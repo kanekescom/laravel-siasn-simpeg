@@ -4,24 +4,25 @@ namespace Kanekescom\Siasn\Simpeg\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use Kanekescom\Siasn\Api\Simpeg\Models\ReferensiUnor;
-use Kanekescom\Siasn\Simpeg\Repositories\ReferensiUnorRepository;
+use Kanekescom\Siasn\Api\Simpeg\Models\RiwayatJabatan;
+use Kanekescom\Siasn\Simpeg\Repositories\RiwayatJabatanRepository;
 
-class PullReferensiUnor extends Command
+class PullRiwayatJabatan extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'siasn-simpeg:pull-ref-unor';
+    protected $signature = 'siasn-simpeg:pull-rw-jabatan
+                            {nipBaru : NIP Baru}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Pull data from /referensi/ref-unor endpoint on SIASN SIMPEG API';
+    protected $description = 'Pull data from /pns/rw-jabatan/{nipBaru} endpoint on SIASN SIMPEG API';
 
     /**
      * Execute the console command.
@@ -31,8 +32,9 @@ class PullReferensiUnor extends Command
         $start = now();
 
         DB::transaction(function () {
-            $repository = app(ReferensiUnorRepository::class);
-            $model = new ReferensiUnor;
+            $nip_baru = $this->argument('nipBaru');
+            $repository = app(RiwayatJabatanRepository::class);
+            $model = new RiwayatJabatan($nip_baru);
 
             if (blank($model)) {
                 $this->error('Data not found!');
@@ -40,6 +42,7 @@ class PullReferensiUnor extends Command
 
             if (filled($model)) {
                 $repository->query()
+                    ->where('nip_baru', $nip_baru)
                     ->delete();
 
                 $bar = $this->output->createProgressBar($model->count());

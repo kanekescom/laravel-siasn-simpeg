@@ -28,6 +28,7 @@ class SimpegServiceProvider extends ServiceProvider
         });
 
         $this->app->bind(\Kanekescom\Siasn\Simpeg\Repositories\ReferensiUnorRepository::class, \Kanekescom\Siasn\Simpeg\Repositories\ReferensiUnorRepositoryEloquent::class);
+        $this->app->bind(\Kanekescom\Siasn\Simpeg\Repositories\RiwayatJabatanRepository::class, \Kanekescom\Siasn\Simpeg\Repositories\RiwayatJabatanRepositoryEloquent::class);
     }
 
     /**
@@ -47,6 +48,10 @@ class SimpegServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../database/migrations/create_siasn_simpeg_referensi_unor_table.php.stub' => $this->getMigrationFileName('create_siasn_simpeg_referensi_unor_table.php'),
         ], 'migrations');
+
+        $this->publishes([
+            __DIR__ . '/../database/migrations/create_siasn_simpeg_riwayat_jabatan_table.php.stub' => $this->getMigrationFileName('create_siasn_simpeg_riwayat_jabatan_table.php'),
+        ], 'migrations');
     }
 
     /**
@@ -60,6 +65,7 @@ class SimpegServiceProvider extends ServiceProvider
 
         $this->commands([
             Commands\PullReferensiUnor::class,
+            Commands\PullRiwayatJabatan::class,
         ]);
     }
 
