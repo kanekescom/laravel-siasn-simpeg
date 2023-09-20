@@ -28,6 +28,7 @@ class SimpegServiceProvider extends ServiceProvider
         });
 
         $this->app->bind(\Kanekescom\Siasn\Simpeg\Repositories\DataUtamaRepository::class, \Kanekescom\Siasn\Simpeg\Repositories\DataUtamaRepositoryEloquent::class);
+        $this->app->bind(\Kanekescom\Siasn\Simpeg\Repositories\PegawaiRepository::class, \Kanekescom\Siasn\Simpeg\Repositories\PegawaiRepositoryEloquent::class);
         $this->app->bind(\Kanekescom\Siasn\Simpeg\Repositories\ReferensiUnorRepository::class, \Kanekescom\Siasn\Simpeg\Repositories\ReferensiUnorRepositoryEloquent::class);
         $this->app->bind(\Kanekescom\Siasn\Simpeg\Repositories\RiwayatJabatanRepository::class, \Kanekescom\Siasn\Simpeg\Repositories\RiwayatJabatanRepositoryEloquent::class);
     }
@@ -51,6 +52,10 @@ class SimpegServiceProvider extends ServiceProvider
         ], 'migrations');
 
         $this->publishes([
+            __DIR__.'/../database/migrations/create_siasn_simpeg_pegawai_table.php.stub' => $this->getMigrationFileName('create_siasn_simpeg_pegawai_table.php'),
+        ], 'migrations');
+
+        $this->publishes([
             __DIR__.'/../database/migrations/create_siasn_simpeg_referensi_unor_table.php.stub' => $this->getMigrationFileName('create_siasn_simpeg_referensi_unor_table.php'),
         ], 'migrations');
 
@@ -69,6 +74,7 @@ class SimpegServiceProvider extends ServiceProvider
         }
 
         $this->commands([
+            Commands\ImportPegawaiCsv::class,
             Commands\PullDataUtama::class,
             Commands\PullReferensiUnor::class,
             Commands\PullRiwayatJabatan::class,
