@@ -46,17 +46,11 @@ class ReferensiUnor extends Model implements Transformable
         'jenis_unor_id',
     ];
 
-    /**
-     * Get the Pegawai for the ReferensiUnor.
-     */
     public function pegawais()
     {
         return $this->hasMany(Pegawai::class, 'unor_id', 'id');
     }
 
-    /**
-     * Get the DataUtama for the ReferensiUnor.
-     */
     public function dataUtamas()
     {
         return $this->hasMany(DataUtama::class, 'unor_id', 'id');

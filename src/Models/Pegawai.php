@@ -107,19 +107,13 @@ class Pegawai extends Model implements Transformable
         'satuan_kerja_kerja_nama',
     ];
 
-    /**
-     * Get the ReferensiUnor that owns the Pegawai.
-     */
     public function refUnor()
     {
         return $this->belongsTo(ReferensiUnor::class, 'unor_id', 'id');
     }
 
-    /**
-     * Get the ReferensiUnor that owns the Pegawai.
-     */
-    public static function doesntHaveRefUnor()
+    public function scopeDoesntHaveRefUnor($query)
     {
-        return (new static)->doesntHave('refUnor');
+        $query->doesntHave('refUnor');
     }
 }
