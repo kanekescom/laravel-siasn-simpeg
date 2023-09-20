@@ -22,6 +22,20 @@ class Pegawai extends Model implements Transformable
     protected $table = 'siasn_simpeg_pegawai';
 
     /**
+     * The primary key associated with the table.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'pns_id';
+
+    /**
+     * The data type of the auto-incrementing ID.
+     *
+     * @var string
+     */
+    protected $keyType = 'string';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -92,4 +106,12 @@ class Pegawai extends Model implements Transformable
         'satuan_kerja_kerja_id',
         'satuan_kerja_kerja_nama',
     ];
+
+    /**
+     * Get the ReferensiUnor that owns the Pegawai.
+     */
+    public function refUnor()
+    {
+        return $this->belongsTo(ReferensiUnor::class);
+    }
 }

@@ -22,6 +22,13 @@ class DataUtama extends Model implements Transformable
     protected $table = 'siasn_simpeg_data_utama';
 
     /**
+     * The data type of the auto-incrementing ID.
+     *
+     * @var string
+     */
+    protected $keyType = 'string';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
