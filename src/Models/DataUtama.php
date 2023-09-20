@@ -151,4 +151,20 @@ class DataUtama extends Model implements Transformable
         'jabatan_asn',
         'kartu_asn',
     ];
+
+    /**
+     * Get the ReferensiUnor that owns the DataUtama.
+     */
+    public function refUnor()
+    {
+        return $this->belongsTo(ReferensiUnor::class, 'unor_id', 'id');
+    }
+
+    /**
+     * Get the ReferensiUnor that owns the Pegawai.
+     */
+    public static function doesntHaveRefUnor()
+    {
+        return (new static)->doesntHave('refUnor');
+    }
 }

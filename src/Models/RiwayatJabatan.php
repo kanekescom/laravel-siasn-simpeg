@@ -61,4 +61,28 @@ class RiwayatJabatan extends Model implements Transformable
         'tmt_pelantikan',
         'path',
     ];
+
+    /**
+     * Get the Pegawai for the RiwayatJabatan.
+     */
+    public function pegawais()
+    {
+        return $this->hasMany(Pegawai::class, 'id_pns', 'id');
+    }
+
+    /**
+     * Get the ReferensiUnor that owns the RiwayatJabatan.
+     */
+    public function refUnor()
+    {
+        return $this->belongsTo(ReferensiUnor::class, 'unor_id', 'id');
+    }
+
+    /**
+     * Get the ReferensiUnor that owns the Pegawai.
+     */
+    public static function doesntHaveRefUnor()
+    {
+        return (new static)->doesntHave('refUnor');
+    }
 }

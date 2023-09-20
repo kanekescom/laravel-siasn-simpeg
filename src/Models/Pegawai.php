@@ -112,6 +112,14 @@ class Pegawai extends Model implements Transformable
      */
     public function refUnor()
     {
-        return $this->belongsTo(ReferensiUnor::class);
+        return $this->belongsTo(ReferensiUnor::class, 'unor_id', 'id');
+    }
+
+    /**
+     * Get the ReferensiUnor that owns the Pegawai.
+     */
+    public static function doesntHaveRefUnor()
+    {
+        return (new static)->doesntHave('refUnor');
     }
 }
