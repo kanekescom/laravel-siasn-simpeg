@@ -2,13 +2,13 @@
 
 namespace Kanekescom\Siasn\Simpeg\Repositories;
 
-use Kanekescom\Siasn\Simpeg\Models\RiwayatJabatan;
-use Kanekescom\Siasn\Simpeg\Presenters\RiwayatJabatanPresenter;
-use Kanekescom\Siasn\Simpeg\Validators\RiwayatJabatanValidator;
+use Kanekescom\Siasn\Simpeg\Models\DataUtama;
+use Kanekescom\Siasn\Simpeg\Presenters\DataUtamaPresenter;
+use Kanekescom\Siasn\Simpeg\Validators\DataUtamaValidator;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Prettus\Repository\Eloquent\BaseRepository;
 
-class RiwayatJabatanRepositoryEloquent extends BaseRepository implements RiwayatJabatanRepository
+class DataUtamaRepositoryEloquent extends BaseRepository implements DataUtamaRepository
 {
     /**
      * @var bool
@@ -22,7 +22,7 @@ class RiwayatJabatanRepositoryEloquent extends BaseRepository implements Riwayat
      */
     public function model()
     {
-        return RiwayatJabatan::class;
+        return DataUtama::class;
     }
 
     /**
@@ -32,7 +32,7 @@ class RiwayatJabatanRepositoryEloquent extends BaseRepository implements Riwayat
      */
     public function validator()
     {
-        return RiwayatJabatanValidator::class;
+        return DataUtamaValidator::class;
     }
 
     /**
@@ -42,7 +42,7 @@ class RiwayatJabatanRepositoryEloquent extends BaseRepository implements Riwayat
      */
     public function presenter()
     {
-        return RiwayatJabatanPresenter::class;
+        return DataUtamaPresenter::class;
     }
 
     /**

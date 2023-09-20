@@ -27,6 +27,7 @@ class SimpegServiceProvider extends ServiceProvider
             return new Simpeg;
         });
 
+        $this->app->bind(\Kanekescom\Siasn\Simpeg\Repositories\DataUtamaRepository::class, \Kanekescom\Siasn\Simpeg\Repositories\DataUtamaRepositoryEloquent::class);
         $this->app->bind(\Kanekescom\Siasn\Simpeg\Repositories\ReferensiUnorRepository::class, \Kanekescom\Siasn\Simpeg\Repositories\ReferensiUnorRepositoryEloquent::class);
         $this->app->bind(\Kanekescom\Siasn\Simpeg\Repositories\RiwayatJabatanRepository::class, \Kanekescom\Siasn\Simpeg\Repositories\RiwayatJabatanRepositoryEloquent::class);
     }
@@ -36,21 +37,25 @@ class SimpegServiceProvider extends ServiceProvider
      */
     protected function offerPublishing(): void
     {
-        if (!$this->app->runningInConsole()) {
+        if (! $this->app->runningInConsole()) {
             return;
         }
 
-        if (!function_exists('config_path')) {
+        if (! function_exists('config_path')) {
             // function not available and 'publish' not relevant in Lumen
             return;
         }
 
         $this->publishes([
-            __DIR__ . '/../database/migrations/create_siasn_simpeg_referensi_unor_table.php.stub' => $this->getMigrationFileName('create_siasn_simpeg_referensi_unor_table.php'),
+            __DIR__.'/../database/migrations/create_siasn_simpeg_data_utama_table.php.stub' => $this->getMigrationFileName('create_siasn_simpeg_data_utama_table.php'),
         ], 'migrations');
 
         $this->publishes([
-            __DIR__ . '/../database/migrations/create_siasn_simpeg_riwayat_jabatan_table.php.stub' => $this->getMigrationFileName('create_siasn_simpeg_riwayat_jabatan_table.php'),
+            __DIR__.'/../database/migrations/create_siasn_simpeg_referensi_unor_table.php.stub' => $this->getMigrationFileName('create_siasn_simpeg_referensi_unor_table.php'),
+        ], 'migrations');
+
+        $this->publishes([
+            __DIR__.'/../database/migrations/create_siasn_simpeg_riwayat_jabatan_table.php.stub' => $this->getMigrationFileName('create_siasn_simpeg_riwayat_jabatan_table.php'),
         ], 'migrations');
     }
 
@@ -59,11 +64,12 @@ class SimpegServiceProvider extends ServiceProvider
      */
     protected function registerCommands(): void
     {
-        if (!$this->app->runningInConsole()) {
+        if (! $this->app->runningInConsole()) {
             return;
         }
 
         $this->commands([
+            Commands\PullDataUtama::class,
             Commands\PullReferensiUnor::class,
             Commands\PullRiwayatJabatan::class,
         ]);
@@ -76,13 +82,13 @@ class SimpegServiceProvider extends ServiceProvider
     {
         $timestamp = date('Y_m_d_His');
 
-        return collect([$this->app->databasePath() . DIRECTORY_SEPARATOR . 'migrations' . DIRECTORY_SEPARATOR])
+        return collect([$this->app->databasePath().DIRECTORY_SEPARATOR.'migrations'.DIRECTORY_SEPARATOR])
             ->flatMap(function ($path) use ($migrationFileName) {
                 $filesystem = $this->app->make(Filesystem::class);
 
-                return $filesystem->glob($path . '*_' . $migrationFileName);
+                return $filesystem->glob($path.'*_'.$migrationFileName);
             })
-            ->push($this->app->databasePath() . "/migrations/{$timestamp}_{$migrationFileName}")
+            ->push($this->app->databasePath()."/migrations/{$timestamp}_{$migrationFileName}")
             ->first();
     }
 }

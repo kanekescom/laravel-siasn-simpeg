@@ -10,7 +10,7 @@ class RiwayatJabatanTransformer extends TransformerAbstract
     /**
      * Transform the RiwayatJabatan model.
      *
-     * @param Kanekescom\Siasn\Simpeg\Models\RiwayatJabatan $model
+     * @param  Kanekescom\Siasn\Simpeg\Models\RiwayatJabatan  $model
      */
     public function transform(RiwayatJabatan $model): array
     {

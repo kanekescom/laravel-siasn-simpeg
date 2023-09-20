@@ -51,7 +51,7 @@ class PullRiwayatJabatan extends Command
                 $model->chunk(500)->each(function ($item) use ($repository, $bar) {
                     $repository->upsert($item->toArray(), 'id');
                     $repository->query()
-                        ->onlyTrashed()
+                        ->withTrashed()
                         ->whereIn('id', $item->pluck('id'))
                         ->restore();
 

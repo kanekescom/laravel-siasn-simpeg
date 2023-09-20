@@ -5,7 +5,7 @@ namespace Kanekescom\Siasn\Simpeg\Validators;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\LaravelValidator;
 
-class ReferensiUnorValidator extends LaravelValidator
+class DataUtamaValidator extends LaravelValidator
 {
     /**
      * Validation Rules

@@ -4,7 +4,6 @@ namespace Kanekescom\Siasn\Simpeg\Repositories;
 
 use Kanekescom\Siasn\Simpeg\Models\ReferensiUnor;
 use Kanekescom\Siasn\Simpeg\Presenters\ReferensiUnorPresenter;
-use Kanekescom\Siasn\Simpeg\Repositories\ReferensiUnorRepository;
 use Kanekescom\Siasn\Simpeg\Validators\ReferensiUnorValidator;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Prettus\Repository\Eloquent\BaseRepository;
