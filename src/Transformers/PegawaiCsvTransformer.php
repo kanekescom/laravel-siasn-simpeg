@@ -16,7 +16,7 @@ class PegawaiCsvTransformer extends TransformerAbstract
         return [
             /* place your other model properties here */
             'pns_id' => $item['PNS ID'],
-            'nip_baru' => $item['NIP BARU'],
+            'nip_baru' => $this->removeQuotationMark($item['NIP BARU']),
             'nip_lama' => $item['NIP LAMA'],
             'nama' => $item['NAMA'],
             'gelar_depan' => $item['GELAR DEPAN'],
@@ -29,13 +29,13 @@ class PegawaiCsvTransformer extends TransformerAbstract
             'agama_nama' => $item['AGAMA NAMA'],
             'jenis_kawin_id' => $item['JENIS KAWIN ID'],
             'jenis_kawin_nama' => $item['JENIS KAWIN NAMA'],
-            'nik' => $item['NIK'],
+            'nik' => $this->removeQuotationMark($item['NIK']),
             'nomor_hp' => $item['NOMOR HP'],
             'email' => $item['EMAIL'],
             'email_gov' => $item['EMAIL GOV'],
             'alamat' => $item['ALAMAT'],
-            'npwp_nomor' => $item['NPWP NOMOR'],
-            'bpjs' => $item['BPJS'],
+            'npwp_nomor' => $this->removeQuotationMark($item['NPWP NOMOR']),
+            'bpjs' => $this->removeQuotationMark($item['BPJS']),
             'jenis_pegawai_id' => $item['JENIS PEGAWAI ID'],
             'jenis_pegawai_nama' => $item['JENIS PEGAWAI NAMA'],
             'kedudukan_hukum_id' => $item['KEDUDUKAN HUKUM ID'],
@@ -84,5 +84,10 @@ class PegawaiCsvTransformer extends TransformerAbstract
             // 'updated_at' => $item['updated_at'],
             // 'deleted_at' => $item['deleted_at'],
         ];
+    }
+
+    protected function removeQuotationMark($string)
+    {
+        return preg_replace("/^'/", '', $string, 1);
     }
 }
