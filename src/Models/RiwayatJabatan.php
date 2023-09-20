@@ -72,6 +72,11 @@ class RiwayatJabatan extends Model implements Transformable
         return $this->belongsTo(ReferensiUnor::class, 'unor_id', 'id');
     }
 
+    public function scopeHasRefUnor($query)
+    {
+        $query->has('refUnor');
+    }
+
     public function scopeDoesntHaveRefUnor($query)
     {
         $query->doesntHave('refUnor');
