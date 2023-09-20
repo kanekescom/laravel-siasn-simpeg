@@ -24,5 +24,6 @@
         <env name="SIASN_SSO_PASSWORD" value=""/>
         <env name="SIASN_CONST_INSTANSI_ID" value=""/>
         <env name="SIASN_CONST_SATUAN_KERJA_ID" value=""/>
+        <env name="PEGAWAI_NIP_BARU" value="199304212019031003"/>
     </php>
 </phpunit>
