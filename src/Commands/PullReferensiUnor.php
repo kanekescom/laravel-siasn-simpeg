@@ -4,7 +4,7 @@ namespace Kanekescom\Siasn\Simpeg\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use Kanekescom\Siasn\Simpeg\Models\ReferensiUnorApi;
+use Kanekescom\Siasn\Api\Simpeg\Models\ReferensiUnor;
 use Kanekescom\Siasn\Simpeg\Repositories\ReferensiUnorRepository;
 
 class PullReferensiUnor extends Command
@@ -32,7 +32,7 @@ class PullReferensiUnor extends Command
 
         DB::transaction(function () {
             $repository = app(ReferensiUnorRepository::class);
-            $items = new ReferensiUnorApi;
+            $items = new ReferensiUnor;
 
             if (blank($items)) {
                 $this->error('Data not found!');
