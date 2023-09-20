@@ -1,0 +1,146 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('siasn_simpeg_data_utama', function (Blueprint $table) {
+            $table->string('id')->primary();
+            $table->string('nip_baru')->nullable();
+            $table->string('nip_lama')->nullable();
+            $table->string('nama')->nullable();
+            $table->string('gelar_depan')->nullable();
+            $table->string('gelar_belakang')->nullable();
+            $table->string('tempat_lahir')->nullable();
+            $table->string('tempat_lahir_id')->nullable();
+            $table->string('tgl_lahir')->nullable();
+            $table->string('agama')->nullable();
+            $table->string('agama_id')->nullable();
+            $table->string('email')->nullable();
+            $table->string('email_gov')->nullable();
+            $table->string('nik')->nullable();
+            $table->text('alamat')->nullable();
+            $table->string('no_hp')->nullable();
+            $table->string('no_telp')->nullable();
+            $table->string('jenis_pegawai_id')->nullable();
+            $table->string('mk_tahun')->nullable();
+            $table->string('mk_bulan')->nullable();
+            $table->text('jenis_pegawai_nama')->nullable();
+            $table->string('kedudukan_pns_id')->nullable();
+            $table->text('kedudukan_pns_nama')->nullable();
+            $table->string('status_pegawai')->nullable();
+            $table->string('jenis_kelamin')->nullable();
+            $table->string('jenis_id_dokumen_id')->nullable();
+            $table->string('jenis_id_dokumen_nama')->nullable();
+            $table->text('nomor_id_document')->nullable();
+            $table->text('no_seri_karpeg')->nullable();
+            $table->string('tk_pendidikan_terakhir_id')->nullable();
+            $table->text('tk_pendidikan_terakhir')->nullable();
+            $table->string('pendidikan_terakhir_id')->nullable();
+            $table->text('pendidikan_terakhir_nama')->nullable();
+            $table->string('tahun_lulus')->nullable();
+            $table->string('tmt_pns')->nullable();
+            $table->string('tmt_pensiun')->nullable();
+            $table->string('bup_pensiun')->nullable();
+            $table->string('tgl_sk_pns')->nullable();
+            $table->string('tmt_cpns')->nullable();
+            $table->string('tgl_sk_cpns')->nullable();
+            $table->string('instansi_induk_id')->nullable();
+            $table->text('instansi_induk_nama')->nullable();
+            $table->string('satuan_kerja_induk_id')->nullable();
+            $table->text('satuan_kerja_induk_nama')->nullable();
+            $table->string('kanreg_id')->nullable();
+            $table->text('kanreg_nama')->nullable();
+            $table->string('instansi_kerja_id')->nullable();
+            $table->text('instansi_kerja_nama')->nullable();
+            $table->string('instansi_kerja_kode_cepat')->nullable();
+            $table->string('satuan_kerja_kerja_id')->nullable();
+            $table->text('satuan_kerja_kerja_nama')->nullable();
+            $table->string('unor_id')->nullable();
+            $table->text('unor_nama')->nullable();
+            $table->string('unor_induk_id')->nullable();
+            $table->text('unor_induk_nama')->nullable();
+            $table->string('jenis_jabatan_id')->nullable();
+            $table->string('jenis_jabatan')->nullable();
+            $table->text('jabatan_nama')->nullable();
+            $table->string('jabatan_struktural_id')->nullable();
+            $table->text('jabatan_struktural_nama')->nullable();
+            $table->string('jabatan_fungsional_id')->nullable();
+            $table->text('jabatan_fungsional_nama')->nullable();
+            $table->string('jabatan_fungsional_umum_id')->nullable();
+            $table->text('jabatan_fungsional_umum_nama')->nullable();
+            $table->string('tmt_jabatan')->nullable();
+            $table->string('lokasi_kerja_id')->nullable();
+            $table->string('lokasi_kerja')->nullable();
+            $table->string('gol_ruang_awal_id')->nullable();
+            $table->string('gol_ruang_awal')->nullable();
+            $table->string('gol_ruang_akhir_id')->nullable();
+            $table->string('gol_ruang_akhir')->nullable();
+            $table->string('tmt_gol_akhir')->nullable();
+            $table->string('masa_kerja')->nullable();
+            $table->string('eselon')->nullable();
+            $table->string('eselon_id')->nullable();
+            $table->string('eselon_level')->nullable();
+            $table->string('tmt_eselon')->nullable();
+            $table->string('gaji_pokok')->nullable();
+            $table->string('kpkn_id')->nullable();
+            $table->text('kpkn_nama')->nullable();
+            $table->string('ktua_id')->nullable();
+            $table->text('ktua_nama')->nullable();
+            $table->string('taspen_id')->nullable();
+            $table->text('taspen_nama')->nullable();
+            $table->string('jenis_kawin_id')->nullable();
+            $table->string('status_perkawinan')->nullable();
+            $table->string('status_hidup')->nullable();
+            $table->string('tgl_surat_keterangan_dokter')->nullable();
+            $table->text('no_surat_keterangan_dokter')->nullable();
+            $table->string('jumlah_istri_suami')->nullable();
+            $table->string('jumlah_anak')->nullable();
+            $table->text('no_surat_keterangan_bebas_narkoba')->nullable();
+            $table->string('tgl_surat_keterangan_bebas_narkoba')->nullable();
+            $table->string('skck')->nullable();
+            $table->string('tgl_skck')->nullable();
+            $table->string('akte_kelahiran')->nullable();
+            $table->string('akte_meninggal')->nullable();
+            $table->string('tgl_meninggal')->nullable();
+            $table->text('no_npwp')->nullable();
+            $table->string('tgl_npwp')->nullable();
+            $table->text('no_askes')->nullable();
+            $table->string('bpjs')->nullable();
+            $table->string('kode_pos')->nullable();
+            $table->text('no_spmt')->nullable();
+            $table->text('no_taspen')->nullable();
+            $table->text('bahasa')->nullable();
+            $table->string('kppn_id')->nullable();
+            $table->text('kppn_nama')->nullable();
+            $table->string('pangkat_akhir')->nullable();
+            $table->string('tgl_sttpl')->nullable();
+            $table->text('nomor_sttpl')->nullable();
+            $table->text('nomor_sk_cpns')->nullable();
+            $table->text('nomor_sk_pns')->nullable();
+            $table->text('jenjang')->nullable();
+            $table->text('jabatan_asn')->nullable();
+            $table->string('kartu_asn')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
+        DB::statement('ALTER TABLE siasn_simpeg_data_utama ROW_FORMAT=DYNAMIC;');
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('siasn_simpeg_data_utama');
+    }
+};
