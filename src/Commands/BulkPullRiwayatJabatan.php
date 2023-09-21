@@ -52,6 +52,6 @@ class BulkPullRiwayatJabatan extends Command
         }
 
         $this->newLine();
-        $this->comment("Processed in {$start->shortAbsoluteDiffForHumans(now(), 1)}");
+        $this->comment("All commands are processed in {$start->shortAbsoluteDiffForHumans(now(), 1)}");
     }
 }
