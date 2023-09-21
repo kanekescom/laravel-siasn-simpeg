@@ -2,6 +2,7 @@
 
 namespace Kanekescom\Siasn\Simpeg\Models;
 
+use Kanekescom\Simasn\Models\PegawaiAktual;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -122,13 +123,33 @@ class Pegawai extends Model implements Transformable
         $query->doesntHave('refUnor');
     }
 
-    public function lastJabatan()
+    public function simasn()
     {
-        return $this->hasOne(ReferensiUnor::class, 'unor_id', 'id')->ofMany([
-            'published_at' => 'max',
-            'id' => 'max',
-        ], function ($query) {
-            $query->where('published_at', '<', now());
-        });
+        return $this->hasOne(PegawaiAktual::class, 'pns_id', 'pns_id');
+    }
+
+    public function simasnByNipBaru()
+    {
+        return $this->hasOne(PegawaiAktual::class, 'nip_baru', 'nip_baru');
+    }
+
+    public function scopeHasSimasn($query)
+    {
+        $query->has('simasn');
+    }
+
+    public function scopeDoesntHaveSimasn($query)
+    {
+        $query->doesntHave('simasn');
+    }
+
+    public function scopeHasSimasnByNipBaru($query)
+    {
+        $query->has('simasnByNipBaru');
+    }
+
+    public function scopeDoesntHaveSimasnByNipBaru($query)
+    {
+        $query->doesntHave('simasnByNipBaru');
     }
 }
