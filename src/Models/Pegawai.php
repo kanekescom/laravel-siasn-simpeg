@@ -121,4 +121,14 @@ class Pegawai extends Model implements Transformable
     {
         $query->doesntHave('refUnor');
     }
+
+    public function lastJabatan()
+    {
+        return $this->hasOne(ReferensiUnor::class, 'unor_id', 'id')->ofMany([
+            'published_at' => 'max',
+            'id' => 'max',
+        ], function ($query) {
+            $query->where('published_at', '<', now());
+        });
+    }
 }

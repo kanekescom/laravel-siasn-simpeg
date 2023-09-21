@@ -69,6 +69,7 @@ class SimpegServiceProvider extends ServiceProvider
         }
 
         $this->commands([
+            Commands\BulkPullRiwayatJabatan::class,
             Commands\ImportPegawaiCsv::class,
             Commands\PullDataUtama::class,
             Commands\PullReferensiUnor::class,
