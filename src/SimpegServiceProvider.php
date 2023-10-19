@@ -74,6 +74,8 @@ class SimpegServiceProvider extends ServiceProvider
             Commands\PullDataUtama::class,
             Commands\PullReferensiUnor::class,
             Commands\PullRiwayatJabatan::class,
+            Commands\PostRiwayatJabatanUnor::class,
+            Commands\FixAnomaliRiwayatJabatan::class,
         ]);
     }
 

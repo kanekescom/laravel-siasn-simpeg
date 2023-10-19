@@ -3,6 +3,7 @@
 namespace Kanekescom\Siasn\Simpeg\Models;
 
 use Kanekescom\Simasn\Models\PegawaiAktual;
+use Kirschbaum\PowerJoins\PowerJoins;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -12,6 +13,7 @@ use Prettus\Repository\Traits\TransformableTrait;
 class Pegawai extends Model implements Transformable
 {
     use HasFactory;
+    use PowerJoins;
     use SoftDeletes;
     use TransformableTrait;
 
@@ -108,21 +110,6 @@ class Pegawai extends Model implements Transformable
         'satuan_kerja_kerja_nama',
     ];
 
-    public function refUnor()
-    {
-        return $this->belongsTo(ReferensiUnor::class, 'unor_id', 'id');
-    }
-
-    public function scopeHasRefUnor($query)
-    {
-        $query->has('refUnor');
-    }
-
-    public function scopeDoesntHaveRefUnor($query)
-    {
-        $query->doesntHave('refUnor');
-    }
-
     public function simasn()
     {
         return $this->hasOne(PegawaiAktual::class, 'pns_id', 'pns_id');
@@ -151,5 +138,55 @@ class Pegawai extends Model implements Transformable
     public function scopeDoesntHaveSimasnByNipBaru($query)
     {
         $query->doesntHave('simasnByNipBaru');
+    }
+
+    public function refUnor()
+    {
+        return $this->belongsTo(ReferensiUnor::class, 'unor_id', 'id');
+    }
+
+    public function scopeHasRefUnor($query)
+    {
+        $query->has('refUnor');
+    }
+
+    public function scopeDoesntHaveRefUnor($query)
+    {
+        $query->doesntHave('refUnor');
+    }
+
+    public function simasnByNipBaruRefUnor()
+    {
+        return $this->hasOneThrough(
+            ReferensiUnor::class,
+            PegawaiAktual::class,
+            'nip_baru',
+            'id',
+            'nip_baru',
+            'unor_id'
+        );
+    }
+
+    public function scopeHasSimasnByNipBaruRefUnor($query)
+    {
+        $query->has('simasnByNipBaruRefUnor');
+    }
+
+    public function scopeDoesntHaveSimasnByNipBaruRefUnor($query)
+    {
+        $query->doesntHave('simasnByNipBaruRefUnor');
+    }
+
+    public function riwayatJabatans()
+    {
+        return $this->hasMany(RiwayatJabatan::class, 'id_pns', 'pns_id');
+    }
+
+    public function lastRiwayatJabatan()
+    {
+        return $this->hasOne(RiwayatJabatan::class, 'id_pns', 'pns_id')
+            ->ofMany([
+                'tmt_jabatan' => 'max',
+            ]);
     }
 }
