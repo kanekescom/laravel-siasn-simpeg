@@ -22,6 +22,13 @@ class ReferensiUnor extends Model implements Transformable
     protected $table = 'siasn_simpeg_referensi_unor';
 
     /**
+     * The data type of the auto-incrementing ID.
+     *
+     * @var string
+     */
+    protected $keyType = 'string';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -38,4 +45,14 @@ class ReferensiUnor extends Model implements Transformable
         'pemimpin_pns_id',
         'jenis_unor_id',
     ];
+
+    public function pegawais()
+    {
+        return $this->hasMany(Pegawai::class, 'unor_id', 'id');
+    }
+
+    public function dataUtamas()
+    {
+        return $this->hasMany(DataUtama::class, 'unor_id', 'id');
+    }
 }

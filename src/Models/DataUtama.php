@@ -22,6 +22,13 @@ class DataUtama extends Model implements Transformable
     protected $table = 'siasn_simpeg_data_utama';
 
     /**
+     * The data type of the auto-incrementing ID.
+     *
+     * @var string
+     */
+    protected $keyType = 'string';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -144,4 +151,19 @@ class DataUtama extends Model implements Transformable
         'jabatan_asn',
         'kartu_asn',
     ];
+
+    public function refUnor()
+    {
+        return $this->belongsTo(ReferensiUnor::class, 'unor_id', 'id');
+    }
+
+    public function scopeHasRefUnor($query)
+    {
+        $query->has('refUnor');
+    }
+
+    public function scopeDoesntHaveRefUnor($query)
+    {
+        $query->doesntHave('refUnor');
+    }
 }

@@ -1,4 +1,4 @@
-# Laravel SIASN Simpeg
+# Laravel SIASN SIMPEG
 
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Total Downloads][ico-downloads]][link-downloads]
