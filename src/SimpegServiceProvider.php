@@ -2,97 +2,42 @@
 
 namespace Kanekescom\Siasn\Simpeg;
 
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\ServiceProvider;
+use Spatie\LaravelPackageTools\Package;
+use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class SimpegServiceProvider extends ServiceProvider
+class SimpegServiceProvider extends PackageServiceProvider
 {
-    /**
-     * Perform post-registration booting of services.
-     */
-    public function boot(): void
+    public function configurePackage(Package $package): void
     {
-        $this->offerPublishing();
-
-        $this->registerCommands();
-    }
-
-    /**
-     * Register any package services.
-     */
-    public function register(): void
-    {
-        $this->app->bind(\Kanekescom\Siasn\Simpeg\Repositories\DataUtamaRepository::class, \Kanekescom\Siasn\Simpeg\Repositories\DataUtamaRepositoryEloquent::class);
-        $this->app->bind(\Kanekescom\Siasn\Simpeg\Repositories\PegawaiRepository::class, \Kanekescom\Siasn\Simpeg\Repositories\PegawaiRepositoryEloquent::class);
-        $this->app->bind(\Kanekescom\Siasn\Simpeg\Repositories\ReferensiUnorRepository::class, \Kanekescom\Siasn\Simpeg\Repositories\ReferensiUnorRepositoryEloquent::class);
-        $this->app->bind(\Kanekescom\Siasn\Simpeg\Repositories\RiwayatJabatanRepository::class, \Kanekescom\Siasn\Simpeg\Repositories\RiwayatJabatanRepositoryEloquent::class);
-    }
-
-    /**
-     * Offer publishing.
-     */
-    protected function offerPublishing(): void
-    {
-        if (!$this->app->runningInConsole()) {
-            return;
-        }
-
-        if (!function_exists('config_path')) {
-            // function not available and 'publish' not relevant in Lumen
-            return;
-        }
-
-        $this->publishes([
-            __DIR__ . '/../database/migrations/create_siasn_simpeg_data_utama_table.php.stub' => $this->getMigrationFileName('create_siasn_simpeg_data_utama_table.php'),
-        ], 'migrations');
-
-        $this->publishes([
-            __DIR__ . '/../database/migrations/create_siasn_simpeg_pegawai_table.php.stub' => $this->getMigrationFileName('create_siasn_simpeg_pegawai_table.php'),
-        ], 'migrations');
-
-        $this->publishes([
-            __DIR__ . '/../database/migrations/create_siasn_simpeg_referensi_unor_table.php.stub' => $this->getMigrationFileName('create_siasn_simpeg_referensi_unor_table.php'),
-        ], 'migrations');
-
-        $this->publishes([
-            __DIR__ . '/../database/migrations/create_siasn_simpeg_riwayat_jabatan_table.php.stub' => $this->getMigrationFileName('create_siasn_simpeg_riwayat_jabatan_table.php'),
-        ], 'migrations');
-    }
-
-    /**
-     * Register commands.
-     */
-    protected function registerCommands(): void
-    {
-        if (!$this->app->runningInConsole()) {
-            return;
-        }
-
-        $this->commands([
-            Commands\BulkPullRiwayatJabatan::class,
-            Commands\ImportPegawaiCsv::class,
-            Commands\PullDataUtama::class,
-            Commands\PullReferensiUnor::class,
-            Commands\PullRiwayatJabatan::class,
-            Commands\PostRiwayatJabatanUnor::class,
-            Commands\FixAnomaliRiwayatJabatan::class,
-        ]);
-    }
-
-    /**
-     * Returns existing migration file if found, else uses the current timestamp.
-     */
-    protected function getMigrationFileName(string $migrationFileName): string
-    {
-        $timestamp = date('Y_m_d_His');
-
-        return collect([$this->app->databasePath() . DIRECTORY_SEPARATOR . 'migrations' . DIRECTORY_SEPARATOR])
-            ->flatMap(function ($path) use ($migrationFileName) {
-                $filesystem = $this->app->make(Filesystem::class);
-
-                return $filesystem->glob($path . '*_' . $migrationFileName);
-            })
-            ->push($this->app->databasePath() . "/migrations/{$timestamp}_{$migrationFileName}")
-            ->first();
+        $package
+            ->name('laravel-siasn-simpeg')
+            ->hasConfigFile()
+            ->hasMigrations([
+                'create_siasn_simpeg_agama_table',
+                'create_siasn_simpeg_alasan_hukuman_disiplin_table',
+                'create_siasn_simpeg_asn_jenis_jabatan_table',
+                'create_siasn_simpeg_asn_jenjang_jabatan_table',
+                'create_siasn_simpeg_eselon_table',
+                'create_siasn_simpeg_golongan_table',
+                'create_siasn_simpeg_instansi_table',
+                'create_siasn_simpeg_jabatan_fungsional_table',
+                'create_siasn_simpeg_jabatan_fungsional_umum_table',
+                'create_siasn_simpeg_jenis_anak_table',
+                'create_siasn_simpeg_jenis_diklat_table',
+                'create_siasn_simpeg_jenis_hukuman_table',
+                'create_siasn_simpeg_jenis_jabatan_table',
+                'create_siasn_simpeg_kanreg_table',
+                'create_siasn_simpeg_kedudukan_hukum_table',
+                'create_siasn_simpeg_kel_jabatan_table',
+                'create_siasn_simpeg_latihan_struktural_table',
+                'create_siasn_simpeg_lokasi_table',
+                'create_siasn_simpeg_pendidikan_table',
+                'create_siasn_simpeg_ref_dokumen_table',
+                'create_siasn_simpeg_ref_jenjang_jf_table',
+                'create_siasn_simpeg_satuan_kerja_table',
+                'create_siasn_simpeg_tingkat_pendidikan_table',
+            ])
+            ->runsMigrations()
+            ->hasCommand(Commands\PullCommand::class);
     }
 }
