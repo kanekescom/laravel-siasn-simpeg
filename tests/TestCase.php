@@ -21,7 +21,7 @@ class TestCase extends Orchestra
 
     public function getEnvironmentSetUp($app)
     {
-        $app['config']->set('siasn-api', require __DIR__ . '/../vendor/kanekescom/laravel-siasn-api/config/siasn-api.php');
-        $app['config']->set('siasn-simpeg-api', require __DIR__ . '/../vendor/kanekescom/laravel-siasn-simpeg-api/config/siasn-simpeg-api.php');
+        $app['config']->set('siasn-api', require __DIR__.'/../vendor/kanekescom/laravel-siasn-api/config/siasn-api.php');
+        $app['config']->set('siasn-simpeg-api', require __DIR__.'/../vendor/kanekescom/laravel-siasn-simpeg-api/config/siasn-simpeg-api.php');
     }
 }

@@ -6,9 +6,9 @@ it('can not pull doesnt exist endpoint', function () {
 
 $class = new ReflectionClass(\Kanekescom\Siasn\Simpeg\Simpeg::class);
 $methods = array_filter($class->getMethods(), function ($method) {
-    return !$method->isConstructor()
-        && !$method->isDestructor()
-        && !$method->isInternal()
+    return ! $method->isConstructor()
+        && ! $method->isDestructor()
+        && ! $method->isInternal()
         && strpos($method->name, '__') !== 0;
 });
 $methodNames = array_map(function ($method) {
