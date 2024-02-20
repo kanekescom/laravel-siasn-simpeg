@@ -97,7 +97,7 @@ class PullCommand extends Command
             $modelName = Str::of($endpoint)->studly();
             $modelClass = config("siasn-simpeg.models.{$modelName->snake()}");
             $model = new $modelClass;
-            $simpegMethod = 'get' . $modelName;
+            $simpegMethod = 'get'.$modelName;
             $response = Simpeg::$simpegMethod();
 
             $this->info("[{$i}/{$endpointCount}] {$endpoint}");
