@@ -89,7 +89,7 @@ class PullRiwayatCommand extends Command
             $modelName = str($endpoint)->studly();
             $modelClass = $modelName->prepend('Kanekescom\Siasn\Simpeg\Models\/');
             $model = new $modelClass;
-            $simpegMethod = 'get' . $modelName;
+            $simpegMethod = 'get'.$modelName;
             $response = Simpeg::$simpegMethod();
 
             $this->info("[{$i}/{$endpointCount}] {$endpoint}");

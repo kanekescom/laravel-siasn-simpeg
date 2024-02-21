@@ -14,8 +14,8 @@ class ImportCommand extends Command
      * @var string
      */
     protected $signature = 'siasn-simpeg:import
-                        {filePath : File path}
-                        {--truncate : Truncate data before run import}';
+                            {filePath : File path}
+                            {--truncate : Truncate data before run import}';
 
     /**
      * The console command description.
