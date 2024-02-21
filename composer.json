@@ -24,12 +24,13 @@
     ],
     "require": {
         "php": "^8.1",
+        "eightynine/filament-excel-import": "^3.0",
         "filament/filament": "^3.2",
         "guzzlehttp/guzzle": "^7.2",
         "illuminate/contracts": "^10.0",
         "kanekescom/laravel-helperia": "^2.0",
         "kanekescom/laravel-siasn-api": "^2.0",
-        "kanekescom/laravel-siasn-referensi-api": "^2.0",
+        "kanekescom/laravel-siasn-simpeg-api": "^2.0",
         "spatie/laravel-fractal": "^6.0",
         "spatie/laravel-package-tools": "^1.14.0"
     },
@@ -85,7 +86,8 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Kanekescom\\Siasn\\Simpeg\\SimpegServiceProvider"
+                "Kanekescom\\Siasn\\Simpeg\\SimpegServiceProvider",
+                "Kanekescom\\Siasn\\Simpeg\\SiasnSimpegPanelProvider"
             ],
             "aliases": {
                 "Simpeg": "Kanekescom\\Siasn\\Simpeg\\Facades\\Simpeg"
