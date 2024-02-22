@@ -16,7 +16,7 @@ class Pegawai extends Model
      *
      * @var string
      */
-    protected $primaryKey = 'PNS_ID';
+    protected $primaryKey = 'pns_id';
 
     /**
      * The data type of the auto-incrementing ID.

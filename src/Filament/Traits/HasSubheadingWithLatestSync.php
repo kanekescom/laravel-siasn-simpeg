@@ -8,6 +8,6 @@ trait HasSubheadingWithLatestSync
 {
     public function getSubheading(): string|Htmlable|null
     {
-        return __('Last sync: ') . (new (self::$resource::getModel()))->latest()->first()?->updated_at->diffForHumans();
+        return __('Last sync: ').(new (self::$resource::getModel()))->latest()->first()?->updated_at->diffForHumans();
     }
 }
