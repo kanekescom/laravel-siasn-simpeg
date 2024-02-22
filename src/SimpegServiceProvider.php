@@ -41,8 +41,8 @@ class SimpegServiceProvider extends PackageServiceProvider
                 '2024_01_02_000026_create_siasn_simpeg_pns_rw_skp_table',
                 '2024_01_02_000027_create_siasn_simpeg_pns_rw_skp22_table',
                 '2024_01_02_000028_create_siasn_simpeg_referensi_ref_unor_table',
-                '2024_01_02_000029_create_siasn_simpeg_orantua_ayah_table',
-                '2024_01_02_000030_create_siasn_simpeg_orantua_ibu_table',
+                '2024_01_02_000029_create_siasn_simpeg_orangtua_ayah_table',
+                '2024_01_02_000030_create_siasn_simpeg_orangtua_ibu_table',
                 '2024_01_02_000031_create_siasn_simpeg_pasangan_table',
                 '2024_01_02_000032_create_siasn_simpeg_data_pernikahan_table',
             ])
