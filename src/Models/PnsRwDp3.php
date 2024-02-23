@@ -25,6 +25,10 @@ class PnsRwDp3 extends Model
      */
     protected $guarded = [];
 
+    protected $casts = [
+        'path' => 'array',
+    ];
+
     public function getTable()
     {
         return 'siasn_simpeg_'.str(class_basename(__CLASS__))->snake();
