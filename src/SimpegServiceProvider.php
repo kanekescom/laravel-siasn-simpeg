@@ -24,7 +24,7 @@ class SimpegServiceProvider extends PackageServiceProvider
                 '2024_01_02_000009_create_siasn_simpeg_pns_photo_table',
                 '2024_01_02_000010_create_siasn_simpeg_pns_rw_angkakredit_table',
                 '2024_01_02_000011_create_siasn_simpeg_pns_rw_cltn_table',
-                '2024_01_02_000012_create_siasn_simpeg_pns_rw_cltn_table',
+                '2024_01_02_000012_create_siasn_simpeg_pns_rw_diklat_table',
                 '2024_01_02_000013_create_siasn_simpeg_pns_rw_dp3_table',
                 '2024_01_02_000014_create_siasn_simpeg_pns_rw_golongan_table',
                 '2024_01_02_000015_create_siasn_simpeg_pns_rw_hukdis_table',
