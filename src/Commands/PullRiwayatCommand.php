@@ -102,7 +102,7 @@ class PullRiwayatCommand extends Command
             }
         }
 
-        $start = now();
+        $startPegawai = now();
         $endpoints = $endpoints->keys();
         $endpointCount = $endpoints->count();
         $pegawais = $nipBaru ? Pegawai::where('nip_baru', $nipBaru)->get() : Pegawai::get();
@@ -111,6 +111,7 @@ class PullRiwayatCommand extends Command
         $iPegawai = $skip;
 
         $pegawais->each(function ($pegawai) use ($pegawaiCount, &$iPegawai, $endpoints, $endpointCount) {
+            $startEndpoint = now();
             $iPegawai++;
             $iEndpoint = 0;
 
@@ -172,11 +173,12 @@ class PullRiwayatCommand extends Command
                 }
             });
 
+            $this->comment("All endpoint tasks are processed in {$startEndpoint->shortAbsoluteDiffForHumans(now(), 1)}");
             $this->newLine();
         });
 
         $this->newLine();
-        $this->comment("All tasks are processed in {$start->shortAbsoluteDiffForHumans(now(), 1)}");
+        $this->comment("All tasks are processed in {$startPegawai->shortAbsoluteDiffForHumans(now(), 1)}");
 
         return self::SUCCESS;
     }
