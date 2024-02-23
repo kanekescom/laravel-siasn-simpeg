@@ -78,15 +78,15 @@ class PullRiwayatCommand extends Command
         $endpointOptions = collect($this->endpoints)->mapWithKeys(function ($item) {
             return [$item => $item];
         });
-        $endpoints = collect($this->argument('endpoint'));
+        $endpoint = $this->argument('endpoint');
         $nipBaru = $this->argument('nipBaru');
-        $skip = $this->option('skip');
+        $skip = (int) $this->option('skip');
 
-        if (filled($endpoints->first()) && blank($endpoints = $endpointOptions->only($endpoints))) {
+        if (blank($endpoints = $endpointOptions->only($endpoint))) {
             throw new BadEndpointCallException('Endpoint does not exist.');
         }
 
-        if (blank($endpoints->first())) {
+        if (blank($endpoint)) {
             $endpoints = collect($this->choice(
                 'What do you want to call endpoint? Separate with commas.',
                 collect(['all' => 'all'])->merge($endpointOptions)->keys()->toArray(),
@@ -105,86 +105,77 @@ class PullRiwayatCommand extends Command
         $start = now();
         $endpoints = $endpoints->keys();
         $endpointCount = $endpoints->count();
-        $endpointErrors = collect([]);
-        $pegawais = $nipBaru ? Pegawai::where('nip_baru', $nipBaru)->get() : Pegawai::get()->skip($skip);
+        $pegawais = $nipBaru ? Pegawai::where('nip_baru', $nipBaru)->get() : Pegawai::get();
         $pegawaiCount = $pegawais->count();
-        $iEndpoint = 0;
+        $pegawais = $pegawais->skip($skip);
+        $iPegawai = $skip;
 
-        $endpoints->each(function ($endpoint) use ($endpointCount, &$endpointErrors, &$iEndpoint, $pegawais, $pegawaiCount) {
-            $iEndpoint++;
-            $modelName = str($endpoint)->studly();
-            $modelClass = "Kanekescom\\Siasn\\Simpeg\\Models\\{$modelName}";
-            $model = new $modelClass;
-            $simpegMethod = 'get'.$modelName;
-            $iPegawai = 0;
+        $pegawais->each(function ($pegawai) use ($pegawaiCount, &$iPegawai, $endpoints, $endpointCount) {
+            $iPegawai++;
+            $iEndpoint = 0;
 
-            $this->info("ENDPOINT: [{$iEndpoint}/{$endpointCount}] {$endpoint}");
+            $this->info("PEGAWAI: [{$iPegawai}/{$pegawaiCount}] {$pegawai->nip_baru}");
 
-            $pegawais->each(function ($pegawai) use (&$endpointErrors, $endpoint, $simpegMethod, $pegawaiCount, &$iPegawai, $model) {
-                $iPegawai++;
-                $this->info("PEGAWAI: {$endpoint} [{$iPegawai}/{$pegawaiCount}] {$pegawai->nip_baru}");
-
+            $endpoints->each(function ($endpoint) use ($pegawai, $endpointCount, &$iEndpoint) {
+                $iEndpoint++;
+                $modelName = str($endpoint)->studly();
+                $modelClass = "Kanekescom\\Siasn\\Simpeg\\Models\\{$modelName}";
+                $model = new $modelClass;
+                $simpegMethod = 'get'.$modelName;
                 $response = Simpeg::$simpegMethod($pegawai->nip_baru);
 
-                // if ($response->count() == 0) {
-                //     $errorMessage = "{$endpoint} data for {$pegawai->nip_baru} is not found";
-                //     $endpointErrors->put($endpoint, $errorMessage);
-                //     $this->warning('Data not found');
-                // }
+                $this->info("ENDPOINT: [{$iEndpoint}/{$endpointCount}] {$endpoint}");
 
-                try {
-                    $bar = $this->output->createProgressBar($response->count());
-                    $bar->start();
+                if ($response->count()) {
+                    try {
+                        $bar = $this->output->createProgressBar($response->count());
+                        $bar->start();
 
-                    $model = $model->where($this->pnsId[$endpoint], $pegawai->pns_id);
+                        $model = $model->where($this->pnsId[$endpoint], $pegawai->pns_id);
 
-                    DB::transaction(function () use ($endpoint, $model, $response, $bar) {
-                        if (config('siasn-simpeg.delete_model_before_pull')) {
-                            $model->delete();
-                        }
+                        DB::transaction(function () use ($endpoint, $model, $response, $bar) {
+                            if (config('siasn-simpeg.delete_model_before_pull')) {
+                                $model->delete();
+                            }
 
-                        $response->chunk(config('siasn-simpeg.chunk_data'))->each(function ($item) use ($model, $endpoint, $bar) {
-                            $item = $item->map(function ($item) {
-                                $item['path'] = collect($item['path'])->toJson();
+                            $response->chunk(config('siasn-simpeg.chunk_data'))->each(function ($item) use ($model, $endpoint, $bar) {
+                                $item = $item->map(function ($item) {
+                                    if (isset($item['path'])) {
+                                        $item['path'] = collect($item['path'])->toJson();
+                                    }
 
-                                return Arr::except($item, [
-                                    'created_at',
-                                    'updated_at',
-                                    'deleted_at',
-                                ]);
+                                    return Arr::except($item, [
+                                        'created_at',
+                                        'updated_at',
+                                        'deleted_at',
+                                    ]);
+                                });
+                                $model->upsert($item->toArray(), $this->pnsId[$endpoint]);
+                                $model->withTrashed()
+                                    ->whereIn('id', $item->pluck('id'))
+                                    ->restore();
+
+                                $bar->advance($item->count());
                             });
-                            $model->upsert($item->toArray(), $this->pnsId[$endpoint]);
-                            $model->withTrashed()
-                                ->whereIn('id', $item->pluck('id'))
-                                ->restore();
-
-                            $bar->advance($item->count());
                         });
-                    });
 
-                    $bar->finish();
+                        $bar->finish();
 
-                    $this->newLine();
-                    $this->newLine();
-                } catch (\Exception $e) {
-                    $this->error($e);
-                    $this->newLine();
+                        $this->newLine();
+                        $this->newLine();
+                    } catch (\Exception $e) {
+                        $this->error($e);
+                        $this->newLine();
 
-                    return self::FAILURE;
+                        return self::FAILURE;
+                    }
                 }
-            });
-        });
-
-        if ($endpointErrors) {
-            $this->info("There is {$endpointErrors->count()} error(s):");
-
-            $endpointErrors->each(function ($value, $key) {
-                $this->error(" {$key}: {$value} ");
             });
 
             $this->newLine();
-        }
+        });
 
+        $this->newLine();
         $this->comment("All tasks are processed in {$start->shortAbsoluteDiffForHumans(now(), 1)}");
 
         return self::SUCCESS;
