@@ -6,7 +6,7 @@ use Illuminate\Http\Client\Response;
 use Kanekescom\Helperia\Support\ClassExtender;
 use League\Fractal\TransformerAbstract;
 
-class ResponseTransformer extends ClassExtender
+class RiwayatResponseTransformer extends ClassExtender
 {
     public function __construct(Response $response, TransformerAbstract $transformer)
     {
@@ -16,7 +16,7 @@ class ResponseTransformer extends ClassExtender
             return;
         }
 
-        $data = $response->collect()->get('results');
+        $data = $response->collect()->get('data');
 
         if (is_array($data)) {
             $items = fractal($data, $transformer)->toArray();
@@ -26,24 +26,6 @@ class ResponseTransformer extends ClassExtender
             return;
         }
 
-        $data = $response->collect()->get('results');
-
-        if (is_array($data)) {
-            $items = fractal($data, $transformer)->toArray();
-
-            $this->class = collect($items['data']);
-
-            return;
-        }
-
-        $data = $response->collect()->toArray();
-
-        if (is_array($data)) {
-            $items = fractal($data, $transformer)->toArray();
-
-            $this->class = collect($items['data']);
-
-            return;
-        }
+        return $this->class = collect();
     }
 }

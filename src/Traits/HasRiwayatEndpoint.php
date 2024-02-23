@@ -2,152 +2,295 @@
 
 namespace Kanekescom\Siasn\Simpeg\Traits;
 
-use Illuminate\Http\Client\Response;
-use Kanekescom\Siasn\Simpeg\Helpers\UrlParser;
+use Kanekescom\Siasn\Simpeg\Helpers\RiwayatResponseTransformer;
 
 trait HasRiwayatEndpoint
 {
-    public function getPnsRwAngkakredit(array $paths = [], array $query = []): Response
+    public function getPnsRwAngkakredit($nipBaru)
     {
-        $urlFormat = '/pns/rw-angkakredit/{nipBaru}';
-        $urlParsed = (new UrlParser($urlFormat))->parse($paths);
+        $paths = [
+            'nipBaru' => $nipBaru,
+        ];
 
-        return $this->get($urlParsed, $query);
+        $response = $this->simpeg::{__FUNCTION__}($paths);
+        $transformer = str(__FUNCTION__)->replaceFirst('get', '');
+        $transformerClass = "\\Kanekescom\\Siasn\\Simpeg\\Transformers\\{$transformer}Transformer";
+
+        return new RiwayatResponseTransformer(
+            $response,
+            new $transformerClass
+        );
     }
 
-    public function getPnsRwCltn(array $paths = [], array $query = []): Response
+    public function getPnsRwCltn($nipBaru)
     {
-        $urlFormat = '/pns/rw-cltn/{nipBaru}';
-        $urlParsed = (new UrlParser($urlFormat))->parse($paths);
+        $paths = [
+            'nipBaru' => $nipBaru,
+        ];
 
-        return $this->get($urlParsed, $query);
+        $response = $this->simpeg::{__FUNCTION__}($paths);
+        $transformer = str(__FUNCTION__)->replaceFirst('get', '');
+        $transformerClass = "\\Kanekescom\\Siasn\\Simpeg\\Transformers\\{$transformer}Transformer";
+
+        return new RiwayatResponseTransformer(
+            $response,
+            new $transformerClass
+        );
     }
 
-    public function getPnsRwDiklat(array $paths = [], array $query = []): Response
+    public function getPnsRwDiklat($nipBaru)
     {
-        $urlFormat = '/pns/rw-diklat/{nipBaru}';
-        $urlParsed = (new UrlParser($urlFormat))->parse($paths);
+        $paths = [
+            'nipBaru' => $nipBaru,
+        ];
 
-        return $this->get($urlParsed, $query);
+        $response = $this->simpeg::{__FUNCTION__}($paths);
+        $transformer = str(__FUNCTION__)->replaceFirst('get', '');
+        $transformerClass = "\\Kanekescom\\Siasn\\Simpeg\\Transformers\\{$transformer}Transformer";
+
+        return new RiwayatResponseTransformer(
+            $response,
+            new $transformerClass
+        );
     }
 
-    public function getPnsRwDp3(array $paths = [], array $query = []): Response
+    public function getPnsRwDp3($nipBaru)
     {
-        $urlFormat = '/pns/rw-dp3/{nipBaru}';
-        $urlParsed = (new UrlParser($urlFormat))->parse($paths);
+        $paths = [
+            'nipBaru' => $nipBaru,
+        ];
 
-        return $this->get($urlParsed, $query);
+        $response = $this->simpeg::{__FUNCTION__}($paths);
+        $transformer = str(__FUNCTION__)->replaceFirst('get', '');
+        $transformerClass = "\\Kanekescom\\Siasn\\Simpeg\\Transformers\\{$transformer}Transformer";
+
+        return new RiwayatResponseTransformer(
+            $response,
+            new $transformerClass
+        );
     }
 
-    public function getPnsRwGolongan(array $paths = [], array $query = []): Response
+    public function getPnsRwGolongan($nipBaru)
     {
-        $urlFormat = '/pns/rw-golongan/{nipBaru}';
-        $urlParsed = (new UrlParser($urlFormat))->parse($paths);
+        $paths = [
+            'nipBaru' => $nipBaru,
+        ];
 
-        return $this->get($urlParsed, $query);
+        $response = $this->simpeg::{__FUNCTION__}($paths);
+        $transformer = str(__FUNCTION__)->replaceFirst('get', '');
+        $transformerClass = "\\Kanekescom\\Siasn\\Simpeg\\Transformers\\{$transformer}Transformer";
+
+        return new RiwayatResponseTransformer(
+            $response,
+            new $transformerClass
+        );
     }
 
-    public function getPnsRwHukdis(array $paths = [], array $query = []): Response
+    public function getPnsRwHukdis($nipBaru)
     {
-        $urlFormat = '/pns/rw-hukdis/{nipBaru}';
-        $urlParsed = (new UrlParser($urlFormat))->parse($paths);
+        $paths = [
+            'nipBaru' => $nipBaru,
+        ];
 
-        return $this->get($urlParsed, $query);
+        $response = $this->simpeg::{__FUNCTION__}($paths);
+        $transformer = str(__FUNCTION__)->replaceFirst('get', '');
+        $transformerClass = "\\Kanekescom\\Siasn\\Simpeg\\Transformers\\{$transformer}Transformer";
+
+        return new RiwayatResponseTransformer(
+            $response,
+            new $transformerClass
+        );
     }
 
-    public function getPnsRwJabatan(array $paths = [], array $query = []): Response
+    public function getPnsRwJabatan($nipBaru)
     {
-        $urlFormat = '/pns/rw-jabatan/{nipBaru}';
-        $urlParsed = (new UrlParser($urlFormat))->parse($paths);
+        $paths = [
+            'nipBaru' => $nipBaru,
+        ];
 
-        return $this->get($urlParsed, $query);
+        $response = $this->simpeg::{__FUNCTION__}($paths);
+        $transformer = str(__FUNCTION__)->replaceFirst('get', '');
+        $transformerClass = "\\Kanekescom\\Siasn\\Simpeg\\Transformers\\{$transformer}Transformer";
+
+        return new RiwayatResponseTransformer(
+            $response,
+            new $transformerClass
+        );
     }
 
-    public function getPnsRwKinerjaperiodik(array $paths = [], array $query = []): Response
+    public function getPnsRwKinerjaperiodik($nipBaru)
     {
-        $urlFormat = '/pns/rw-kinerjaperiodik/{nipBaru}';
-        $urlParsed = (new UrlParser($urlFormat))->parse($paths);
+        $paths = [
+            'nipBaru' => $nipBaru,
+        ];
 
-        return $this->get($urlParsed, $query);
+        $response = $this->simpeg::{__FUNCTION__}($paths);
+        $transformer = str(__FUNCTION__)->replaceFirst('get', '');
+        $transformerClass = "\\Kanekescom\\Siasn\\Simpeg\\Transformers\\{$transformer}Transformer";
+
+        return new RiwayatResponseTransformer(
+            $response,
+            new $transformerClass
+        );
     }
 
-    public function getPnsRwKursus(array $paths = [], array $query = []): Response
+    public function getPnsRwKursus($nipBaru)
     {
-        $urlFormat = '/pns/rw-kursus/{nipBaru}';
-        $urlParsed = (new UrlParser($urlFormat))->parse($paths);
+        $paths = [
+            'nipBaru' => $nipBaru,
+        ];
 
-        return $this->get($urlParsed, $query);
+        $response = $this->simpeg::{__FUNCTION__}($paths);
+        $transformer = str(__FUNCTION__)->replaceFirst('get', '');
+        $transformerClass = "\\Kanekescom\\Siasn\\Simpeg\\Transformers\\{$transformer}Transformer";
+
+        return new RiwayatResponseTransformer(
+            $response,
+            new $transformerClass
+        );
     }
 
-    public function getPnsRwMasakerja(array $paths = [], array $query = []): Response
+    public function getPnsRwMasakerja($nipBaru)
     {
-        $urlFormat = '/pns/rw-masakerja/{nipBaru}';
-        $urlParsed = (new UrlParser($urlFormat))->parse($paths);
+        $paths = [
+            'nipBaru' => $nipBaru,
+        ];
 
-        return $this->get($urlParsed, $query);
+        $response = $this->simpeg::{__FUNCTION__}($paths);
+        $transformer = str(__FUNCTION__)->replaceFirst('get', '');
+        $transformerClass = "\\Kanekescom\\Siasn\\Simpeg\\Transformers\\{$transformer}Transformer";
+
+        return new RiwayatResponseTransformer(
+            $response,
+            new $transformerClass
+        );
     }
 
-    public function getPnsRwPemberhentian(array $paths = [], array $query = []): Response
+    public function getPnsRwPemberhentian($nipBaru)
     {
-        $urlFormat = '/pns/rw-pemberhentian/{nipBaru}';
-        $urlParsed = (new UrlParser($urlFormat))->parse($paths);
+        $paths = [
+            'nipBaru' => $nipBaru,
+        ];
 
-        return $this->get($urlParsed, $query);
+        $response = $this->simpeg::{__FUNCTION__}($paths);
+        $transformer = str(__FUNCTION__)->replaceFirst('get', '');
+        $transformerClass = "\\Kanekescom\\Siasn\\Simpeg\\Transformers\\{$transformer}Transformer";
+
+        return new RiwayatResponseTransformer(
+            $response,
+            new $transformerClass
+        );
     }
 
-    public function getPnsRwPendidikan(array $paths = [], array $query = []): Response
+    public function getPnsRwPendidikan($nipBaru)
     {
-        $urlFormat = '/pns/rw-pendidikan/{nipBaru}';
-        $urlParsed = (new UrlParser($urlFormat))->parse($paths);
+        $paths = [
+            'nipBaru' => $nipBaru,
+        ];
 
-        return $this->get($urlParsed, $query);
+        $response = $this->simpeg::{__FUNCTION__}($paths);
+        $transformer = str(__FUNCTION__)->replaceFirst('get', '');
+        $transformerClass = "\\Kanekescom\\Siasn\\Simpeg\\Transformers\\{$transformer}Transformer";
+
+        return new RiwayatResponseTransformer(
+            $response,
+            new $transformerClass
+        );
     }
 
-    public function getPnsRwPenghargaan(array $paths = [], array $query = []): Response
+    public function getPnsRwPenghargaan($nipBaru)
     {
-        $urlFormat = '/pns/rw-penghargaan/{nipBaru}';
-        $urlParsed = (new UrlParser($urlFormat))->parse($paths);
+        $paths = [
+            'nipBaru' => $nipBaru,
+        ];
 
-        return $this->get($urlParsed, $query);
+        $response = $this->simpeg::{__FUNCTION__}($paths);
+        $transformer = str(__FUNCTION__)->replaceFirst('get', '');
+        $transformerClass = "\\Kanekescom\\Siasn\\Simpeg\\Transformers\\{$transformer}Transformer";
+
+        return new RiwayatResponseTransformer(
+            $response,
+            new $transformerClass
+        );
     }
 
-    public function getPnsRwPindahinstansi(array $paths = [], array $query = []): Response
+    public function getPnsRwPindahinstansi($nipBaru)
     {
-        $urlFormat = '/pns/rw-pindahinstansi/{nipBaru}';
-        $urlParsed = (new UrlParser($urlFormat))->parse($paths);
+        $paths = [
+            'nipBaru' => $nipBaru,
+        ];
 
-        return $this->get($urlParsed, $query);
+        $response = $this->simpeg::{__FUNCTION__}($paths);
+        $transformer = str(__FUNCTION__)->replaceFirst('get', '');
+        $transformerClass = "\\Kanekescom\\Siasn\\Simpeg\\Transformers\\{$transformer}Transformer";
+
+        return new RiwayatResponseTransformer(
+            $response,
+            new $transformerClass
+        );
     }
 
-    public function getPnsRwPnsunor(array $paths = [], array $query = []): Response
+    public function getPnsRwPnsunor($nipBaru)
     {
-        $urlFormat = '/pns/rw-pnsunor/{nipBaru}';
-        $urlParsed = (new UrlParser($urlFormat))->parse($paths);
+        $paths = [
+            'nipBaru' => $nipBaru,
+        ];
 
-        return $this->get($urlParsed, $query);
+        $response = $this->simpeg::{__FUNCTION__}($paths);
+        $transformer = str(__FUNCTION__)->replaceFirst('get', '');
+        $transformerClass = "\\Kanekescom\\Siasn\\Simpeg\\Transformers\\{$transformer}Transformer";
+
+        return new RiwayatResponseTransformer(
+            $response,
+            new $transformerClass
+        );
     }
 
-    public function getPnsRwPwk(array $paths = [], array $query = []): Response
+    public function getPnsRwPwk($nipBaru)
     {
-        $urlFormat = '/pns/rw-pwk/{nipBaru}';
-        $urlParsed = (new UrlParser($urlFormat))->parse($paths);
+        $paths = [
+            'nipBaru' => $nipBaru,
+        ];
 
-        return $this->get($urlParsed, $query);
+        $response = $this->simpeg::{__FUNCTION__}($paths);
+        $transformer = str(__FUNCTION__)->replaceFirst('get', '');
+        $transformerClass = "\\Kanekescom\\Siasn\\Simpeg\\Transformers\\{$transformer}Transformer";
+
+        return new RiwayatResponseTransformer(
+            $response,
+            new $transformerClass
+        );
     }
 
-    public function getPnsRwSkp(array $paths = [], array $query = []): Response
+    public function getPnsRwSkp($nipBaru)
     {
-        $urlFormat = '/pns/rw-skp/{nipBaru}';
-        $urlParsed = (new UrlParser($urlFormat))->parse($paths);
+        $paths = [
+            'nipBaru' => $nipBaru,
+        ];
 
-        return $this->get($urlParsed, $query);
+        $response = $this->simpeg::{__FUNCTION__}($paths);
+        $transformer = str(__FUNCTION__)->replaceFirst('get', '');
+        $transformerClass = "\\Kanekescom\\Siasn\\Simpeg\\Transformers\\{$transformer}Transformer";
+
+        return new RiwayatResponseTransformer(
+            $response,
+            new $transformerClass
+        );
     }
 
-    public function getPnsRwSkp22(array $paths = [], array $query = []): Response
+    public function getPnsRwSkp22($nipBaru)
     {
-        $urlFormat = '/pns/rw-skp22/{nipBaru}';
-        $urlParsed = (new UrlParser($urlFormat))->parse($paths);
+        $paths = [
+            'nipBaru' => $nipBaru,
+        ];
 
-        return $this->get($urlParsed, $query);
+        $response = $this->simpeg::{__FUNCTION__}($paths);
+        $transformer = str(__FUNCTION__)->replaceFirst('get', '');
+        $transformerClass = "\\Kanekescom\\Siasn\\Simpeg\\Transformers\\{$transformer}Transformer";
+
+        return new RiwayatResponseTransformer(
+            $response,
+            new $transformerClass
+        );
     }
 }

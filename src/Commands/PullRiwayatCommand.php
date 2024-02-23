@@ -3,9 +3,11 @@
 namespace Kanekescom\Siasn\Simpeg\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
-use Kanekescom\Siasn\Api\Simpeg\Exceptions\BadEndpointCallException;
+use Kanekescom\Siasn\Simpeg\Exceptions\BadEndpointCallException;
 use Kanekescom\Siasn\Simpeg\Facades\Simpeg;
+use Kanekescom\Siasn\Simpeg\Models\Pegawai;
 
 class PullRiwayatCommand extends Command
 {
@@ -15,7 +17,9 @@ class PullRiwayatCommand extends Command
      * @var string
      */
     protected $signature = 'siasn-simpeg:pull-riwayat
-                            {nipBaru? : NIP Baru}';
+                            {endpoint? : Endpoint API}}
+                            {nipBaru? : NIP Baru}
+                            {--skip=0}';
 
     /**
      * The console command description.
@@ -24,11 +28,6 @@ class PullRiwayatCommand extends Command
      */
     protected $description = 'Pull riwayat data to database from endpoint on SIASN Simpeg API';
 
-    /**
-     * The console command choice map.
-     *
-     * @var string
-     */
     protected $endpoints = [
         'pns-rw-angkakredit',
         'pns-rw-cltn',
@@ -50,13 +49,38 @@ class PullRiwayatCommand extends Command
         'pns-rw-skp22',
     ];
 
+    protected $pnsId = [
+        'pns-rw-angkakredit' => 'pns',
+        'pns-rw-cltn' => 'pnsOrangId',
+        'pns-rw-diklat' => 'pnsId',
+        'pns-rw-dp3' => 'pnsId',
+        'pns-rw-golongan' => 'idPns',
+        'pns-rw-hukdis' => 'pnsOrang',
+        'pns-rw-jabatan' => 'idPns',
+        'pns-rw-kinerjaperiodik' => 'pnsDinilaiId',
+        'pns-rw-kursus' => 'idPns',
+        'pns-rw-masakerja' => 'idPns',
+        'pns-rw-pemberhentian' => 'pnsOrang',
+        'pns-rw-pendidikan' => 'idPns',
+        'pns-rw-penghargaan' => 'pnsOrangId',
+        'pns-rw-pindahinstansi' => 'pnsOrang',
+        'pns-rw-pnsunor' => 'pnsOrang',
+        'pns-rw-pwk' => 'pnsOrang',
+        'pns-rw-skp' => 'pns',
+        'pns-rw-skp22' => 'pnsDinilaiId',
+    ];
+
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        $endpointOptions = collect($this->endpoints);
-        $endpoints = str($this->argument('endpoint'))->explode(',');
+        $endpointOptions = collect($this->endpoints)->mapWithKeys(function ($item) {
+            return [$item => $item];
+        });
+        $endpoints = collect($this->argument('endpoint'));
+        $nipBaru = $this->argument('nipBaru');
+        $skip = $this->option('skip');
 
         if (filled($endpoints->first()) && blank($endpoints = $endpointOptions->only($endpoints))) {
             throw new BadEndpointCallException('Endpoint does not exist.');
@@ -65,7 +89,7 @@ class PullRiwayatCommand extends Command
         if (blank($endpoints->first())) {
             $endpoints = collect($this->choice(
                 'What do you want to call endpoint? Separate with commas.',
-                collect(['all' => 'all'])->merge($endpointOptions)->toArray(),
+                collect(['all' => 'all'])->merge($endpointOptions)->keys()->toArray(),
                 0,
                 null,
                 true,
@@ -82,55 +106,73 @@ class PullRiwayatCommand extends Command
         $endpoints = $endpoints->keys();
         $endpointCount = $endpoints->count();
         $endpointErrors = collect([]);
-        $i = 0;
+        $pegawais = $nipBaru ? Pegawai::where('nip_baru', $nipBaru)->get() : Pegawai::get()->skip($skip);
+        $pegawaiCount = $pegawais->count();
+        $iEndpoint = 0;
 
-        $endpoints->each(function ($endpoint) use ($endpointCount, &$endpointErrors, &$i) {
-            $i++;
+        $endpoints->each(function ($endpoint) use ($endpointCount, &$endpointErrors, &$iEndpoint, $pegawais, $pegawaiCount) {
+            $iEndpoint++;
             $modelName = str($endpoint)->studly();
-            $modelClass = $modelName->prepend('Kanekescom\Siasn\Simpeg\Models\/');
+            $modelClass = "Kanekescom\\Siasn\\Simpeg\\Models\\{$modelName}";
             $model = new $modelClass;
             $simpegMethod = 'get'.$modelName;
-            $response = Simpeg::$simpegMethod();
+            $iPegawai = 0;
 
-            $this->info("[{$i}/{$endpointCount}] {$endpoint}");
+            $this->info("ENDPOINT: [{$iEndpoint}/{$endpointCount}] {$endpoint}");
 
-            if ($response->count() == 0) {
-                $errorMessage = 'Data not found';
-                $endpointErrors->put($endpoint, $errorMessage);
+            $pegawais->each(function ($pegawai) use (&$endpointErrors, $endpoint, $simpegMethod, $pegawaiCount, &$iPegawai, $model) {
+                $iPegawai++;
+                $this->info("PEGAWAI: {$endpoint} [{$iPegawai}/{$pegawaiCount}] {$pegawai->nip_baru}");
 
-                $this->error(" {$errorMessage} ");
-            }
+                $response = Simpeg::$simpegMethod($pegawai->nip_baru);
 
-            try {
-                $bar = $this->output->createProgressBar($response->count());
-                $bar->start();
+                // if ($response->count() == 0) {
+                //     $errorMessage = "{$endpoint} data for {$pegawai->nip_baru} is not found";
+                //     $endpointErrors->put($endpoint, $errorMessage);
+                //     $this->warning('Data not found');
+                // }
 
-                DB::transaction(function () use ($model, $response, $bar) {
-                    if (config('siasn-simpeg.delete_model_before_pull')) {
-                        $model->query()->delete();
-                    }
+                try {
+                    $bar = $this->output->createProgressBar($response->count());
+                    $bar->start();
 
-                    $response->chunk(config('siasn-simpeg.chunk_data'))->each(function ($item) use ($model, $bar) {
-                        $model->upsert($item->toArray(), 'id');
-                        $model->query()
-                            ->withTrashed()
-                            ->whereIn('id', $item->pluck('id'))
-                            ->restore();
+                    $model = $model->where($this->pnsId[$endpoint], $pegawai->pns_id);
 
-                        $bar->advance($item->count());
+                    DB::transaction(function () use ($endpoint, $model, $response, $bar) {
+                        if (config('siasn-simpeg.delete_model_before_pull')) {
+                            $model->delete();
+                        }
+
+                        $response->chunk(config('siasn-simpeg.chunk_data'))->each(function ($item) use ($model, $endpoint, $bar) {
+                            $item = $item->map(function ($item) {
+                                $item['path'] = collect($item['path'])->toJson();
+
+                                return Arr::except($item, [
+                                    'created_at',
+                                    'updated_at',
+                                    'deleted_at',
+                                ]);
+                            });
+                            $model->upsert($item->toArray(), $this->pnsId[$endpoint]);
+                            $model->withTrashed()
+                                ->whereIn('id', $item->pluck('id'))
+                                ->restore();
+
+                            $bar->advance($item->count());
+                        });
                     });
-                });
 
-                $bar->finish();
+                    $bar->finish();
 
-                $this->newLine();
-                $this->newLine();
-            } catch (\Exception $e) {
-                $this->error($e);
-                $this->newLine();
+                    $this->newLine();
+                    $this->newLine();
+                } catch (\Exception $e) {
+                    $this->error($e);
+                    $this->newLine();
 
-                return self::FAILURE;
-            }
+                    return self::FAILURE;
+                }
+            });
         });
 
         if ($endpointErrors) {
