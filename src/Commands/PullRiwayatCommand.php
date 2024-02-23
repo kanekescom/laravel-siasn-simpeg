@@ -52,7 +52,7 @@ class PullRiwayatCommand extends Command
     protected $pnsId = [
         'pns-rw-angkakredit' => 'pns',
         'pns-rw-cltn' => 'pnsOrangId',
-        'pns-rw-diklat' => 'pnsId',
+        'pns-rw-diklat' => 'idPns',
         'pns-rw-dp3' => 'pnsId',
         'pns-rw-golongan' => 'idPns',
         'pns-rw-hukdis' => 'pnsOrang',
