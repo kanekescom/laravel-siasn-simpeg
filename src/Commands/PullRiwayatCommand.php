@@ -124,7 +124,7 @@ class PullRiwayatCommand extends Command
                 $simpegMethod = 'get'.$modelName;
                 $response = Simpeg::$simpegMethod($pegawai->nip_baru);
 
-                $this->info("ENDPOINT: [{$iEndpoint}/{$endpointCount}] {$endpoint}");
+                $this->warn("ENDPOINT: [{$iEndpoint}/{$endpointCount}] {$endpoint}");
 
                 if ($response->count()) {
                     try {
