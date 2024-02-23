@@ -1,6 +1,6 @@
 <?php
 
-namespace Kanekescom\Siasn\Pegawai\Transformers;
+namespace Kanekescom\Siasn\Simpeg\Transformers;
 
 use League\Fractal\TransformerAbstract;
 
