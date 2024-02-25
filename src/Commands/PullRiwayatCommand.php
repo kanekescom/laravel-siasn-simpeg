@@ -28,7 +28,7 @@ class PullRiwayatCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Pull riwayat data to database from endpoint on SIASN Simpeg API';
+    protected $description = 'Pull riwayat pegawai to database from endpoint on SIASN Simpeg API';
 
     protected $endpoints = [
         'pns-rw-angkakredit',
@@ -138,7 +138,7 @@ class PullRiwayatCommand extends Command
             $iPegawai++;
             $iEndpoint = 0;
 
-            $this->info("PEGAWAI: [{$iPegawai}/{$pegawaiCount}] {$pegawai->nip_baru}");
+            $this->info("EMPLOYEE: [{$iPegawai}/{$pegawaiCount}] {$pegawai->nip_baru}");
 
             $endpoints->each(function ($endpoint) use ($pegawai, $endpointCount, &$iEndpoint) {
                 $iEndpoint++;
@@ -148,7 +148,7 @@ class PullRiwayatCommand extends Command
                 $simpegMethod = 'get'.$modelName;
                 $response = Simpeg::$simpegMethod($pegawai->nip_baru);
 
-                $this->comment("ENDPOINT: [{$iEndpoint}/{$endpointCount}] {$endpoint}");
+                $this->comment("PEGAWAI: [{$iEndpoint}/{$endpointCount}] {$endpoint}");
 
                 if ($response->count()) {
                     try {

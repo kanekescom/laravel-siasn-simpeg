@@ -22,7 +22,7 @@ class ImportCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Import data to database via csv file exported from SIASN Export Data ASN';
+    protected $description = 'Import pegawai to database via csv file exported from SIASN Export Data ASN';
 
     /**
      * Execute the console command.
