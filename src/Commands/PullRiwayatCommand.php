@@ -110,7 +110,7 @@ class PullRiwayatCommand extends Command
         $pegawais = $pegawais->skip($skip);
         $iPegawai = $skip;
 
-        $pegawais->each(function ($pegawai) use ($pegawaiCount, &$iPegawai, $endpoints, $endpointCount) {
+        $pegawais->each(function ($pegawai) use ($pegawaiCount, &$iPegawai, $endpoints, $endpointCount, $startPegawai) {
             $startEndpoint = now();
             $iPegawai++;
             $iEndpoint = 0;
@@ -173,12 +173,10 @@ class PullRiwayatCommand extends Command
                 }
             });
 
-            $this->comment("All endpoint tasks are processed in {$startEndpoint->shortAbsoluteDiffForHumans(now(), 1)}");
+            $this->comment("All endpoint tasks for {$pegawai->nip_baru} are processed in {$startEndpoint->shortAbsoluteDiffForHumans(now(), 1)}");
+            $this->comment(str("All task has been running for {$startPegawai->shortAbsoluteDiffForHumans(now(), 1)}")->upper());
             $this->newLine();
         });
-
-        $this->newLine();
-        $this->comment("All tasks are processed in {$startPegawai->shortAbsoluteDiffForHumans(now(), 1)}");
 
         return self::SUCCESS;
     }
