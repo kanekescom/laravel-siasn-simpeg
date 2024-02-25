@@ -64,7 +64,9 @@ You can also use the ```endpoint``` argument to specify only certain endpoints a
 
 Use ```--skip=0``` option to skip N pegawai.
 
-and use ```--track``` option to track the data pulling process.
+or use ```--track``` option to track the data pulling process.
+
+and use ```--startOver``` option to start over the data pulling process from the begining.
 
 ## Testing
 

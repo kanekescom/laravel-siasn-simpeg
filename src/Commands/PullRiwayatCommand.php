@@ -21,7 +21,8 @@ class PullRiwayatCommand extends Command
                             {endpoint? : Endpoint API}}
                             {nipBaru? : NIP Baru}
                             {--skip=0}
-                            {--track}';
+                            {--track}
+                            {--startOver}';
 
     /**
      * The console command description.
@@ -82,7 +83,8 @@ class PullRiwayatCommand extends Command
         });
         $endpoint = $this->argument('endpoint');
         $nipBaru = $this->argument('nipBaru');
-        $track = (int) $this->option('track');
+        $track = $this->option('track');
+        $startOver = $this->option('startOver');
 
         if (blank($endpoints = $endpointOptions->only($endpoint))) {
             throw new BadEndpointCallException('Endpoint does not exist.');
@@ -92,6 +94,12 @@ class PullRiwayatCommand extends Command
         $pullTrackingCommandName .= $endpoint ? " {$endpoint}" : $endpoint;
         $hasPullTracking = PullTracking::where('command', $pullTrackingCommandName)->first();
         $pullTracking = null;
+
+        if ($startOver && $hasPullTracking) {
+            $hasPullTracking->delete();
+            $this->info(str('Start over command.')->upper());
+            $this->newLine();
+        }
 
         if (blank($endpoint) && ! ($track && $hasPullTracking)) {
             $endpoints = collect($this->choice(
@@ -114,10 +122,16 @@ class PullRiwayatCommand extends Command
         $endpointCount = $endpoints->count();
         $pegawais = $nipBaru ? Pegawai::where('nip_baru', $nipBaru)->get() : Pegawai::get();
         $pegawaiCount = $pegawais->count();
-        $skip = $hasPullTracking->last_try ?: (int) $this->option('skip');
+        $skip = $hasPullTracking?->last_try ?: (int) $this->option('skip');
 
         if ($track) {
             if ($hasPullTracking) {
+                if ($hasPullTracking->done_at) {
+                    $this->info(str('Pull command has been completed. Use --startOver to re-pull from the beginning.')->upper());
+
+                    return self::SUCCESS;
+                }
+
                 $pullingStartingForm = $skip + 1;
 
                 $this->info(str("Continue pulling starting from {$pullingStartingForm}")->upper());
