@@ -207,6 +207,10 @@ class PullRiwayatCommand extends Command
             $this->newLine();
         });
 
+        $pullTracking->update([
+            'done_at' => now(),
+        ]);
+
         return self::SUCCESS;
     }
 }
