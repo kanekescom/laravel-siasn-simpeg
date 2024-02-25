@@ -45,6 +45,7 @@ class SimpegServiceProvider extends PackageServiceProvider
                 '2024_01_02_000030_create_siasn_simpeg_orangtua_ibu_table',
                 '2024_01_02_000031_create_siasn_simpeg_pasangan_table',
                 '2024_01_02_000032_create_siasn_simpeg_data_pernikahan_table',
+                '2024_01_02_000033_create_siasn_simpeg_pull_tracking_table',
             ])
             ->runsMigrations()
             ->hasCommand(Commands\PullRiwayatCommand::class)
