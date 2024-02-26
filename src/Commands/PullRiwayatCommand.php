@@ -84,6 +84,7 @@ class PullRiwayatCommand extends Command
         $endpoint = $this->argument('endpoint');
         $nipBaru = $this->argument('nipBaru');
         $track = $this->option('track');
+        $skip = (int) $this->option('skip');
         $startOver = $this->option('startOver');
 
         if (blank($endpoints = $endpointOptions->only($endpoint))) {
@@ -94,6 +95,8 @@ class PullRiwayatCommand extends Command
         $pullTrackingCommandName .= $endpoint ? " {$endpoint}" : $endpoint;
         $hasPullTracking = PullTracking::where('command', $pullTrackingCommandName)->first();
         $pullTracking = null;
+        $lastTryPullTracking = $hasPullTracking?->last_try;
+        $skip = $skip > $lastTryPullTracking ? $skip : $lastTryPullTracking;
 
         if ($startOver && $hasPullTracking) {
             $hasPullTracking->delete();
@@ -102,7 +105,7 @@ class PullRiwayatCommand extends Command
             $this->newLine();
         }
 
-        if (blank($endpoint) && !($track && $hasPullTracking)) {
+        if (blank($endpoint) && ! ($track && $hasPullTracking)) {
             $endpoints = collect($this->choice(
                 'What do you want to call endpoint? Separate with commas.',
                 collect(['all' => 'all'])->merge($endpointOptions)->keys()->toArray(),
@@ -121,9 +124,13 @@ class PullRiwayatCommand extends Command
         $startPegawai = now();
         $endpoints = $endpoints->keys();
         $endpointCount = $endpoints->count();
-        $pegawais = $nipBaru ? Pegawai::where('nip_baru', $nipBaru)->get() : Pegawai::get();
+        $pegawais = Pegawai::get()->skip($skip);
+
+        if ($nipBaru) {
+            $pegawais = Pegawai::where('nip_baru', $nipBaru)->get();
+        }
+
         $pegawaiCount = $pegawais->count();
-        $skip = $hasPullTracking?->last_try ?: (int) $this->option('skip');
 
         if ($track) {
             if ($hasPullTracking) {
@@ -145,10 +152,9 @@ class PullRiwayatCommand extends Command
             ]);
         }
 
-        $pegawais = $pegawais->skip($skip);
         $iPegawai = $skip;
 
-        $pegawais->each(function ($pegawai) use ($pegawaiCount, &$iPegawai, $endpoints, $endpointCount, $startPegawai, $pullTracking, $skip, $track) {
+        $pegawais->each(function ($pegawai) use ($pegawaiCount, &$iPegawai, $endpoints, $endpointCount, $startPegawai, $pullTracking, $skip) {
             $startEndpoint = now();
             $iPegawai++;
             $iEndpoint = 0;
@@ -160,7 +166,7 @@ class PullRiwayatCommand extends Command
                 $modelName = str($endpoint)->studly();
                 $modelClass = "Kanekescom\\Siasn\\Simpeg\\Models\\{$modelName}";
                 $model = new $modelClass;
-                $simpegMethod = 'get' . $modelName;
+                $simpegMethod = 'get'.$modelName;
                 $response = Simpeg::$simpegMethod($pegawai->nip_baru);
 
                 $this->comment("PEGAWAI: [{$iEndpoint}/{$endpointCount}] {$endpoint}");
@@ -211,11 +217,9 @@ class PullRiwayatCommand extends Command
                 }
             });
 
-            if ($track) {
-                $pullTracking->update([
-                    'last_try' => $iPegawai,
-                ]);
-            }
+            $pullTracking?->update([
+                'last_try' => $iPegawai,
+            ]);
 
             $executedItems = $iPegawai - $skip;
 
@@ -224,7 +228,7 @@ class PullRiwayatCommand extends Command
             $this->newLine();
         });
 
-        $pullTracking->update([
+        $pullTracking?->update([
             'done_at' => now(),
         ]);
 
