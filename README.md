@@ -41,6 +41,7 @@ php artisan vendor:publish --tag="siasn-simpeg-config"
 ## Usage
 
 ### Import pegawai
+
 Import pegawai to database via csv file exported from SIASN Export Data ASN.
 
 ```bash
@@ -54,7 +55,6 @@ php artisan siasn-simpeg:import {filePath} --truncate
 ```
 
 ### Pull riwayat pegawai
-Pull riwayat pegawai from API.
 
 ```bash
 php artisan siasn-simpeg:pull-riwayat
@@ -67,6 +67,12 @@ Use ```--skip=0``` option to skip N pegawai.
 or use ```--track``` option to track the data pulling process.
 
 and use ```--startOver``` option to start over the data pulling process from the begining.
+
+### Pull referensi ref unor
+
+```bash
+php artisan siasn-simpeg:pull-referensi-ref-unor
+```
 
 ## Testing
 
