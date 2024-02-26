@@ -97,11 +97,12 @@ class PullRiwayatCommand extends Command
 
         if ($startOver && $hasPullTracking) {
             $hasPullTracking->delete();
+            $hasPullTracking = null;
             $this->info(str('Start over command.')->upper());
             $this->newLine();
         }
 
-        if (blank($endpoint) && ! ($track && $hasPullTracking)) {
+        if (blank($endpoint) && !($track && $hasPullTracking)) {
             $endpoints = collect($this->choice(
                 'What do you want to call endpoint? Separate with commas.',
                 collect(['all' => 'all'])->merge($endpointOptions)->keys()->toArray(),
@@ -127,7 +128,7 @@ class PullRiwayatCommand extends Command
         if ($track) {
             if ($hasPullTracking) {
                 if ($hasPullTracking->done_at) {
-                    $this->info(str('Pull command has been completed. Use --startOver to re-pull from the beginning.')->upper());
+                    $this->info('Pull command has been completed. Use --startOver to re-pull from the beginning.');
 
                     return self::SUCCESS;
                 }
@@ -159,7 +160,7 @@ class PullRiwayatCommand extends Command
                 $modelName = str($endpoint)->studly();
                 $modelClass = "Kanekescom\\Siasn\\Simpeg\\Models\\{$modelName}";
                 $model = new $modelClass;
-                $simpegMethod = 'get'.$modelName;
+                $simpegMethod = 'get' . $modelName;
                 $response = Simpeg::$simpegMethod($pegawai->nip_baru);
 
                 $this->comment("PEGAWAI: [{$iEndpoint}/{$endpointCount}] {$endpoint}");
@@ -216,8 +217,8 @@ class PullRiwayatCommand extends Command
                 ]);
             }
 
-            $this->comment("All endpoint tasks for {$pegawai->nip_baru} are processed in {$startEndpoint->shortAbsoluteDiffForHumans(now(), 1)}");
-            $this->comment(str("All task has been running for {$startPegawai->shortAbsoluteDiffForHumans(now(), 1)}")->upper());
+            $this->info("All endpoint tasks for {$pegawai->nip_baru} are processed in {$startEndpoint->shortAbsoluteDiffForHumans(now(), 1)}");
+            $this->info(str("All task has been running for {$startPegawai->shortAbsoluteDiffForHumans(now(), 1)}")->upper());
             $this->newLine();
         });
 
