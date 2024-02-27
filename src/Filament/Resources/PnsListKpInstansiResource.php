@@ -16,15 +16,15 @@ class PnsListKpInstansiResource extends Resource
 
     protected static ?string $slug = 'pns-list-kp-instansi';
 
-    protected static ?string $pluralLabel = 'PNS List KP Instansi';
+    protected static ?string $pluralLabel = 'List KP Instansi';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationLabel = 'PNS List KP Instansi';
+    protected static ?string $navigationLabel = 'List KP Instansi';
+
+    protected static ?string $navigationGroup = 'KP';
 
     protected static bool $shouldRegisterNavigation = true;
-
-    protected static ?int $navigationSort = 99;
 
     public static function form(Form $form): Form
     {

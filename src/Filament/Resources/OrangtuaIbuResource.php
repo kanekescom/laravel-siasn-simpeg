@@ -14,7 +14,17 @@ class OrangtuaIbuResource extends Resource
 {
     protected static ?string $model = OrangtuaIbu::class;
 
+    protected static ?string $slug = '--orangtua-ibu';
+
+    protected static ?string $pluralLabel = '--Orangtua Ibu';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    protected static ?string $navigationLabel = '--Orangtua Ibu';
+
+    protected static ?string $navigationGroup = 'PNS';
+
+    protected static bool $shouldRegisterNavigation = true;
 
     public static function form(Form $form): Form
     {

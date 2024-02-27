@@ -47,7 +47,13 @@ class SiasnSimpegPanelProvider extends PanelProvider
                 //
             ])
             ->navigationGroups([
-                //
+                'PNS',
+                'Riwayat',
+                'KP',
+                'Pemberhentian',
+                'Pengadaan',
+                'Referensi',
+                'Tools',
             ])
             ->middleware([
                 EncryptCookies::class,

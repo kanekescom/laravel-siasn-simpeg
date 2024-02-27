@@ -16,15 +16,15 @@ class PnsDataOrtuResource extends Resource
 
     protected static ?string $slug = 'pns-data-ortu';
 
-    protected static ?string $pluralLabel = 'PNS Data Ortu';
+    protected static ?string $pluralLabel = 'Data Ortu';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationLabel = 'PNS Data Ortu';
+    protected static ?string $navigationLabel = 'Data Ortu';
+
+    protected static ?string $navigationGroup = 'PNS';
 
     protected static bool $shouldRegisterNavigation = true;
-
-    protected static ?int $navigationSort = 99;
 
     public static function form(Form $form): Form
     {

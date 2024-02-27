@@ -22,9 +22,9 @@ class PnsListPensiunInstansiResource extends Resource
 
     protected static ?string $navigationLabel = 'PNS List Pensiun Instansi';
 
-    protected static bool $shouldRegisterNavigation = true;
+    protected static ?string $navigationGroup = 'Pemberhentian';
 
-    protected static ?int $navigationSort = 99;
+    protected static bool $shouldRegisterNavigation = true;
 
     public static function form(Form $form): Form
     {

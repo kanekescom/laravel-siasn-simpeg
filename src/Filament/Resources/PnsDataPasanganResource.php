@@ -16,15 +16,15 @@ class PnsDataPasanganResource extends Resource
 
     protected static ?string $slug = 'pns-data-pasangan';
 
-    protected static ?string $pluralLabel = 'PNS Data Pasangan';
+    protected static ?string $pluralLabel = 'Data Pasangan';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationLabel = 'PNS Data Pasangan';
+    protected static ?string $navigationLabel = 'Data Pasangan';
+
+    protected static ?string $navigationGroup = 'PNS';
 
     protected static bool $shouldRegisterNavigation = true;
-
-    protected static ?int $navigationSort = 99;
 
     public static function form(Form $form): Form
     {

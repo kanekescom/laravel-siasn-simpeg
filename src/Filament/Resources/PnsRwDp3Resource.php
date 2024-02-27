@@ -20,11 +20,11 @@ class PnsRwDp3Resource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationLabel = 'PNS RW DP3';
+    protected static ?string $navigationLabel = 'DP3';
+
+    protected static ?string $navigationGroup = 'Riwayat';
 
     protected static bool $shouldRegisterNavigation = true;
-
-    protected static ?int $navigationSort = 99;
 
     public static function form(Form $form): Form
     {

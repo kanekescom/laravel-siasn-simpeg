@@ -16,15 +16,15 @@ class PnsPhotoResource extends Resource
 
     protected static ?string $slug = 'pns-photo';
 
-    protected static ?string $pluralLabel = 'PNS Photo';
+    protected static ?string $pluralLabel = 'Photo';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationLabel = 'PNS Photo';
+    protected static ?string $navigationLabel = 'Photo';
+
+    protected static ?string $navigationGroup = 'PNS';
 
     protected static bool $shouldRegisterNavigation = true;
-
-    protected static ?int $navigationSort = 99;
 
     public static function form(Form $form): Form
     {

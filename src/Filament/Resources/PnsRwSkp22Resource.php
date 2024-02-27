@@ -20,11 +20,11 @@ class PnsRwSkp22Resource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationLabel = 'PNS RW SKP 2022';
+    protected static ?string $navigationLabel = 'SKP 2022';
+
+    protected static ?string $navigationGroup = 'Riwayat';
 
     protected static bool $shouldRegisterNavigation = true;
-
-    protected static ?int $navigationSort = 99;
 
     public static function form(Form $form): Form
     {

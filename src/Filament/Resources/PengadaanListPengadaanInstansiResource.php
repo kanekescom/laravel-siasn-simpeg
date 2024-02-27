@@ -16,15 +16,15 @@ class PengadaanListPengadaanInstansiResource extends Resource
 
     protected static ?string $slug = 'pengadaan-list-pengadaan-instansi';
 
-    protected static ?string $pluralLabel = 'Pengadaan List Pengadaan Instansi';
+    protected static ?string $pluralLabel = 'List Pengadaan Instansi';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationLabel = 'Pengadaan List Pengadaan Instansi';
+    protected static ?string $navigationLabel = 'List Pengadaan Instansi';
+
+    protected static ?string $navigationGroup = 'Pengadaan';
 
     protected static bool $shouldRegisterNavigation = true;
-
-    protected static ?int $navigationSort = 99;
 
     public static function form(Form $form): Form
     {

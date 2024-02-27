@@ -14,7 +14,17 @@ class OrangtuaAyahResource extends Resource
 {
     protected static ?string $model = OrangtuaAyah::class;
 
+    protected static ?string $slug = '--orangtua-ayah';
+
+    protected static ?string $pluralLabel = '--Orangtua Ayah';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    protected static ?string $navigationLabel = '--Orangtua Ayah';
+
+    protected static ?string $navigationGroup = 'PNS';
+
+    protected static bool $shouldRegisterNavigation = true;
 
     public static function form(Form $form): Form
     {

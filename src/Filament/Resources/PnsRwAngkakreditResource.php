@@ -20,11 +20,11 @@ class PnsRwAngkakreditResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationLabel = 'PNS RW Angka Kredit';
+    protected static ?string $navigationLabel = 'Angka Kredit';
+
+    protected static ?string $navigationGroup = 'Riwayat';
 
     protected static bool $shouldRegisterNavigation = true;
-
-    protected static ?int $navigationSort = 99;
 
     public static function form(Form $form): Form
     {

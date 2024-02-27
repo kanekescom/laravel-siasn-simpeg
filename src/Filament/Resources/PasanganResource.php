@@ -14,17 +14,17 @@ class PasanganResource extends Resource
 {
     protected static ?string $model = Pasangan::class;
 
-    protected static ?string $slug = 'pasangan';
+    protected static ?string $slug = '--pasangan';
 
-    protected static ?string $pluralLabel = 'Pasangan';
+    protected static ?string $pluralLabel = '--Pasangan';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationLabel = 'Pasangan';
+    protected static ?string $navigationLabel = '--Pasangan';
+
+    protected static ?string $navigationGroup = 'PNS';
 
     protected static bool $shouldRegisterNavigation = true;
-
-    protected static ?int $navigationSort = 99;
 
     public static function form(Form $form): Form
     {

@@ -14,17 +14,17 @@ class DataPernikahanResource extends Resource
 {
     protected static ?string $model = DataPernikahan::class;
 
-    protected static ?string $slug = 'data-pernikahan';
+    protected static ?string $slug = '--data-pernikahan';
 
-    protected static ?string $pluralLabel = 'Data Pernikahan';
+    protected static ?string $pluralLabel = '--Data Pernikahan';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationLabel = 'Data Pernikahan';
+    protected static ?string $navigationLabel = '--Data Pernikahan';
+
+    protected static ?string $navigationGroup = 'PNS';
 
     protected static bool $shouldRegisterNavigation = true;
-
-    protected static ?int $navigationSort = 99;
 
     public static function form(Form $form): Form
     {
