@@ -86,9 +86,9 @@ return new class extends Migration
             $table->string('tmtGolAkhir')->nullable();
             $table->string('masaKerja')->nullable();
             $table->string('eselon')->nullable();
-            $table->string('eselonId', 2)->nullable()->index('6_eselonId');
-            $table->string('eselonLevel')->nullable();
-            $table->string('tmtEselon')->nullable();
+            $table->string('eselonId', 10)->nullable()->index('6_eselonId');
+            $table->string('eselonLevel', 10)->nullable()->index('6_eselonLevel');
+            $table->string('tmtEselon', 10)->nullable();
             $table->string('gajiPokok')->nullable();
             $table->string('kpknId', 42)->nullable()->index('6_kpknId');
             $table->text('kpknNama')->nullable();

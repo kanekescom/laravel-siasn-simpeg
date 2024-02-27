@@ -49,6 +49,7 @@ class SimpegServiceProvider extends PackageServiceProvider
             ])
             ->runsMigrations()
             ->hasCommand(Commands\ImportCommand::class)
+            ->hasCommand(Commands\PullPnsDataUtamaCommand::class)
             ->hasCommand(Commands\PullRiwayatCommand::class)
             ->hasCommand(Commands\PullReferensiRefUnorCommand::class);
     }
