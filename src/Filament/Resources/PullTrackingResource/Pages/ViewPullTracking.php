@@ -2,18 +2,17 @@
 
 namespace Kanekescom\Siasn\Simpeg\Filament\Resources\PullTrackingResource\Pages;
 
-use Filament\Actions;
-use Filament\Resources\Pages\ManageRecords;
+use Filament\Resources\Pages\ViewRecord;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PullTrackingResource;
 
-class ManagePullTrackings extends ManageRecords
+class ViewPullTracking extends ViewRecord
 {
     protected static string $resource = PullTrackingResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            //
         ];
     }
 }

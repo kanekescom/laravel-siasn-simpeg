@@ -24,6 +24,6 @@ class PullTracking extends Model
 
     public function errors(): HasMany
     {
-        return $this->hasMany(PullTrackingError::class, 'pull_tracking_id');
+        return $this->hasMany(PullTrackingError::class);
     }
 }

@@ -2,10 +2,13 @@
 
 namespace Kanekescom\Siasn\Simpeg\Filament\Resources;
 
+use Filament\Forms;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PullTrackingResource\Pages;
+use Kanekescom\Siasn\Simpeg\Filament\Resources\PullTrackingResource\RelationManagers\ErrorsRelationManager;
 use Kanekescom\Siasn\Simpeg\Models\PullTracking;
 
 class PullTrackingResource extends Resource
@@ -23,6 +26,30 @@ class PullTrackingResource extends Resource
     protected static ?string $navigationGroup = 'SIASN SIMPEG ADVANCE';
 
     protected static bool $shouldRegisterNavigation = true;
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\TextInput::make('command')
+                    ->columnSpanFull()
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('start_from')
+                    ->required()
+                    ->numeric()
+                    ->default(0),
+                Forms\Components\TextInput::make('last_try')
+                    ->required()
+                    ->numeric()
+                    ->default(0),
+                Forms\Components\TextInput::make('amount')
+                    ->required()
+                    ->numeric()
+                    ->default(0),
+                Forms\Components\DateTimePicker::make('done_at'),
+            ]);
+    }
 
     public static function table(Table $table): Table
     {
@@ -76,10 +103,18 @@ class PullTrackingResource extends Resource
             ]);
     }
 
+    public static function getRelations(): array
+    {
+        return [
+            ErrorsRelationManager::class,
+        ];
+    }
+
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManagePullTrackings::route('/'),
+            'index' => Pages\ListPullTrackings::route('/'),
+            'view' => Pages\ViewPullTracking::route('/{record}'),
         ];
     }
 }
