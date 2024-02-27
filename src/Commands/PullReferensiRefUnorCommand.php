@@ -30,43 +30,44 @@ class PullReferensiRefUnorCommand extends Command
     {
         try {
             $response = Simpeg::getReferensiRefUnor();
-
-            if ($response->count()) {
-                try {
-                    $model = new ReferensiRefUnor;
-                    $bar = $this->output->createProgressBar($response->count());
-                    $bar->start();
-
-                    DB::transaction(function () use ($model, $response, $bar) {
-                        if (config('siasn-simpeg.delete_model_before_pull')) {
-                            $model->delete();
-                        }
-
-                        $response->chunk(config('siasn-simpeg.chunk_data'))->each(function ($item) use ($model, $bar) {
-                            $model->upsert($item->toArray(), 'id');
-                            $model->withTrashed()
-                                ->whereIn('id', $item->pluck('id'))
-                                ->restore();
-
-                            $bar->advance($item->count());
-                        });
-                    });
-
-                    $bar->finish();
-
-                    $this->newLine(2);
-                } catch (\Exception $e) {
-                    $this->error($e);
-                    $this->newLine();
-
-                    return self::FAILURE;
-                }
-            }
         } catch (\Exception $e) {
             $this->error($e);
             $this->newLine();
 
             return self::FAILURE;
+        }
+
+        if ($response->count()) {
+            try {
+                $bar = $this->output->createProgressBar($response->count());
+                $bar->start();
+
+                $model = new ReferensiRefUnor;
+
+                DB::transaction(function () use ($model, $response, $bar) {
+                    if (config('siasn-simpeg.delete_model_before_pull')) {
+                        $model->delete();
+                    }
+
+                    $response->chunk(config('siasn-simpeg.chunk_data'))->each(function ($item) use ($model, $bar) {
+                        $model->upsert($item->toArray(), 'id');
+                        $model->withTrashed()
+                            ->whereIn('id', $item->pluck('id'))
+                            ->restore();
+
+                        $bar->advance($item->count());
+                    });
+                });
+
+                $bar->finish();
+
+                $this->newLine(2);
+            } catch (\Exception $e) {
+                $this->error($e);
+                $this->newLine();
+
+                return self::FAILURE;
+            }
         }
 
         return self::SUCCESS;
