@@ -72,10 +72,10 @@ class PengadaanListPengadaanInstansiResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id')
-                    ->label('ID')
                     ->copyable()
                     ->sortable()
-                    ->searchable(isIndividual: true),
+                    ->searchable(isIndividual: true)
+                    ->label('ID'),
                 Tables\Columns\TextColumn::make('orang_id')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->copyable()
