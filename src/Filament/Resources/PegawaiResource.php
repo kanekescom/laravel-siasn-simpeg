@@ -217,6 +217,7 @@ class PegawaiResource extends Resource
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('jenis_kelamin')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
@@ -291,6 +292,7 @@ class PegawaiResource extends Resource
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('kedudukan_hukum_nama')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
@@ -383,6 +385,7 @@ class PegawaiResource extends Resource
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('jabatan_nama')
+                    ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),

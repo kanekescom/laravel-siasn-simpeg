@@ -58,43 +58,53 @@ class ReferensiRefUnorResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id')
-                    ->label('ID')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->copyable()
                     ->sortable()
-                    ->searchable(isIndividual: true),
+                    ->searchable(isIndividual: true)
+                    ->label('ID'),
                 Tables\Columns\TextColumn::make('InstansiId')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('DiatasanId')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('EselonId')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('NamaUnor')
+                    ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('NamaJabatan')
+                    ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('CepatKode')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('IndukUnorId')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('PemimpinPnsId')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('JenisUnorId')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
