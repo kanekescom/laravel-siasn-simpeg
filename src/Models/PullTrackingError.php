@@ -4,9 +4,8 @@ namespace Kanekescom\Siasn\Simpeg\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class PullTracking extends Model
+class PullTrackingError extends Model
 {
     use HasFactory;
 
@@ -20,10 +19,5 @@ class PullTracking extends Model
     public function getTable()
     {
         return 'siasn_simpeg_'.str(class_basename(__CLASS__))->snake();
-    }
-
-    public function errors(): HasMany
-    {
-        return $this->hasMany(PullTrackingError::class, 'pull_tracking_id');
     }
 }

@@ -8,6 +8,8 @@ use Kanekescom\Siasn\Simpeg\Facades\Simpeg;
 use Kanekescom\Siasn\Simpeg\Models\Pegawai;
 use Kanekescom\Siasn\Simpeg\Models\PnsDataUtama;
 use Kanekescom\Siasn\Simpeg\Models\PullTracking;
+use Kanekescom\Siasn\Simpeg\Models\PullTrackingError;
+use Kanekescom\Siasn\Simpeg\Services\PullTrackingErrorService;
 
 class PullPnsDataUtamaCommand extends Command
 {
@@ -36,8 +38,8 @@ class PullPnsDataUtamaCommand extends Command
     {
         $nipBaru = $this->option('nipBaru');
         $track = $this->option('track');
-        $skip = $this->option('skip');
         $startOver = $this->option('startOver');
+        $skip = $startOver ? 0 : $this->option('skip');
 
         $pullTrackingCommandName = 'siasn-simpeg:pull-pns-data-utama';
         $hasPullTracking = $nipBaru ? null : PullTracking::where('command', $pullTrackingCommandName)->first();
@@ -55,7 +57,8 @@ class PullPnsDataUtamaCommand extends Command
         }
 
         $startPegawai = now();
-        $pullTracking = null;
+        $pullTracking = new PullTracking;
+        $pullTrackingError = new PullTrackingError;
         $pegawais = Pegawai::get();
 
         if ($nipBaru) {
@@ -70,29 +73,28 @@ class PullPnsDataUtamaCommand extends Command
             return self::FAILURE;
         }
 
-        if (! $nipBaru && $track && ! $startOver) {
+        if ($nipBaru == null && $track) {
             $pullTracking = PullTracking::updateOrCreate(['command' => $pullTrackingCommandName], [
                 'start_from' => $skip,
                 'amount' => $pegawaiCount,
             ]);
+        }
 
-            if ($hasPullTracking && $hasPullTracking->done_at) {
-                $this->info('Pull command has been completed. Use --startOver to re-pull from the beginning.');
+        if ($nipBaru == null && $track && ! $startOver && $hasPullTracking && $hasPullTracking->done_at) {
+            $this->info('Pull command has been completed. Use --startOver to re-pull from the beginning.');
 
-                return self::SUCCESS;
-            }
+            return self::SUCCESS;
+        }
 
-            if ($hasPullTracking) {
-                $pullingStartingForm = $skip + 1;
+        if ($nipBaru == null && $track && ! $startOver && $hasPullTracking) {
+            $pullingStartingForm = $skip + 1;
 
-                $this->info(str("Continue pulling starting from {$pullingStartingForm}")->upper());
-                $this->newLine();
-            }
+            $this->info(str("Continue pulling starting from {$pullingStartingForm}")->upper());
+            $this->newLine();
         }
 
         $pegawais = $pegawais->skip($skip);
-
-        $pegawais->each(function ($pegawai) use ($pegawaiCount, &$iPegawai, $startPegawai, $pullTracking, $skip) {
+        $pegawais->each(function ($pegawai) use ($pegawaiCount, &$iPegawai, $startPegawai, $pullTracking, $pullTrackingError, $skip, $nipBaru, $track) {
             $iPegawai++;
 
             $this->info("PEGAWAI: [{$iPegawai}/{$pegawaiCount}] {$pegawai->nip_baru}");
@@ -100,6 +102,10 @@ class PullPnsDataUtamaCommand extends Command
             try {
                 $response = Simpeg::getPnsDataUtama($pegawai->nip_baru);
             } catch (\Exception $e) {
+                if ($nipBaru == null && $track) {
+                    new PullTrackingErrorService($e, $pullTrackingError, $pullTracking, $pegawai->pns_id);
+                }
+
                 $this->error($e);
                 $this->newLine();
 
@@ -119,6 +125,10 @@ class PullPnsDataUtamaCommand extends Command
                         ->restore();
                 });
             } catch (\Exception $e) {
+                if ($nipBaru == null && $track) {
+                    new PullTrackingErrorService($e, $pullTrackingError, $pullTracking, $pegawai->pns_id);
+                }
+
                 $this->error($e);
                 $this->newLine();
 
@@ -128,7 +138,7 @@ class PullPnsDataUtamaCommand extends Command
             $pullTracking?->update(['last_try' => $iPegawai]);
             $executedItems = $iPegawai - $skip;
 
-            $this->info(str("All tasks are running for {$startPegawai->shortAbsoluteDiffForHumans(now(), 1)} and {$executedItems} items executed")->upper());
+            $this->info(str("All tasks are running for {$startPegawai->shortAbsoluteDiffForHumans(now(), 1)} and {$executedItems} items have been executed.")->upper());
             $this->newLine();
         });
 

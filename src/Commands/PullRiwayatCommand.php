@@ -9,6 +9,8 @@ use Kanekescom\Siasn\Simpeg\Exceptions\BadEndpointCallException;
 use Kanekescom\Siasn\Simpeg\Facades\Simpeg;
 use Kanekescom\Siasn\Simpeg\Models\Pegawai;
 use Kanekescom\Siasn\Simpeg\Models\PullTracking;
+use Kanekescom\Siasn\Simpeg\Models\PullTrackingError;
+use Kanekescom\Siasn\Simpeg\Services\PullTrackingErrorService;
 
 class PullRiwayatCommand extends Command
 {
@@ -82,8 +84,8 @@ class PullRiwayatCommand extends Command
         $endpoint = $this->argument('endpoint');
         $nipBaru = $this->option('nipBaru');
         $track = $this->option('track');
-        $skip = $this->option('skip');
         $startOver = $this->option('startOver');
+        $skip = $startOver ? 0 : $this->option('skip');
 
         if (blank($endpoints = $endpointOptions->only($endpoint))) {
             throw new BadEndpointCallException('Endpoint does not exist.');
@@ -120,7 +122,8 @@ class PullRiwayatCommand extends Command
         $startPegawai = now();
         $endpoints = $endpoints->keys();
         $endpointCount = $endpoints->count();
-        $pullTracking = null;
+        $pullTracking = new PullTracking;
+        $pullTrackingError = new PullTrackingError;
         $pegawais = Pegawai::get();
 
         if ($nipBaru) {
@@ -135,36 +138,35 @@ class PullRiwayatCommand extends Command
             return self::FAILURE;
         }
 
-        if (! $nipBaru && $track && ! $startOver) {
+        if ($nipBaru == null && $track) {
             $pullTracking = PullTracking::updateOrCreate(['command' => $pullTrackingCommandName], [
                 'start_from' => $skip,
                 'amount' => $pegawaiCount,
             ]);
+        }
 
-            if ($hasPullTracking && $hasPullTracking->done_at) {
-                $this->info('Pull command has been completed. Use --startOver to re-pull from the beginning.');
+        if ($nipBaru == null && $track && ! $startOver && $hasPullTracking && $hasPullTracking->done_at) {
+            $this->info('Pull command has been completed. Use --startOver to re-pull from the beginning.');
 
-                return self::SUCCESS;
-            }
+            return self::SUCCESS;
+        }
 
-            if ($hasPullTracking) {
-                $pullingStartingForm = $skip + 1;
+        if ($nipBaru == null && $track && ! $startOver && $hasPullTracking) {
+            $pullingStartingForm = $skip + 1;
 
-                $this->info(str("Continue pulling starting from {$pullingStartingForm}")->upper());
-                $this->newLine();
-            }
+            $this->info(str("Continue pulling starting from {$pullingStartingForm}")->upper());
+            $this->newLine();
         }
 
         $pegawais = $pegawais->skip($skip);
-
-        $pegawais->each(function ($pegawai) use ($pegawaiCount, &$iPegawai, $endpoints, $endpointCount, $startPegawai, $pullTracking, $skip) {
+        $pegawais->each(function ($pegawai) use ($pegawaiCount, &$iPegawai, $endpoints, $endpointCount, $startPegawai, $pullTracking, $pullTrackingError, $skip, $nipBaru, $track) {
             $startEndpoint = now();
             $iPegawai++;
             $iEndpoint = 0;
 
             $this->info("PEGAWAI: [{$iPegawai}/{$pegawaiCount}] {$pegawai->nip_baru}");
 
-            $endpoints->each(function ($endpoint) use ($pegawai, $endpointCount, &$iEndpoint) {
+            $endpoints->each(function ($endpoint) use ($pegawai, $endpointCount, &$iEndpoint, $pullTracking, $pullTrackingError, $nipBaru, $track) {
                 $iEndpoint++;
                 $modelName = str($endpoint)->studly();
                 $modelClass = "Kanekescom\\Siasn\\Simpeg\\Models\\{$modelName}";
@@ -174,6 +176,10 @@ class PullRiwayatCommand extends Command
                 try {
                     $response = Simpeg::$simpegMethod($pegawai->nip_baru);
                 } catch (\Exception $e) {
+                    if ($nipBaru == null && $track) {
+                        new PullTrackingErrorService($e, $pullTrackingError, $pullTracking, $pegawai->pns_id);
+                    }
+
                     $this->error($e);
                     $this->newLine();
 
@@ -219,6 +225,10 @@ class PullRiwayatCommand extends Command
 
                         $this->newLine(2);
                     } catch (\Exception $e) {
+                        if ($nipBaru == null && $track) {
+                            new PullTrackingErrorService($e, $pullTrackingError, $pullTracking, $pegawai->pns_id);
+                        }
+
                         $this->error($e);
                         $this->newLine();
 
@@ -230,8 +240,8 @@ class PullRiwayatCommand extends Command
             $pullTracking?->update(['last_try' => $iPegawai]);
             $executedItems = $iPegawai - $skip;
 
-            $this->info("All endpoint tasks for {$pegawai->nip_baru} are processed in {$startEndpoint->shortAbsoluteDiffForHumans(now(), 1)}");
-            $this->info(str("All tasks are running for {$startPegawai->shortAbsoluteDiffForHumans(now(), 1)} and {$executedItems} items executed")->upper());
+            $this->info("All endpoint tasks for {$pegawai->nip_baru} are processed in {$startEndpoint->shortAbsoluteDiffForHumans(now(), 1)}.");
+            $this->info(str("All tasks are running for {$startPegawai->shortAbsoluteDiffForHumans(now(), 1)} and {$executedItems} items have been executed.")->upper());
             $this->newLine();
         });
 
