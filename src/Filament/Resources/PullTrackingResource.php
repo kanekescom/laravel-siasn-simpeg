@@ -23,7 +23,7 @@ class PullTrackingResource extends Resource
 
     protected static ?string $navigationLabel = 'Pull Tracking';
 
-    protected static ?string $navigationGroup = 'SIASN SIMPEG ADVANCE';
+    protected static ?string $navigationGroup = 'Tools';
 
     protected static bool $shouldRegisterNavigation = true;
 

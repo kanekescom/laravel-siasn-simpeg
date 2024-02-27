@@ -22,9 +22,9 @@ class PnsRwSkp22Resource extends Resource
 
     protected static ?string $navigationLabel = 'PNS RW SKP 2022';
 
-    protected static ?string $navigationGroup = 'SIASN SIMPEG';
-
     protected static bool $shouldRegisterNavigation = true;
+
+    protected static ?int $navigationSort = 99;
 
     public static function form(Form $form): Form
     {

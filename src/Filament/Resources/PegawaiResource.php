@@ -22,9 +22,9 @@ class PegawaiResource extends Resource
 
     protected static ?string $navigationLabel = 'Pegawai';
 
-    protected static ?string $navigationGroup = 'SIASN SIMPEG';
-
     protected static bool $shouldRegisterNavigation = true;
+
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {

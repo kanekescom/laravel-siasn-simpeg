@@ -22,9 +22,9 @@ class PengadaanListPengadaanInstansiResource extends Resource
 
     protected static ?string $navigationLabel = 'Pengadaan List Pengadaan Instansi';
 
-    protected static ?string $navigationGroup = 'SIASN SIMPEG';
-
     protected static bool $shouldRegisterNavigation = true;
+
+    protected static ?int $navigationSort = 99;
 
     public static function form(Form $form): Form
     {

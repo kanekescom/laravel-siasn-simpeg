@@ -22,9 +22,9 @@ class ReferensiRefUnorResource extends Resource
 
     protected static ?string $navigationLabel = 'Referensi Unor';
 
-    protected static ?string $navigationGroup = 'SIASN SIMPEG';
-
     protected static bool $shouldRegisterNavigation = true;
+
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {
