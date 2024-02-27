@@ -19,7 +19,7 @@ class PullRiwayatCommand extends Command
      */
     protected $signature = 'siasn-simpeg:pull-riwayat
                             {endpoint? : Endpoint API}}
-                            {nipBaru? : NIP Baru}
+                            {--nipBaru= : NIP Baru}
                             {--skip=0}
                             {--track}
                             {--startOver}';
@@ -80,9 +80,9 @@ class PullRiwayatCommand extends Command
     {
         $endpointOptions = collect($this->endpoints)->mapWithKeys(fn ($item) => [$item => $item]);
         $endpoint = $this->argument('endpoint');
-        $nipBaru = $this->argument('nipBaru');
+        $nipBaru = $this->option('nipBaru');
         $track = $this->option('track');
-        $skip = (int) $this->option('skip');
+        $skip = $this->option('skip');
         $startOver = $this->option('startOver');
 
         if (blank($endpoints = $endpointOptions->only($endpoint))) {
@@ -91,20 +91,21 @@ class PullRiwayatCommand extends Command
 
         $pullTrackingCommandName = 'siasn-simpeg:pull-riwayat';
         $pullTrackingCommandName .= $endpoint ? " {$endpoint}" : $endpoint;
-        $hasPullTracking = PullTracking::where('command', $pullTrackingCommandName)->first();
-        $lastTryPullTracking = $hasPullTracking?->last_try;
-        $skip = $skip > $lastTryPullTracking ? $skip : $lastTryPullTracking;
+        $hasPullTracking = $nipBaru ? null : PullTracking::where('command', $pullTrackingCommandName)->first();
+        $lastTryPullTracking = $startOver ? 0 : $hasPullTracking?->last_try;
+        $skip = (int) ($skip > $lastTryPullTracking ? $skip : $lastTryPullTracking);
         $iPegawai = $skip;
 
         if ($startOver && $hasPullTracking) {
             $hasPullTracking->delete();
             $hasPullTracking = null;
+            $skip = 0;
 
             $this->info(str('Start over command.')->upper());
             $this->newLine();
         }
 
-        if (blank($endpoint) && !($track && $hasPullTracking)) {
+        if (blank($endpoint) && ! ($track && $hasPullTracking)) {
             $endpoints = collect($this->choice(
                 'What do you want to call endpoint? Separate with commas.',
                 collect(['all' => 'all'])->merge($endpointOptions)->keys()->toArray(),
@@ -119,11 +120,22 @@ class PullRiwayatCommand extends Command
         $startPegawai = now();
         $endpoints = $endpoints->keys();
         $endpointCount = $endpoints->count();
-        $pegawais = Pegawai::when($nipBaru, fn ($query) => $query->where('nip_baru', $nipBaru))->get()->skip($skip);
-        $pegawaiCount = $pegawais->count();
         $pullTracking = null;
+        $pegawais = Pegawai::get();
 
-        if ($track) {
+        if ($nipBaru) {
+            $pegawais = Pegawai::where('nip_baru', $nipBaru)->get();
+        }
+
+        $pegawaiCount = $pegawais->count();
+
+        if ($skip >= $pegawaiCount) {
+            $this->components->error('Skip option value exceeds number of pegawai.');
+
+            return self::FAILURE;
+        }
+
+        if ($track && ! $startOver) {
             $pullTracking = PullTracking::updateOrCreate(['command' => $pullTrackingCommandName], [
                 'start_from' => $skip,
                 'amount' => $pegawaiCount,
@@ -143,6 +155,8 @@ class PullRiwayatCommand extends Command
             }
         }
 
+        $pegawais = $pegawais->skip($skip);
+
         $pegawais->each(function ($pegawai) use ($pegawaiCount, &$iPegawai, $endpoints, $endpointCount, $startPegawai, $pullTracking, $skip) {
             $startEndpoint = now();
             $iPegawai++;
@@ -155,7 +169,7 @@ class PullRiwayatCommand extends Command
                 $modelName = str($endpoint)->studly();
                 $modelClass = "Kanekescom\\Siasn\\Simpeg\\Models\\{$modelName}";
                 $model = new $modelClass;
-                $simpegMethod = 'get' . $modelName;
+                $simpegMethod = 'get'.$modelName;
 
                 try {
                     $response = Simpeg::$simpegMethod($pegawai->nip_baru);
