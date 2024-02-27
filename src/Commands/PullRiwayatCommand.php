@@ -135,7 +135,7 @@ class PullRiwayatCommand extends Command
             return self::FAILURE;
         }
 
-        if ($track && ! $startOver) {
+        if (! $nipBaru && $track && ! $startOver) {
             $pullTracking = PullTracking::updateOrCreate(['command' => $pullTrackingCommandName], [
                 'start_from' => $skip,
                 'amount' => $pegawaiCount,
