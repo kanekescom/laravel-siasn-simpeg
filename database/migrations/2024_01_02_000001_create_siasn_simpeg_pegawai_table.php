@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('siasn_simpeg_pegawai', function (Blueprint $table) {
             $table->string('pns_id', 42)->primary();
-            $table->string('nip_baru')->nullable()->index('1_nip_baru');
-            $table->string('nip_lama')->nullable()->index('1_nip_lama');
+            $table->string('nip_baru', 18)->nullable()->index('1_nip_baru');
+            $table->string('nip_lama', 9)->nullable()->index('1_nip_lama');
             $table->string('nama')->nullable();
             $table->string('gelar_depan')->nullable();
             $table->string('gelar_belakang')->nullable();
