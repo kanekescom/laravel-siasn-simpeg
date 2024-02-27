@@ -99,8 +99,17 @@ class PullRiwayatCommand extends Command
         $iPegawai = $skip;
 
         if ($startOver && $hasPullTracking) {
-            $hasPullTracking->delete();
-            $hasPullTracking = null;
+            try {
+                $hasPullTracking->errors()->delete();
+                $hasPullTracking->delete();
+                $hasPullTracking = null;
+            } catch (\Exception $e) {
+                $this->error($e);
+                $this->newLine();
+
+                return self::FAILURE;
+            }
+
             $skip = 0;
 
             $this->info(str('Start over command.')->upper());
