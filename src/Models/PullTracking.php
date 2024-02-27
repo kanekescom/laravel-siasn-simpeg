@@ -10,13 +10,6 @@ class PullTracking extends Model
     use HasFactory;
 
     /**
-     * The data type of the auto-incrementing ID.
-     *
-     * @var string
-     */
-    protected $keyType = 'string';
-
-    /**
      * The attributes that aren't mass assignable.
      *
      * @var array
@@ -25,6 +18,6 @@ class PullTracking extends Model
 
     public function getTable()
     {
-        return 'siasn_simpeg_'.str(class_basename(__CLASS__))->snake();
+        return 'siasn_simpeg_' . str(class_basename(__CLASS__))->snake();
     }
 }
