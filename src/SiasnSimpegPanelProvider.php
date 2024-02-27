@@ -41,6 +41,7 @@ class SiasnSimpegPanelProvider extends PanelProvider
                 Pages\Dashboard::class,
             ])
             ->discoverWidgets(in: __DIR__.'/Filament/Widgets', for: 'Kanekescom\\Siasn\\Simpeg\\Filament\\Widgets')
+            ->topbar(config('siasn-simpeg.filament.topbar'))
             ->widgets([
                 //
             ])

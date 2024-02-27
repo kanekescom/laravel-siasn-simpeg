@@ -10,7 +10,10 @@ return [
 
     'filament' => [
         'id' => 'siasn-simpeg',
+
         'path' => 'siasn/simpeg',
+
+        'topbar' => false,
     ],
 
 ];
