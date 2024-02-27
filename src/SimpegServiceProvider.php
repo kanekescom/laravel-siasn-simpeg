@@ -48,7 +48,9 @@ class SimpegServiceProvider extends PackageServiceProvider
                 '2024_01_02_000033_create_siasn_simpeg_pull_tracking_table',
             ])
             ->runsMigrations()
+            ->hasCommand(Commands\ImportCommand::class)
+            ->hasCommand(Commands\PullPnsDataUtamaCommand::class)
             ->hasCommand(Commands\PullRiwayatCommand::class)
-            ->hasCommand(Commands\ImportCommand::class);
+            ->hasCommand(Commands\PullReferensiRefUnorCommand::class);
     }
 }

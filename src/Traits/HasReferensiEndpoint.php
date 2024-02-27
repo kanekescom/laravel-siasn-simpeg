@@ -2,16 +2,19 @@
 
 namespace Kanekescom\Siasn\Simpeg\Traits;
 
-use Illuminate\Http\Client\Response;
-use Kanekescom\Siasn\Simpeg\Helpers\UrlParser;
+use Kanekescom\Siasn\Simpeg\Helpers\ReferensiResponseTransformer;
 
 trait HasReferensiEndpoint
 {
-    public function getReferensiRefUnor(array $paths = [], array $query = []): Response
+    public function getReferensiRefUnor()
     {
-        $urlFormat = '/referensi/ref-unor';
-        $urlParsed = (new UrlParser($urlFormat))->parse($paths);
+        $response = $this->simpeg::{__FUNCTION__}();
+        $transformer = str(__FUNCTION__)->replaceFirst('get', '');
+        $transformerClass = "\\Kanekescom\\Siasn\\Simpeg\\Transformers\\{$transformer}Transformer";
 
-        return $this->get($urlParsed, $query);
+        return new ReferensiResponseTransformer(
+            $response,
+            new $transformerClass
+        );
     }
 }

@@ -4,6 +4,7 @@ namespace Kanekescom\Siasn\Simpeg\Traits;
 
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Storage;
+use Kanekescom\Siasn\Simpeg\Helpers\PnsDataUtamaResponseTransformer;
 use Kanekescom\Siasn\Simpeg\Helpers\UrlParser;
 
 trait HasPnsEndpoint
@@ -40,12 +41,20 @@ trait HasPnsEndpoint
         return $this->post($urlParsed, $query);
     }
 
-    public function getPnsDataUtama(array $paths = [], array $query = []): Response
+    public function getPnsDataUtama($nipBaru)
     {
-        $urlFormat = '/pns/data-utama/{nipBaru}';
-        $urlParsed = (new UrlParser($urlFormat))->parse($paths);
+        $paths = [
+            'nipBaru' => $nipBaru,
+        ];
 
-        return $this->get($urlParsed, $query);
+        $response = $this->simpeg::{__FUNCTION__}($paths);
+        $transformer = str(__FUNCTION__)->replaceFirst('get', '');
+        $transformerClass = "\\Kanekescom\\Siasn\\Simpeg\\Transformers\\{$transformer}Transformer";
+
+        return new PnsDataUtamaResponseTransformer(
+            $response,
+            new $transformerClass
+        );
     }
 
     public function getPnsPhoto(array $paths = [], array $query = []): Response

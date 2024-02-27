@@ -11,7 +11,7 @@ class PnsDataUtamaTransformer extends TransformerAbstract
      *
      * @return array
      */
-    public function transform(array $item)
+    public function transform($item)
     {
         return $item;
     }
