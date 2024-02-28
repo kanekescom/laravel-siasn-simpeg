@@ -15,4 +15,9 @@ class ViewPegawai extends ViewRecord
             //
         ];
     }
+
+    public function hasCombinedRelationManagerTabsWithContent(): bool
+    {
+        return true;
+    }
 }
