@@ -42,6 +42,7 @@ class PegawaiPppkResource extends Resource
     {
         return [
             'index' => Pages\ManagePegawais::route('/'),
+            'view' => Pages\ViewPegawai::route('/{record}'),
         ];
     }
 }
