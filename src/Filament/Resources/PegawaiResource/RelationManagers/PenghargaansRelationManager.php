@@ -11,6 +11,8 @@ class PenghargaansRelationManager extends RelationManager
 {
     protected static string $relationship = 'penghargaans';
 
+    protected static ?string $title = 'Penghargaan';
+
     public function form(Form $form): Form
     {
         return PnsRwPenghargaanResource::form($form);

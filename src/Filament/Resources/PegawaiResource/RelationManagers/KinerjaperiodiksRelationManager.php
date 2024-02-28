@@ -11,6 +11,8 @@ class KinerjaperiodiksRelationManager extends RelationManager
 {
     protected static string $relationship = 'kinerjaperiodiks';
 
+    protected static ?string $title = 'Kinerja Periodik';
+
     public function form(Form $form): Form
     {
         return PnsRwKinerjaperiodikResource::form($form);

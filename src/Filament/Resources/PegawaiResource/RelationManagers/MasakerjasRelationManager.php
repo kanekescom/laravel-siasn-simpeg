@@ -11,6 +11,8 @@ class MasakerjasRelationManager extends RelationManager
 {
     protected static string $relationship = 'masakerjas';
 
+    protected static ?string $title = 'Masa Kerja';
+
     public function form(Form $form): Form
     {
         return PnsRwMasakerjaResource::form($form);

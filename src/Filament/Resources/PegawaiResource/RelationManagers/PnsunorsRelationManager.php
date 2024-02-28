@@ -11,6 +11,8 @@ class PnsunorsRelationManager extends RelationManager
 {
     protected static string $relationship = 'pnsunors';
 
+    protected static ?string $title = 'Unor';
+
     public function form(Form $form): Form
     {
         return PnsRwPnsunorResource::form($form);

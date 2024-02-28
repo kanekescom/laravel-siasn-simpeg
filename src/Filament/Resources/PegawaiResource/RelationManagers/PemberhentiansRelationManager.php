@@ -11,6 +11,8 @@ class PemberhentiansRelationManager extends RelationManager
 {
     protected static string $relationship = 'pemberhentians';
 
+    protected static ?string $title = 'Pemberhentian';
+
     public function form(Form $form): Form
     {
         return PnsRwPemberhentianResource::form($form);

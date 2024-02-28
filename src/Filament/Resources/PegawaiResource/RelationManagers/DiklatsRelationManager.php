@@ -11,6 +11,8 @@ class DiklatsRelationManager extends RelationManager
 {
     protected static string $relationship = 'diklats';
 
+    protected static ?string $title = 'Diklat';
+
     public function form(Form $form): Form
     {
         return PnsRwDiklatResource::form($form);

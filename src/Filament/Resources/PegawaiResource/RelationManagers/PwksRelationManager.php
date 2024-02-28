@@ -11,6 +11,8 @@ class PwksRelationManager extends RelationManager
 {
     protected static string $relationship = 'pwks';
 
+    protected static ?string $title = 'PWK';
+
     public function form(Form $form): Form
     {
         return PnsRwPwkResource::form($form);

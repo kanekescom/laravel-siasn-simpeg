@@ -11,6 +11,8 @@ class HukdisesRelationManager extends RelationManager
 {
     protected static string $relationship = 'hukdises';
 
+    protected static ?string $title = 'Hukdis';
+
     public function form(Form $form): Form
     {
         return PnsRwHukdisResource::form($form);

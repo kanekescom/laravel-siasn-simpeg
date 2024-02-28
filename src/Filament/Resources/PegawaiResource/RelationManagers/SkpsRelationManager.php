@@ -11,6 +11,8 @@ class SkpsRelationManager extends RelationManager
 {
     protected static string $relationship = 'skps';
 
+    protected static ?string $title = 'SKP';
+
     public function form(Form $form): Form
     {
         return PnsRwSkpResource::form($form);

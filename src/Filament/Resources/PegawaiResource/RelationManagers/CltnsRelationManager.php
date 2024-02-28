@@ -11,6 +11,8 @@ class CltnsRelationManager extends RelationManager
 {
     protected static string $relationship = 'cltns';
 
+    protected static ?string $title = 'CLTN';
+
     public function form(Form $form): Form
     {
         return PnsRwCltnResource::form($form);

@@ -11,6 +11,8 @@ class GolongansRelationManager extends RelationManager
 {
     protected static string $relationship = 'golongans';
 
+    protected static ?string $title = 'Golongan';
+
     public function form(Form $form): Form
     {
         return PnsRwGolonganResource::form($form);
