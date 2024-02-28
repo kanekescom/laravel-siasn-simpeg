@@ -7,6 +7,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Kanekescom\Siasn\Simpeg\Filament\Resources\PegawaiResource\RelationManagers\PemberhentiansRelationManager;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PnsRwPemberhentianResource\Pages;
 use Kanekescom\Siasn\Simpeg\Models\PnsRwPemberhentian;
 
@@ -57,11 +58,13 @@ class PnsRwPemberhentianResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('pegawai.nip_baru')
+                    ->hiddenOn(PemberhentiansRelationManager::class)
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->label('NIP'),
                 Tables\Columns\TextColumn::make('pegawai.nama')
+                    ->hiddenOn(PemberhentiansRelationManager::class)
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)

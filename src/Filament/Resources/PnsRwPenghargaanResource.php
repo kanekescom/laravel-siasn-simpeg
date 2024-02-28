@@ -7,6 +7,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Kanekescom\Siasn\Simpeg\Filament\Resources\PegawaiResource\RelationManagers\PenghargaansRelationManager;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PnsRwPenghargaanResource\Pages;
 use Kanekescom\Siasn\Simpeg\Models\PnsRwPenghargaan;
 
@@ -53,11 +54,13 @@ class PnsRwPenghargaanResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('pegawai.nip_baru')
+                    ->hiddenOn(PenghargaansRelationManager::class)
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->label('NIP'),
                 Tables\Columns\TextColumn::make('pegawai.nama')
+                    ->hiddenOn(PenghargaansRelationManager::class)
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)

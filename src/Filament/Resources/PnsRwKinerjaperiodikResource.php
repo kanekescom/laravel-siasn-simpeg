@@ -7,6 +7,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Kanekescom\Siasn\Simpeg\Filament\Resources\PegawaiResource\RelationManagers\KinerjaperiodiksRelationManager;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PnsRwKinerjaperiodikResource\Pages;
 use Kanekescom\Siasn\Simpeg\Models\PnsRwKinerjaperiodik;
 
@@ -95,11 +96,13 @@ class PnsRwKinerjaperiodikResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('pegawai.nip_baru')
+                    ->hiddenOn(KinerjaperiodiksRelationManager::class)
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->label('NIP'),
                 Tables\Columns\TextColumn::make('pegawai.nama')
+                    ->hiddenOn(KinerjaperiodiksRelationManager::class)
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)

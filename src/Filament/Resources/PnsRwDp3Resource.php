@@ -7,6 +7,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Kanekescom\Siasn\Simpeg\Filament\Resources\PegawaiResource\RelationManagers\Dp3sRelationManager;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PnsRwDp3Resource\Pages;
 use Kanekescom\Siasn\Simpeg\Models\PnsRwDp3;
 
@@ -103,11 +104,13 @@ class PnsRwDp3Resource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('pegawai.nip_baru')
+                    ->hiddenOn(Dp3sRelationManager::class)
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->label('NIP'),
                 Tables\Columns\TextColumn::make('pegawai.nama')
+                    ->hiddenOn(Dp3sRelationManager::class)
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)

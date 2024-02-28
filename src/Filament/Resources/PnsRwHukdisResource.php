@@ -7,6 +7,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Kanekescom\Siasn\Simpeg\Filament\Resources\PegawaiResource\RelationManagers\HukdisesRelationManager;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PnsRwHukdisResource\Pages;
 use Kanekescom\Siasn\Simpeg\Models\PnsRwHukdis;
 
@@ -81,11 +82,13 @@ class PnsRwHukdisResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('pegawai.nip_baru')
+                    ->hiddenOn(HukdisesRelationManager::class)
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->label('NIP'),
                 Tables\Columns\TextColumn::make('pegawai.nama')
+                    ->hiddenOn(HukdisesRelationManager::class)
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)

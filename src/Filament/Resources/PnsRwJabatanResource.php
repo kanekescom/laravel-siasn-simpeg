@@ -7,6 +7,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Kanekescom\Siasn\Simpeg\Filament\Resources\PegawaiResource\RelationManagers\JabatansRelationManager;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PnsRwJabatanResource\Pages;
 use Kanekescom\Siasn\Simpeg\Models\PnsRwJabatan;
 
@@ -88,12 +89,14 @@ class PnsRwJabatanResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('pegawai.nip_baru')
-                    ->copyable()
-                    ->sortable()
-                    ->searchable(isIndividual: true)
-                    ->label('NIP'),
+                // Tables\Columns\TextColumn::make('pegawai.nip_baru')
+                //     ->hiddenOn(JabatansRelationManager::class)
+                //     ->copyable()
+                //     ->sortable()
+                //     ->searchable(isIndividual: true)
+                //     ->label('NIP'),
                 Tables\Columns\TextColumn::make('pegawai.nama')
+                    ->hiddenOn(JabatansRelationManager::class)
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)

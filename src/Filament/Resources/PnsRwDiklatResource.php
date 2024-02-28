@@ -7,6 +7,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Kanekescom\Siasn\Simpeg\Filament\Resources\PegawaiResource\RelationManagers\DiklatsRelationManager;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PnsRwDiklatResource\Pages;
 use Kanekescom\Siasn\Simpeg\Models\PnsRwDiklat;
 
@@ -42,11 +43,13 @@ class PnsRwDiklatResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('pegawai.nip_baru')
+                    ->hiddenOn(DiklatsRelationManager::class)
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->label('NIP'),
                 Tables\Columns\TextColumn::make('pegawai.nama')
+                    ->hiddenOn(DiklatsRelationManager::class)
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)

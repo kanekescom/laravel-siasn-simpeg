@@ -7,6 +7,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Kanekescom\Siasn\Simpeg\Filament\Resources\PegawaiResource\RelationManagers\GolongansRelationManager;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PnsRwGolonganResource\Pages;
 use Kanekescom\Siasn\Simpeg\Models\PnsRwGolongan;
 
@@ -73,11 +74,13 @@ class PnsRwGolonganResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('pegawai.nip_baru')
+                    ->hiddenOn(GolongansRelationManager::class)
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->label('NIP'),
                 Tables\Columns\TextColumn::make('pegawai.nama')
+                    ->hiddenOn(GolongansRelationManager::class)
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)

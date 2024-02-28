@@ -7,6 +7,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Kanekescom\Siasn\Simpeg\Filament\Resources\PegawaiResource\RelationManagers\PindahinstansisRelationManager;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PnsRwPindahinstansiResource\Pages;
 use Kanekescom\Siasn\Simpeg\Models\PnsRwPindahinstansi;
 
@@ -109,11 +110,13 @@ class PnsRwPindahinstansiResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('pegawai.nip_baru')
+                    ->hiddenOn(PindahinstansisRelationManager::class)
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->label('NIP'),
                 Tables\Columns\TextColumn::make('pegawai.nama')
+                    ->hiddenOn(PindahinstansisRelationManager::class)
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
