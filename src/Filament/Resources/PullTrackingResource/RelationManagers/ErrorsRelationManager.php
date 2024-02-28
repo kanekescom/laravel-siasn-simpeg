@@ -28,6 +28,7 @@ class ErrorsRelationManager extends RelationManager
                     ->searchable(isIndividual: true)
                     ->label('NIP'),
                 Tables\Columns\TextColumn::make('done_at')
+                    ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
