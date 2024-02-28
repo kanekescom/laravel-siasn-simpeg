@@ -40,4 +40,16 @@ class Pegawai extends Model
     {
         return 'siasn_simpeg_'.str(class_basename(__CLASS__))->snake();
     }
+
+    public function scopePns($query)
+    {
+        return $query
+            ->whereNotIn('kedudukan_hukum_id', [71, 72, 73]);
+    }
+
+    public function scopePppk($query)
+    {
+        return $query
+            ->whereIn('kedudukan_hukum_id', [71, 72, 73]);
+    }
 }

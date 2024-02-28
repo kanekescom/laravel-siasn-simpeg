@@ -1,32 +1,15 @@
 <?php
 
-namespace Kanekescom\Siasn\Simpeg\Filament\Resources;
+namespace Kanekescom\Siasn\Simpeg\Filament\Traits;
 
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Kanekescom\Siasn\Simpeg\Filament\Resources\PegawaiResource\Pages;
-use Kanekescom\Siasn\Simpeg\Models\Pegawai;
 
-class PegawaiResource extends Resource
+trait HasPegawaiResource
 {
-    protected static ?string $model = Pegawai::class;
-
-    protected static ?string $slug = 'pegawai';
-
-    protected static ?string $pluralLabel = 'Pegawai';
-
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
-    protected static ?string $navigationLabel = 'Pegawai';
-
-    protected static bool $shouldRegisterNavigation = true;
-
-    protected static ?int $navigationSort = 1;
-
-    public static function form(Form $form): Form
+    public static function defaultForm(Form $form): Form
     {
         return $form
             ->schema([
@@ -169,7 +152,7 @@ class PegawaiResource extends Resource
             ]);
     }
 
-    public static function table(Table $table): Table
+    public static function defaultTable(Table $table): Table
     {
         return $table
             ->columns([
@@ -477,7 +460,7 @@ class PegawaiResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
+                    // Tables\Actions\ViewAction::make(),
                 ]),
             ])
             ->bulkActions([
@@ -485,12 +468,5 @@ class PegawaiResource extends Resource
                     //
                 ]),
             ]);
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ManagePegawais::route('/'),
-        ];
     }
 }

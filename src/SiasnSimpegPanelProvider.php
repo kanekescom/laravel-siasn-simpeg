@@ -47,6 +47,7 @@ class SiasnSimpegPanelProvider extends PanelProvider
                 //
             ])
             ->navigationGroups([
+                'Pegawai',
                 'PNS',
                 'Riwayat',
                 'KP',
