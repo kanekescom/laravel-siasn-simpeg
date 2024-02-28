@@ -4,7 +4,9 @@ namespace Kanekescom\Siasn\Simpeg\Filament\Resources\PegawaiResource\RelationMan
 
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Artisan;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PnsRwPendidikanResource;
 
 class PendidikansRelationManager extends RelationManager
@@ -25,6 +27,13 @@ class PendidikansRelationManager extends RelationManager
 
     public function table(Table $table): Table
     {
-        return PnsRwPendidikanResource::table($table);
+        return PnsRwPendidikanResource::table($table)
+            ->headerActions([
+                Tables\Actions\Action::make('sync')
+                    ->requiresConfirmation()
+                    ->action(function ($livewire) {
+                        Artisan::call("siasn-simpeg:pull-riwayat pns-rw-pendidikan --nipBaru={$livewire->getOwnerRecord()->nip_baru}");
+                    }),
+            ]);
     }
 }
