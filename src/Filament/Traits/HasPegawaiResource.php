@@ -417,7 +417,17 @@ trait HasPegawaiResource
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('lokasi_kerja_nama')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('unor_id')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('unor_nama')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->copyable()
                     ->sortable()
@@ -427,7 +437,17 @@ trait HasPegawaiResource
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('instansi_induk_nama')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('instansi_kerja_id')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('instansi_kerja_nama')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->copyable()
                     ->sortable()
@@ -437,7 +457,17 @@ trait HasPegawaiResource
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('satuan_kerja_induk_nama')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('satuan_kerja_kerja_id')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('satuan_kerja_kerja_nama')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->copyable()
                     ->sortable()
