@@ -58,6 +58,16 @@ class PnsRwCltnResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('pegawai.nip_baru')
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true)
+                    ->label('NIP'),
+                Tables\Columns\TextColumn::make('pegawai.nama')
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true)
+                    ->label('Nama'),
                 Tables\Columns\TextColumn::make('id')
                     ->copyable()
                     ->sortable()

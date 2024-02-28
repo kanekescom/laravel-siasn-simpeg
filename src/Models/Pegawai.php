@@ -4,6 +4,7 @@ namespace Kanekescom\Siasn\Simpeg\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Pegawai extends Model
@@ -39,6 +40,11 @@ class Pegawai extends Model
     public function getTable()
     {
         return 'siasn_simpeg_'.str(class_basename(__CLASS__))->snake();
+    }
+
+    public function kinerjas(): HasMany
+    {
+        return $this->hasMany(PnsRwSkp22::class, 'pnsDinilaiId');
     }
 
     public function scopePns($query)

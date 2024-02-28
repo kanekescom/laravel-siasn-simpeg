@@ -4,6 +4,7 @@ namespace Kanekescom\Siasn\Simpeg\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PnsRwDiklat extends Model
@@ -32,5 +33,10 @@ class PnsRwDiklat extends Model
     public function getTable()
     {
         return 'siasn_simpeg_'.str(class_basename(__CLASS__))->snake();
+    }
+
+    public function pegawai(): BelongsTo
+    {
+        return $this->belongsTo(Pegawai::class, 'idPns');
     }
 }
