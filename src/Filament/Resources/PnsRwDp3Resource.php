@@ -7,6 +7,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Artisan;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PegawaiResource\RelationManagers\Dp3sRelationManager;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PnsRwDp3Resource\Pages;
 use Kanekescom\Siasn\Simpeg\Models\PnsRwDp3;
@@ -102,6 +103,13 @@ class PnsRwDp3Resource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->headerActions([
+                Tables\Actions\Action::make('sync')
+                    ->requiresConfirmation()
+                    ->action(function () {
+                        Artisan::call('siasn-simpeg:pull-riwayat pns-rw-dp3 --track --startOver');
+                    }),
+            ])
             ->columns([
                 Tables\Columns\TextColumn::make('pegawai.nip_baru')
                     ->hiddenOn(Dp3sRelationManager::class)

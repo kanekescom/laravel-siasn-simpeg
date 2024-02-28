@@ -7,6 +7,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Artisan;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PegawaiResource\RelationManagers\SkpsRelationManager;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PnsRwSkpResource\Pages;
 use Kanekescom\Siasn\Simpeg\Models\PnsRwSkp;
@@ -111,6 +112,13 @@ class PnsRwSkpResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->headerActions([
+                Tables\Actions\Action::make('sync')
+                    ->requiresConfirmation()
+                    ->action(function () {
+                        Artisan::call('siasn-simpeg:pull-riwayat pns-rw-skp --track --startOver');
+                    }),
+            ])
             ->columns([
                 Tables\Columns\TextColumn::make('pegawai.nip_baru')
                     ->hiddenOn(SkpsRelationManager::class)
