@@ -6,6 +6,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Kanekescom\Siasn\Simpeg\Filament\Resources\PegawaiResource\RelationManagers;
 
 trait HasPegawaiResource
 {
@@ -498,5 +499,29 @@ trait HasPegawaiResource
                     //
                 ]),
             ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            RelationManagers\AngkakreditsRelationManager::class,
+            RelationManagers\CltnsRelationManager::class,
+            RelationManagers\DiklatsRelationManager::class,
+            RelationManagers\Dp3sRelationManager::class,
+            RelationManagers\GolongansRelationManager::class,
+            RelationManagers\HukdisesRelationManager::class,
+            RelationManagers\JabatansRelationManager::class,
+            RelationManagers\KinerjaperiodiksRelationManager::class,
+            RelationManagers\KursusesRelationManager::class,
+            RelationManagers\MasakerjasRelationManager::class,
+            RelationManagers\PemberhentiansRelationManager::class,
+            RelationManagers\PendidikansRelationManager::class,
+            RelationManagers\PenghargaansRelationManager::class,
+            RelationManagers\PindahinstansisRelationManager::class,
+            RelationManagers\PnsunorsRelationManager::class,
+            RelationManagers\PwksRelationManager::class,
+            RelationManagers\SkpsRelationManager::class,
+            RelationManagers\Skp22sRelationManager::class,
+        ];
     }
 }
