@@ -13,6 +13,11 @@ class JabatansRelationManager extends RelationManager
 
     protected static ?string $title = 'Jabatan';
 
+    public function isReadOnly(): bool
+    {
+        return false;
+    }
+
     public function form(Form $form): Form
     {
         return PnsRwJabatanResource::form($form);

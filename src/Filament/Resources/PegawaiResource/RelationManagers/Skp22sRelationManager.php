@@ -13,6 +13,11 @@ class Skp22sRelationManager extends RelationManager
 
     protected static ?string $title = 'Kinerja';
 
+    public function isReadOnly(): bool
+    {
+        return false;
+    }
+
     public function form(Form $form): Form
     {
         return PnsRwSkp22Resource::form($form);

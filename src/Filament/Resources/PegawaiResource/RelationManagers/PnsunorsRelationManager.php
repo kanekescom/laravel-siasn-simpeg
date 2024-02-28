@@ -13,6 +13,11 @@ class PnsunorsRelationManager extends RelationManager
 
     protected static ?string $title = 'Unor';
 
+    public function isReadOnly(): bool
+    {
+        return false;
+    }
+
     public function form(Form $form): Form
     {
         return PnsRwPnsunorResource::form($form);

@@ -13,6 +13,11 @@ class HukdisesRelationManager extends RelationManager
 
     protected static ?string $title = 'Hukdis';
 
+    public function isReadOnly(): bool
+    {
+        return false;
+    }
+
     public function form(Form $form): Form
     {
         return PnsRwHukdisResource::form($form);

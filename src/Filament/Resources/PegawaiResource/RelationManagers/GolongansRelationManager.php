@@ -13,6 +13,11 @@ class GolongansRelationManager extends RelationManager
 
     protected static ?string $title = 'Golongan';
 
+    public function isReadOnly(): bool
+    {
+        return false;
+    }
+
     public function form(Form $form): Form
     {
         return PnsRwGolonganResource::form($form);

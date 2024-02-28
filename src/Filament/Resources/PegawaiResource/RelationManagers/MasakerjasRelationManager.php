@@ -13,6 +13,11 @@ class MasakerjasRelationManager extends RelationManager
 
     protected static ?string $title = 'Masa Kerja';
 
+    public function isReadOnly(): bool
+    {
+        return false;
+    }
+
     public function form(Form $form): Form
     {
         return PnsRwMasakerjaResource::form($form);

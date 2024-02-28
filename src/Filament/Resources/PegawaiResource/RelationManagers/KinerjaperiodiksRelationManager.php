@@ -13,6 +13,11 @@ class KinerjaperiodiksRelationManager extends RelationManager
 
     protected static ?string $title = 'Kinerja Periodik';
 
+    public function isReadOnly(): bool
+    {
+        return false;
+    }
+
     public function form(Form $form): Form
     {
         return PnsRwKinerjaperiodikResource::form($form);

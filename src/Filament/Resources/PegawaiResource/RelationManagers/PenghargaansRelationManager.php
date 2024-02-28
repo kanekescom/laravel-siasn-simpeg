@@ -13,6 +13,11 @@ class PenghargaansRelationManager extends RelationManager
 
     protected static ?string $title = 'Penghargaan';
 
+    public function isReadOnly(): bool
+    {
+        return false;
+    }
+
     public function form(Form $form): Form
     {
         return PnsRwPenghargaanResource::form($form);

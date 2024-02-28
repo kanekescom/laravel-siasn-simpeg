@@ -13,6 +13,11 @@ class SkpsRelationManager extends RelationManager
 
     protected static ?string $title = 'SKP';
 
+    public function isReadOnly(): bool
+    {
+        return false;
+    }
+
     public function form(Form $form): Form
     {
         return PnsRwSkpResource::form($form);

@@ -13,6 +13,11 @@ class PemberhentiansRelationManager extends RelationManager
 
     protected static ?string $title = 'Pemberhentian';
 
+    public function isReadOnly(): bool
+    {
+        return false;
+    }
+
     public function form(Form $form): Form
     {
         return PnsRwPemberhentianResource::form($form);

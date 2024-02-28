@@ -13,6 +13,11 @@ class PendidikansRelationManager extends RelationManager
 
     protected static ?string $title = 'Pendidikan';
 
+    public function isReadOnly(): bool
+    {
+        return false;
+    }
+
     public function form(Form $form): Form
     {
         return PnsRwPendidikanResource::form($form);

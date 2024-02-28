@@ -13,6 +13,11 @@ class Dp3sRelationManager extends RelationManager
 
     protected static ?string $title = 'DP3';
 
+    public function isReadOnly(): bool
+    {
+        return false;
+    }
+
     public function form(Form $form): Form
     {
         return PnsRwDp3Resource::form($form);

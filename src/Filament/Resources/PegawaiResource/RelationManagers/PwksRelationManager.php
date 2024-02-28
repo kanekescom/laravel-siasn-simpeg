@@ -13,6 +13,11 @@ class PwksRelationManager extends RelationManager
 
     protected static ?string $title = 'PWK';
 
+    public function isReadOnly(): bool
+    {
+        return false;
+    }
+
     public function form(Form $form): Form
     {
         return PnsRwPwkResource::form($form);
