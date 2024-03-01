@@ -8,9 +8,16 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Artisan;
+use Kanekescom\Siasn\Referensi\Enums\JenisJabatanEnum;
+use Kanekescom\Siasn\Referensi\Models\Eselon;
+use Kanekescom\Siasn\Referensi\Models\JabatanFungsional;
+use Kanekescom\Siasn\Referensi\Models\JabatanFungsionalUmum;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PegawaiResource\RelationManagers\JabatansRelationManager;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PnsRwJabatanResource\Pages;
 use Kanekescom\Siasn\Simpeg\Models\PnsRwJabatan;
+use Kanekescom\Siasn\Simpeg\Models\ReferensiRefUnor;
+use Kanekescom\Siasn\Simpeg\Services\PostJabatanSaveService;
+use Spatie\LaravelOptions\Options;
 
 class PnsRwJabatanResource extends Resource
 {
@@ -33,56 +40,145 @@ class PnsRwJabatanResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('id')
+                    ->visibleOn('view')
                     ->maxLength(42),
                 Forms\Components\TextInput::make('idPns')
+                    ->visibleOn('view')
                     ->maxLength(42),
                 Forms\Components\TextInput::make('nipBaru')
+                    ->visibleOn('view')
                     ->maxLength(18),
                 Forms\Components\TextInput::make('nipLama')
+                    ->visibleOn('view')
                     ->maxLength(9),
                 Forms\Components\TextInput::make('jenisJabatan')
+                    ->visibleOn('view')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('instansiKerjaId')
+                    ->visibleOn('view')
                     ->maxLength(42),
                 Forms\Components\TextInput::make('instansiKerjaNama')
+                    ->visibleOn('view')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('satuanKerjaId')
+                    ->visibleOn('view')
                     ->maxLength(42),
                 Forms\Components\TextInput::make('satuanKerjaNama')
+                    ->visibleOn('view')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('unorId')
+                    ->visibleOn('view')
                     ->maxLength(42),
                 Forms\Components\TextInput::make('unorNama')
+                    ->visibleOn('view')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('unorIndukId')
+                    ->visibleOn('view')
                     ->maxLength(42),
                 Forms\Components\TextInput::make('unorIndukNama')
+                    ->visibleOn('view')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('eselon')
+                    ->visibleOn('view')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('eselonId')
+                    ->visibleOn('view')
                     ->maxLength(42),
                 Forms\Components\TextInput::make('jabatanFungsionalId')
+                    ->visibleOn('view')
                     ->maxLength(42),
                 Forms\Components\TextInput::make('jabatanFungsionalNama')
+                    ->visibleOn('view')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('jabatanFungsionalUmumId')
+                    ->visibleOn('view')
                     ->maxLength(42),
                 Forms\Components\TextInput::make('jabatanFungsionalUmumNama')
+                    ->visibleOn('view')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('tmtJabatan')
+                    ->visibleOn('view')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('nomorSk')
+                    ->visibleOn('view')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('tanggalSk')
+                    ->visibleOn('view')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('namaUnor')
+                    ->visibleOn('view')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('namaJabatan')
+                    ->visibleOn('view')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('tmtPelantikan')
+                    ->visibleOn('view')
                     ->maxLength(255),
-                Forms\Components\TextInput::make('path'),
+                Forms\Components\TextInput::make('path')
+                    ->visibleOn('view'),
+
+                Forms\Components\Select::make('jenisJabatan')
+                    ->live()
+                    ->options(JenisJabatanEnum::class)
+                    ->in(
+                        collect(Options::forEnum(JenisJabatanEnum::class)->toArray())
+                            ->pluck('value')
+                    )
+                    ->searchable()
+                    ->preload()
+                    ->required()
+                    ->hiddenOn('view'),
+                Forms\Components\Select::make('eselonId')
+                    ->visible(fn ($get) => in_array($get('jenisJabatan'), [(JenisJabatanEnum::JABATANSTRUKTURAL)->value]))
+                    ->relationship('eselon', 'nama')
+                    ->exists(table: Eselon::class, column: 'id')
+                    ->searchable()
+                    ->preload()
+                    ->required()
+                    ->hiddenOn('view'),
+                Forms\Components\Select::make('jabatanFungsionalId')
+                    ->columnSpanFull()
+                    ->visible(fn ($get) => in_array($get('jenisJabatan'), [(JenisJabatanEnum::JABATANFUNGSIONAL)->value]))
+                    ->relationship('jabatanFungsional', 'nama')
+                    ->exists(table: JabatanFungsional::class, column: 'id')
+                    ->searchable()
+                    ->preload()
+                    ->required()
+                    ->hiddenOn('view'),
+                Forms\Components\Select::make('jabatanFungsionalUmumId')
+                    ->columnSpanFull()
+                    ->visible(fn ($get) => in_array($get('jenisJabatan'), [(JenisJabatanEnum::JABATANPELAKSANA)->value]))
+                    ->relationship('jabatanFungsionalUmum', 'nama')
+                    ->exists(table: JabatanFungsionalUmum::class, column: 'id')
+                    ->searchable()
+                    ->preload()
+                    ->required()
+                    ->hiddenOn('view'),
+                Forms\Components\Select::make('unorId')
+                    ->columnSpanFull()
+                    ->relationship('unor', 'NamaUnor')
+                    ->exists(table: ReferensiRefUnor::class, column: 'id')
+                    ->searchable()
+                    ->preload()
+                    ->required()
+                    ->hiddenOn('view'),
+                Forms\Components\TextInput::make('nomorSk')
+                    ->required()
+                    ->hiddenOn('view'),
+                Forms\Components\DatePicker::make('tmtJabatan')
+                    ->format('d-m-Y')
+                    ->date()
+                    ->required()
+                    ->hiddenOn('view'),
+                Forms\Components\DatePicker::make('tanggalSk')
+                    ->format('d-m-Y')
+                    ->date()
+                    ->required()
+                    ->hiddenOn('view'),
+                Forms\Components\DatePicker::make('tmtPelantikan')
+                    ->format('d-m-Y')
+                    ->date()
+                    ->hiddenOn('view'),
             ]);
     }
 
@@ -110,6 +206,7 @@ class PnsRwJabatanResource extends Resource
                     ->searchable(isIndividual: true)
                     ->label('Nama'),
                 Tables\Columns\TextColumn::make('id')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
@@ -266,6 +363,13 @@ class PnsRwJabatanResource extends Resource
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
+                    Tables\Actions\EditAction::make()
+                        ->action(function ($data, $record, $livewire) {
+                            (new PostJabatanSaveService($data, $record, $livewire->getOwnerRecord()->nip_baru))
+                                ->withNotification()
+                                ->withRefresh()
+                                ->send();
+                        }),
                 ]),
             ])
             ->bulkActions([

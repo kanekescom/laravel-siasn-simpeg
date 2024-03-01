@@ -34,6 +34,6 @@ class JabatansRelationManager extends RelationManager
                     ->action(function ($livewire) {
                         Artisan::call("siasn-simpeg:pull-riwayat pns-rw-jabatan --nipBaru={$livewire->getOwnerRecord()->nip_baru}");
                     }),
-            ]);
+            ])->defaultPaginationPageOption(5);
     }
 }

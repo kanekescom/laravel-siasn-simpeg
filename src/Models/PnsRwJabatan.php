@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Kanekescom\Siasn\Referensi\Enums\JenisJabatanEnum;
+use Kanekescom\Siasn\Referensi\Models\Eselon;
+use Kanekescom\Siasn\Referensi\Models\JabatanFungsional;
+use Kanekescom\Siasn\Referensi\Models\JabatanFungsionalUmum;
 
 class PnsRwJabatan extends Model
 {
@@ -27,6 +31,7 @@ class PnsRwJabatan extends Model
     protected $guarded = [];
 
     protected $casts = [
+        'jenisJabatan' => JenisJabatanEnum::class,
         'path' => 'array',
     ];
 
@@ -38,5 +43,25 @@ class PnsRwJabatan extends Model
     public function pegawai(): BelongsTo
     {
         return $this->belongsTo(Pegawai::class, 'idPns');
+    }
+
+    public function eselon(): BelongsTo
+    {
+        return $this->belongsTo(Eselon::class, 'eselonId');
+    }
+
+    public function jabatanFungsional(): BelongsTo
+    {
+        return $this->belongsTo(JabatanFungsional::class, 'jabatanFungsionalId');
+    }
+
+    public function jabatanFungsionalUmum(): BelongsTo
+    {
+        return $this->belongsTo(JabatanFungsionalUmum::class, 'jabatanFungsionalUmumId');
+    }
+
+    public function unor(): BelongsTo
+    {
+        return $this->belongsTo(ReferensiRefUnor::class, 'unorId');
     }
 }
