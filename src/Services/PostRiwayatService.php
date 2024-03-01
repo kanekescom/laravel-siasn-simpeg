@@ -23,20 +23,6 @@ class PostRiwayatService
 
     protected $refresh = false;
 
-    public function withNotification(bool $notification = true)
-    {
-        $this->notification = $notification;
-
-        return $this;
-    }
-
-    public function withRefresh(bool $refresh = true)
-    {
-        $this->refresh = $refresh;
-
-        return $this;
-    }
-
     public function send()
     {
         $query = collect($this->record->toArray())
@@ -47,8 +33,25 @@ class PostRiwayatService
 
         $this->response = Simpeg::postJabatanSave($query);
 
-        $this->handleNotification();
+        if ($this->notification) {
+            $this->handleNotification();
+        }
+
         $this->pullRiwayat();
+
+        return $this;
+    }
+
+    public function withNotification(bool $notification = true)
+    {
+        $this->notification = $notification;
+
+        return $this;
+    }
+
+    public function withRefresh(bool $refresh = true)
+    {
+        $this->refresh = $refresh;
 
         return $this;
     }
@@ -70,6 +73,8 @@ class PostRiwayatService
 
     protected function pullRiwayat()
     {
-        PullRiwayatService::jabatan($this->nipBaru);
+        PullRiwayatService::make()
+            ->jabatan($this->nipBaru)
+            ->withNotification();
     }
 }

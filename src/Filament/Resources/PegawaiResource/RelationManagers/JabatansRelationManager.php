@@ -6,8 +6,8 @@ use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Support\Facades\Artisan;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PnsRwJabatanResource;
+use Kanekescom\Siasn\Simpeg\Services\PullRiwayatService;
 
 class JabatansRelationManager extends RelationManager
 {
@@ -32,7 +32,9 @@ class JabatansRelationManager extends RelationManager
                 Tables\Actions\Action::make('sync')
                     ->requiresConfirmation()
                     ->action(function ($livewire) {
-                        Artisan::call("siasn-simpeg:pull-riwayat pns-rw-jabatan --nipBaru={$livewire->getOwnerRecord()->nip_baru}");
+                        PullRiwayatService::make()
+                            ->jabatan($livewire->getOwnerRecord()->nip_baru)
+                            ->withNotification();
                     }),
             ])->defaultPaginationPageOption(5);
     }
