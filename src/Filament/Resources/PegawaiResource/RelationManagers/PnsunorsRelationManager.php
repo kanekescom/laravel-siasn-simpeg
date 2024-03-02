@@ -6,8 +6,8 @@ use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Support\Facades\Artisan;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PnsRwPnsunorResource;
+use Kanekescom\Siasn\Simpeg\Services\PullRiwayatService;
 
 class PnsunorsRelationManager extends RelationManager
 {
@@ -32,7 +32,9 @@ class PnsunorsRelationManager extends RelationManager
                 Tables\Actions\Action::make('sync')
                     ->requiresConfirmation()
                     ->action(function ($livewire) {
-                        Artisan::call("siasn-simpeg:pull-riwayat pns-rw-pnsunor --nipBaru={$livewire->getOwnerRecord()->nip_baru}");
+                        PullRiwayatService::find($livewire->getOwnerRecord()->nip_baru)
+                            ->pnsunor()
+                            ->withNotification();
                     }),
             ]);
     }

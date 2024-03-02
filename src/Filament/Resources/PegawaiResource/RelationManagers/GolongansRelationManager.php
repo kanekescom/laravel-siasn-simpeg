@@ -6,8 +6,8 @@ use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Support\Facades\Artisan;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PnsRwGolonganResource;
+use Kanekescom\Siasn\Simpeg\Services\PullRiwayatService;
 
 class GolongansRelationManager extends RelationManager
 {
@@ -32,7 +32,9 @@ class GolongansRelationManager extends RelationManager
                 Tables\Actions\Action::make('sync')
                     ->requiresConfirmation()
                     ->action(function ($livewire) {
-                        Artisan::call("siasn-simpeg:pull-riwayat pns-rw-golongan --nipBaru={$livewire->getOwnerRecord()->nip_baru}");
+                        PullRiwayatService::find($livewire->getOwnerRecord()->nip_baru)
+                            ->golongan()
+                            ->withNotification();
                     }),
             ]);
     }

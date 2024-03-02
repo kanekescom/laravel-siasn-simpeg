@@ -32,8 +32,8 @@ class JabatansRelationManager extends RelationManager
                 Tables\Actions\Action::make('sync')
                     ->requiresConfirmation()
                     ->action(function ($livewire) {
-                        PullRiwayatService::make()
-                            ->jabatan($livewire->getOwnerRecord()->nip_baru)
+                        PullRiwayatService::find($livewire->getOwnerRecord()->nip_baru)
+                            ->jabatan()
                             ->withNotification();
                     }),
             ])->defaultPaginationPageOption(5);

@@ -58,23 +58,20 @@ class PostRiwayatService
 
     protected function handleNotification()
     {
-        if ($this->response->object()->success) {
-            Notification::make()
-                ->title('Saved successfully')
-                ->success()
-                ->send();
-        } else {
-            Notification::make()
-                ->title('Something went wrong')
-                ->danger()
-                ->send();
-        }
+        $status = $this->response->object()->success;
+
+        Notification::make()
+            ->title($status ? 'Saved successfully' : 'Something went wrong')
+            ->status($status ? 'success' : 'danger')
+            ->send();
+
+        return $this;
     }
 
     protected function pullRiwayat()
     {
-        PullRiwayatService::make()
-            ->jabatan($this->nipBaru)
+        PullRiwayatService::find($this->nipBaru)
+            ->jabatan()
             ->withNotification();
     }
 }

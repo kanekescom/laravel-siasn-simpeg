@@ -6,8 +6,8 @@ use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Support\Facades\Artisan;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PnsRwDp3Resource;
+use Kanekescom\Siasn\Simpeg\Services\PullRiwayatService;
 
 class Dp3sRelationManager extends RelationManager
 {
@@ -32,7 +32,9 @@ class Dp3sRelationManager extends RelationManager
                 Tables\Actions\Action::make('sync')
                     ->requiresConfirmation()
                     ->action(function ($livewire) {
-                        Artisan::call("siasn-simpeg:pull-riwayat pns-rw-dp3 --nipBaru={$livewire->getOwnerRecord()->nip_baru}");
+                        PullRiwayatService::find($livewire->getOwnerRecord()->nip_baru)
+                            ->dp3()
+                            ->withNotification();
                     }),
             ]);
     }

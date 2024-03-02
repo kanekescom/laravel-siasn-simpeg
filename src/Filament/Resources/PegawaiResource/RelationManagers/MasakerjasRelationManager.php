@@ -6,8 +6,8 @@ use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Support\Facades\Artisan;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PnsRwMasakerjaResource;
+use Kanekescom\Siasn\Simpeg\Services\PullRiwayatService;
 
 class MasakerjasRelationManager extends RelationManager
 {
@@ -32,7 +32,9 @@ class MasakerjasRelationManager extends RelationManager
                 Tables\Actions\Action::make('sync')
                     ->requiresConfirmation()
                     ->action(function ($livewire) {
-                        Artisan::call("siasn-simpeg:pull-riwayat pns-rw-masakerja --nipBaru={$livewire->getOwnerRecord()->nip_baru}");
+                        PullRiwayatService::find($livewire->getOwnerRecord()->nip_baru)
+                            ->masakerja()
+                            ->withNotification();
                     }),
             ]);
     }
