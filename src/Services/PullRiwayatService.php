@@ -2,7 +2,6 @@
 
 namespace Kanekescom\Siasn\Simpeg\Services;
 
-use Filament\Notifications\Notification;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Kanekescom\Siasn\Simpeg\Facades\Simpeg;
@@ -11,8 +10,6 @@ use Kanekescom\Siasn\Simpeg\Models;
 class PullRiwayatService
 {
     protected $nipBaru;
-
-    protected $pulled = [];
 
     protected $pegawai;
 
@@ -30,8 +27,6 @@ class PullRiwayatService
         $response = Simpeg::getPnsRwAngkakredit($this->nipBaru);
 
         $this->upsert($response, Models\PnsRwAngkakredit::class, 'pns');
-
-        return $this;
     }
 
     public function cltn()
@@ -187,16 +182,6 @@ class PullRiwayatService
         return $this;
     }
 
-    public function withNotification()
-    {
-        $status = collect($this->pulled)->every(fn ($value) => $value === true);
-
-        Notification::make()
-            ->title($status ? 'Pulled successfully' : 'Something went wrong')
-            ->status($status ? 'success' : 'danger')
-            ->send();
-    }
-
     protected function upsert($response, $model, $pnsId)
     {
         if ($response->count()) {
@@ -224,8 +209,6 @@ class PullRiwayatService
                         ->whereIn('id', $item->pluck('id'))
                         ->restore();
                 });
-
-                $this->pulled[] = true;
             });
         }
     }
