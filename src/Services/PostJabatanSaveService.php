@@ -3,14 +3,9 @@
 namespace Kanekescom\Siasn\Simpeg\Services;
 
 use Kanekescom\Siasn\Referensi\Models\Eselon;
-use Kanekescom\Siasn\Simpeg\Models\PnsRwJabatan;
 
-class PostJabatanSaveService extends PostRiwayatService
+class PostJabatanSaveService extends PostRiwayatBase
 {
-    protected $data;
-
-    protected $record;
-
     protected $only = [
         'eselonId',
         'id',
@@ -28,22 +23,17 @@ class PostJabatanSaveService extends PostRiwayatService
         'unorId',
     ];
 
-    protected $response;
+    protected $pushMethod = 'postJabatanSave';
 
-    protected $nipBaru;
+    protected $pullMethod = 'jabatan';
 
-    protected $riwayat = 'pns-rw-jabatan';
-
-    public function __construct(array $data, PnsRwJabatan $record, $nipBaru = null)
+    protected function transform(array $data = [])
     {
-        $data['instansiId'] = config('siasn-api.const.instansi_id');
-        $data['satuanKerjaId'] = config('siasn-api.const.satuan_kerja_id');
-        $data['pnsId'] = $record->idPns;
-        $data['eselonId'] = Eselon::find($record->eselonId)?->id;
-        $record->path = array_values($record->path);
-
-        $this->data = $data;
-        $this->record = $record;
-        $this->nipBaru = $nipBaru;
+        return [
+            'instansiId' => config('siasn-api.const.instansi_id'),
+            'satuanKerjaId' => config('siasn-api.const.satuan_kerja_id'),
+            'pnsId' => $this->record->idPns,
+            'eselonId' => Eselon::find($this->record->eselonId)?->id,
+        ];
     }
 }

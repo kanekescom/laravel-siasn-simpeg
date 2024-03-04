@@ -31,25 +31,35 @@ class ReferensiRefUnorResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('id')
-                    ->maxLength(42),
+                    ->maxLength(42)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('InstansiId')
-                    ->maxLength(42),
+                    ->maxLength(42)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('DiatasanId')
-                    ->maxLength(42),
+                    ->maxLength(42)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('EselonId')
-                    ->maxLength(42),
+                    ->maxLength(42)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('NamaUnor')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('NamaJabatan')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('CepatKode')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('IndukUnorId')
-                    ->maxLength(42),
+                    ->maxLength(42)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('PemimpinPnsId')
-                    ->maxLength(42),
+                    ->maxLength(42)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('JenisUnorId')
-                    ->maxLength(42),
+                    ->maxLength(42)
+                    ->visibleOn('view'),
             ]);
     }
 

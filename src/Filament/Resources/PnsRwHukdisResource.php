@@ -4,13 +4,16 @@ namespace Kanekescom\Siasn\Simpeg\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PegawaiResource\RelationManagers\HukdisesRelationManager;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PnsRwHukdisResource\Pages;
 use Kanekescom\Siasn\Simpeg\Models\PnsRwHukdis;
+use Kanekescom\Siasn\Simpeg\Services\PostHukdisSaveService;
 
 class PnsRwHukdisResource extends Resource
 {
@@ -33,46 +36,67 @@ class PnsRwHukdisResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('id')
-                    ->maxLength(42),
+                    ->maxLength(42)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('rwHukumanDisiplin')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('golongan')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('kedudukanHukum')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('jenisHukuman')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('pnsOrang')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('skNomor')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('skTanggal')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('hukumanTanggal')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('masaTahun')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('masaBulan')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('akhirHukumTanggal')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('nomorPp')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('golonganLama')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('skPembatalanNomor')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('skPembatalanTanggal')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('alasanHukumanDisiplin')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('alasanHukumanDisiplinNama')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('jenisHukumanNama')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('path'),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
+                Forms\Components\TextInput::make('path')
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('keterangan')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('jenisTingkatHukumanId')
                     ->maxLength(42),
             ]);
@@ -127,6 +151,7 @@ class PnsRwHukdisResource extends Resource
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('pnsOrang')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
@@ -225,6 +250,27 @@ class PnsRwHukdisResource extends Resource
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
+                    Tables\Actions\EditAction::make()
+                        ->action(function ($data, $record, $livewire) {
+                            try {
+                                (new PostHukdisSaveService($data, $record))
+                                    ->send()
+                                    ->pull($livewire->getOwnerRecord()->nip_baru);
+
+                                Notification::make()
+                                    ->title('Saved successfully')
+                                    ->success()
+                                    ->send();
+                            } catch (\Throwable $e) {
+                                Notification::make()
+                                    ->title('Something went wrong')
+                                    ->danger()
+                                    ->body($e->getMessage())
+                                    ->send();
+
+                                Log::error($e->getMessage());
+                            }
+                        }),
                 ]),
             ])
             ->bulkActions([

@@ -33,36 +33,52 @@ class PnsRwPendidikanResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('id')
-                    ->maxLength(42),
+                    ->maxLength(42)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('idPns')
-                    ->maxLength(42),
+                    ->maxLength(42)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('nipBaru')
-                    ->maxLength(18),
+                    ->maxLength(18)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('nipLama')
-                    ->maxLength(9),
+                    ->maxLength(9)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('pendidikanId')
-                    ->maxLength(42),
+                    ->maxLength(42)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('pendidikanNama')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('tkPendidikanId')
-                    ->maxLength(42),
+                    ->maxLength(42)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('tkPendidikanNama')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('tahunLulus')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('tglLulus')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('isPendidikanPertama')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('nomorIjasah')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('namaSekolah')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('gelarDepan')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('gelarBelakang')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('path'),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
+                Forms\Components\TextInput::make('path')
+                    ->visibleOn('view'),
             ]);
     }
 
@@ -77,12 +93,12 @@ class PnsRwPendidikanResource extends Resource
                     }),
             ])
             ->columns([
-                Tables\Columns\TextColumn::make('pegawai.nip_baru')
-                    ->hiddenOn(PendidikansRelationManager::class)
-                    ->copyable()
-                    ->sortable()
-                    ->searchable(isIndividual: true)
-                    ->label('NIP'),
+                // Tables\Columns\TextColumn::make('pegawai.nip_baru')
+                //     ->hiddenOn(PendidikansRelationManager::class)
+                //     ->copyable()
+                //     ->sortable()
+                //     ->searchable(isIndividual: true)
+                //     ->label('NIP'),
                 Tables\Columns\TextColumn::make('pegawai.nama')
                     ->hiddenOn(PendidikansRelationManager::class)
                     ->copyable()
@@ -90,11 +106,13 @@ class PnsRwPendidikanResource extends Resource
                     ->searchable(isIndividual: true)
                     ->label('Nama'),
                 Tables\Columns\TextColumn::make('id')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->label('ID'),
                 Tables\Columns\TextColumn::make('idPns')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
@@ -110,6 +128,7 @@ class PnsRwPendidikanResource extends Resource
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('pendidikanId')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
@@ -120,6 +139,7 @@ class PnsRwPendidikanResource extends Resource
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('tkPendidikanId')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()

@@ -4,13 +4,16 @@ namespace Kanekescom\Siasn\Simpeg\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PegawaiResource\RelationManagers\Skp22sRelationManager;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PnsRwSkp22Resource\Pages;
 use Kanekescom\Siasn\Simpeg\Models\PnsRwSkp22;
+use Kanekescom\Siasn\Simpeg\Services\PostSkp22SaveService;
 
 class PnsRwSkp22Resource extends Resource
 {
@@ -33,36 +36,52 @@ class PnsRwSkp22Resource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('id')
-                    ->maxLength(42),
+                    ->maxLength(42)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('hasilKinerja')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('hasilKinerjaNilai')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('kuadranKinerja')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('KuadranKinerjaNilai')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('namaPenilai')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('nipNrpPenilai')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('penilaiGolonganId')
-                    ->maxLength(42),
+                    ->maxLength(42)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('penilaiJabatanNm')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('penilaiUnorNm')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('perilakuKerja')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('PerilakuKerjaNilai')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('pnsDinilaiId')
-                    ->maxLength(42),
+                    ->maxLength(42)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('statusPenilai')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('tahun')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('path'),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
+                Forms\Components\TextInput::make('path')
+                    ->visibleOn('view'),
             ]);
     }
 
@@ -90,6 +109,7 @@ class PnsRwSkp22Resource extends Resource
                     ->searchable(isIndividual: true)
                     ->label('Nama'),
                 Tables\Columns\TextColumn::make('id')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
@@ -150,6 +170,7 @@ class PnsRwSkp22Resource extends Resource
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('pnsDinilaiId')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
@@ -183,6 +204,27 @@ class PnsRwSkp22Resource extends Resource
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
+                    Tables\Actions\EditAction::make()
+                        ->action(function ($data, $record, $livewire) {
+                            try {
+                                (new PostSkp22SaveService($data, $record))
+                                    ->send()
+                                    ->pull($livewire->getOwnerRecord()->nip_baru);
+
+                                Notification::make()
+                                    ->title('Saved successfully')
+                                    ->success()
+                                    ->send();
+                            } catch (\Throwable $e) {
+                                Notification::make()
+                                    ->title('Something went wrong')
+                                    ->danger()
+                                    ->body($e->getMessage())
+                                    ->send();
+
+                                Log::error($e->getMessage());
+                            }
+                        }),
                 ]),
             ])
             ->bulkActions([

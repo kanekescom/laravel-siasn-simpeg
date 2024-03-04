@@ -4,13 +4,16 @@ namespace Kanekescom\Siasn\Simpeg\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PegawaiResource\RelationManagers\KursusesRelationManager;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PnsRwKursusResource\Pages;
 use Kanekescom\Siasn\Simpeg\Models\PnsRwKursus;
+use Kanekescom\Siasn\Simpeg\Services\PostKursusSaveService;
 
 class PnsRwKursusResource extends Resource
 {
@@ -33,36 +36,52 @@ class PnsRwKursusResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('id')
-                    ->maxLength(42),
+                    ->maxLength(42)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('idPns')
-                    ->maxLength(42),
+                    ->maxLength(42)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('nipBaru')
-                    ->maxLength(18),
+                    ->maxLength(18)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('nipLama')
-                    ->maxLength(9),
+                    ->maxLength(9)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('jenisKursusNama')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('jenisKursusSertifikat')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('institusiPenyelenggara')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('jenisKursusId')
-                    ->maxLength(42),
+                    ->maxLength(42)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('jumlahJam')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('namaKursus')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('noSertipikat')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('tahunKursus')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('tanggalKursus')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('path'),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
+                Forms\Components\TextInput::make('path')
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('jenisDiklatId')
-                    ->maxLength(42),
+                    ->maxLength(42)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('tanggalSelesaiKursus')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
             ]);
     }
 
@@ -77,12 +96,12 @@ class PnsRwKursusResource extends Resource
                     }),
             ])
             ->columns([
-                Tables\Columns\TextColumn::make('pegawai.nip_baru')
-                    ->hiddenOn(KursusesRelationManager::class)
-                    ->copyable()
-                    ->sortable()
-                    ->searchable(isIndividual: true)
-                    ->label('NIP'),
+                // Tables\Columns\TextColumn::make('pegawai.nip_baru')
+                //     ->hiddenOn(KursusesRelationManager::class)
+                //     ->copyable()
+                //     ->sortable()
+                //     ->searchable(isIndividual: true)
+                //     ->label('NIP'),
                 Tables\Columns\TextColumn::make('pegawai.nama')
                     ->hiddenOn(KursusesRelationManager::class)
                     ->copyable()
@@ -90,6 +109,7 @@ class PnsRwKursusResource extends Resource
                     ->searchable(isIndividual: true)
                     ->label('Nama'),
                 Tables\Columns\TextColumn::make('id')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
@@ -105,6 +125,7 @@ class PnsRwKursusResource extends Resource
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('nipLama')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
@@ -125,6 +146,7 @@ class PnsRwKursusResource extends Resource
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('jenisKursusId')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
@@ -183,6 +205,27 @@ class PnsRwKursusResource extends Resource
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
+                    Tables\Actions\EditAction::make()
+                        ->action(function ($data, $record, $livewire) {
+                            try {
+                                (new PostKursusSaveService($data, $record))
+                                    ->send()
+                                    ->pull($livewire->getOwnerRecord()->nip_baru);
+
+                                Notification::make()
+                                    ->title('Saved successfully')
+                                    ->success()
+                                    ->send();
+                            } catch (\Throwable $e) {
+                                Notification::make()
+                                    ->title('Something went wrong')
+                                    ->danger()
+                                    ->body($e->getMessage())
+                                    ->send();
+
+                                Log::error($e->getMessage());
+                            }
+                        }),
                 ]),
             ])
             ->bulkActions([

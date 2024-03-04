@@ -4,13 +4,16 @@ namespace Kanekescom\Siasn\Simpeg\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PegawaiResource\RelationManagers\DiklatsRelationManager;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PnsRwDiklatResource\Pages;
 use Kanekescom\Siasn\Simpeg\Models\PnsRwDiklat;
+use Kanekescom\Siasn\Simpeg\Services\PostDiklatSaveService;
 
 class PnsRwDiklatResource extends Resource
 {
@@ -33,9 +36,11 @@ class PnsRwDiklatResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('id')
-                    ->maxLength(42),
+                    ->maxLength(42)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('jenis_diklat')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
             ]);
     }
 
@@ -79,6 +84,27 @@ class PnsRwDiklatResource extends Resource
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
+                    Tables\Actions\EditAction::make()
+                        ->action(function ($data, $record, $livewire) {
+                            try {
+                                (new PostDiklatSaveService($data, $record))
+                                    ->send()
+                                    ->pull($livewire->getOwnerRecord()->nip_baru);
+
+                                Notification::make()
+                                    ->title('Saved successfully')
+                                    ->success()
+                                    ->send();
+                            } catch (\Throwable $e) {
+                                Notification::make()
+                                    ->title('Something went wrong')
+                                    ->danger()
+                                    ->body($e->getMessage())
+                                    ->send();
+
+                                Log::error($e->getMessage());
+                            }
+                        }),
                 ]),
             ])
             ->bulkActions([

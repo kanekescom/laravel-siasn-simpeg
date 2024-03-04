@@ -33,40 +33,61 @@ class PnsRwGolonganResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('id')
-                    ->maxLength(42),
+                    ->maxLength(42)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('idPns')
-                    ->maxLength(42),
+                    ->maxLength(42)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('nipBaru')
-                    ->maxLength(18),
+                    ->maxLength(18)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('nipLama')
-                    ->maxLength(9),
+                    ->maxLength(9)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('golonganId')
-                    ->maxLength(42),
+                    ->maxLength(42)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('golongan')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('skNomor')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('skTanggal')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('tmtGolongan')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('noPertekBkn')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('tglPertekBkn')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('jumlahKreditUtama')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('jumlahKreditTambahan')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('jenisKPId')
-                    ->maxLength(42),
+                    ->maxLength(42)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('jenisKPNama')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('masaKerjaGolonganTahun')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('masaKerjaGolonganBulan')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('path'),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
+                Forms\Components\TextInput::make('path')
+                    ->visibleOn('view'),
+                Forms\Components\TextInput::make('pangkat')
+                    ->maxLength(255)
+                    ->visibleOn('view'),
             ]);
     }
 
@@ -81,12 +102,12 @@ class PnsRwGolonganResource extends Resource
                     }),
             ])
             ->columns([
-                Tables\Columns\TextColumn::make('pegawai.nip_baru')
-                    ->hiddenOn(GolongansRelationManager::class)
-                    ->copyable()
-                    ->sortable()
-                    ->searchable(isIndividual: true)
-                    ->label('NIP'),
+                // Tables\Columns\TextColumn::make('pegawai.nip_baru')
+                //     ->hiddenOn(GolongansRelationManager::class)
+                //     ->copyable()
+                //     ->sortable()
+                //     ->searchable(isIndividual: true)
+                //     ->label('NIP'),
                 Tables\Columns\TextColumn::make('pegawai.nama')
                     ->hiddenOn(GolongansRelationManager::class)
                     ->copyable()
@@ -94,11 +115,13 @@ class PnsRwGolonganResource extends Resource
                     ->searchable(isIndividual: true)
                     ->label('Nama'),
                 Tables\Columns\TextColumn::make('id')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->label('ID'),
                 Tables\Columns\TextColumn::make('idPns')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
@@ -109,11 +132,13 @@ class PnsRwGolonganResource extends Resource
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('nipLama')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('golonganId')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
@@ -159,6 +184,7 @@ class PnsRwGolonganResource extends Resource
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('jenisKPId')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
@@ -174,6 +200,11 @@ class PnsRwGolonganResource extends Resource
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('masaKerjaGolonganBulan')
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('pangkat')
                     ->wrap()
                     ->copyable()
                     ->sortable()

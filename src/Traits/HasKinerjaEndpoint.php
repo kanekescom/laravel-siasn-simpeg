@@ -3,23 +3,20 @@
 namespace Kanekescom\Siasn\Simpeg\Traits;
 
 use Illuminate\Http\Client\Response;
-use Kanekescom\Siasn\Simpeg\Helpers\UrlParser;
 
 trait HasKinerjaEndpoint
 {
-    public function deleteKinerjaperiodikDelete(array $paths = [], array $query = []): Response
+    public function deleteKinerjaperiodikDelete($idRiwayatKinerjaPeriodik): Response
     {
-        $urlFormat = '/kinerjaperiodik/delete/{idRiwayatKinerjaPeriodik}';
-        $urlParsed = (new UrlParser($urlFormat))->parse($paths);
+        $paths = [
+            'idRiwayatKinerjaPeriodik' => $idRiwayatKinerjaPeriodik,
+        ];
 
-        return $this->delete($urlParsed, $query);
+        return $this->simpeg::{__FUNCTION__}($paths);
     }
 
-    public function postKinerjaperiodikSave(array $paths = [], array $query = []): Response
+    public function postKinerjaperiodikSave(array $query = []): Response
     {
-        $urlFormat = '/kinerjaperiodik/save';
-        $urlParsed = (new UrlParser($urlFormat))->parse($paths);
-
-        return $this->post($urlParsed, $query);
+        return $this->simpeg::{__FUNCTION__}([], $query);
     }
 }

@@ -33,34 +33,49 @@ class PnsRwMasakerjaResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('id')
-                    ->maxLength(42),
+                    ->maxLength(42)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('idPns')
-                    ->maxLength(42),
+                    ->maxLength(42)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('nipBaru')
-                    ->maxLength(18),
+                    ->maxLength(18)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('nipLama')
-                    ->maxLength(9),
+                    ->maxLength(9)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('pengalaman')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('tanggalAwal')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('tanggalSelesai')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('nomorSk')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('tanggalSk')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('nomorBkn')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('tanggalBkn')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('tasaKerjaTahun')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('masaKerjaBulan')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('dinilai')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('path'),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
+                Forms\Components\TextInput::make('path')
+                    ->visibleOn('view'),
             ]);
     }
 
@@ -75,12 +90,12 @@ class PnsRwMasakerjaResource extends Resource
                     }),
             ])
             ->columns([
-                Tables\Columns\TextColumn::make('pegawai.nip_baru')
-                    ->hiddenOn(MasakerjasRelationManager::class)
-                    ->copyable()
-                    ->sortable()
-                    ->searchable(isIndividual: true)
-                    ->label('NIP'),
+                // Tables\Columns\TextColumn::make('pegawai.nip_baru')
+                //     ->hiddenOn(MasakerjasRelationManager::class)
+                //     ->copyable()
+                //     ->sortable()
+                //     ->searchable(isIndividual: true)
+                //     ->label('NIP'),
                 Tables\Columns\TextColumn::make('pegawai.nama')
                     ->hiddenOn(MasakerjasRelationManager::class)
                     ->copyable()
@@ -88,11 +103,13 @@ class PnsRwMasakerjaResource extends Resource
                     ->searchable(isIndividual: true)
                     ->label('Nama'),
                 Tables\Columns\TextColumn::make('id')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->label('ID'),
                 Tables\Columns\TextColumn::make('idPns')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()

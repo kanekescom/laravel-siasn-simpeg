@@ -2,29 +2,38 @@
 
 namespace Kanekescom\Siasn\Simpeg\Traits;
 
+use Illuminate\Http\Client\Response;
+use Kanekescom\Siasn\Simpeg\Helpers\AngkakreditIdResponseTransformer;
+
 trait HasAngkaKreditEndpoint
 {
-    public function deleteAngkakreditDelete(array $paths = [], array $query = []): Response
+    public function deleteAngkakreditDelete($idRiwayatAngkaKredit): Response
     {
-        $urlFormat = '/angkakredit/delete/{idRiwayatAngkaKredit}';
-        $urlParsed = (new UrlParser($urlFormat))->parse($paths);
+        $paths = [
+            'idRiwayatAngkaKredit' => $idRiwayatAngkaKredit,
+        ];
 
-        return $this->delete($urlParsed, $query);
+        return $this->simpeg::{__FUNCTION__}($paths);
     }
 
-    public function getAngkakreditId(array $paths = [], array $query = []): Response
+    public function getAngkakreditId($idRiwayatAngkaKredit)
     {
-        $urlFormat = '/angkakredit/id/{idRiwayatAngkaKredit}';
-        $urlParsed = (new UrlParser($urlFormat))->parse($paths);
+        $paths = [
+            'idRiwayatAngkaKredit' => $idRiwayatAngkaKredit,
+        ];
 
-        return $this->get($urlParsed, $query);
+        $response = $this->simpeg::{__FUNCTION__}($paths);
+        $transformer = str(__FUNCTION__)->replaceFirst('get', '');
+        $transformerClass = "\\Kanekescom\\Siasn\\Simpeg\\Transformers\\{$transformer}Transformer";
+
+        return new AngkakreditIdResponseTransformer(
+            $response,
+            new $transformerClass
+        );
     }
 
-    public function postAngkakreditSave(array $paths = [], array $query = []): Response
+    public function postAngkakreditSave(array $query = []): Response
     {
-        $urlFormat = '/angkakredit/save';
-        $urlParsed = (new UrlParser($urlFormat))->parse($paths);
-
-        return $this->post($urlParsed, $query);
+        return $this->simpeg::{__FUNCTION__}([], $query);
     }
 }

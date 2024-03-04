@@ -3,23 +3,28 @@
 namespace Kanekescom\Siasn\Simpeg\Traits;
 
 use Illuminate\Http\Client\Response;
-use Kanekescom\Siasn\Simpeg\Helpers\UrlParser;
+use Kanekescom\Siasn\Simpeg\Helpers\HukdisIdResponseTransformer;
 
 trait HasHukdisEndpoint
 {
-    public function getHukdisId(array $paths = [], array $query = []): Response
+    public function getHukdisId($idRiwayatHukdis)
     {
-        $urlFormat = '/hukdis/id/{idRiwayatHukdis}';
-        $urlParsed = (new UrlParser($urlFormat))->parse($paths);
+        $paths = [
+            'idRiwayatHukdis' => $idRiwayatHukdis,
+        ];
 
-        return $this->get($urlParsed, $query);
+        $response = $this->simpeg::{__FUNCTION__}($paths);
+        $transformer = str(__FUNCTION__)->replaceFirst('get', '');
+        $transformerClass = "\\Kanekescom\\Siasn\\Simpeg\\Transformers\\{$transformer}Transformer";
+
+        return new HukdisIdResponseTransformer(
+            $response,
+            new $transformerClass
+        );
     }
 
-    public function postHukdisSave(array $paths = [], array $query = []): Response
+    public function postHukdisSave(array $query = []): Response
     {
-        $urlFormat = '/hukdis/save';
-        $urlParsed = (new UrlParser($urlFormat))->parse($paths);
-
-        return $this->post($urlParsed, $query);
+        return $this->simpeg::{__FUNCTION__}([], $query);
     }
 }

@@ -4,10 +4,12 @@ namespace Kanekescom\Siasn\Simpeg\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
 use Kanekescom\Siasn\Referensi\Enums\JenisJabatanEnum;
 use Kanekescom\Siasn\Referensi\Models\Eselon;
 use Kanekescom\Siasn\Referensi\Models\JabatanFungsional;
@@ -40,81 +42,83 @@ class PnsRwJabatanResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('id')
-                    ->visibleOn('view')
-                    ->maxLength(42),
+                    ->maxLength(42)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('idPns')
-                    ->visibleOn('view')
-                    ->maxLength(42),
+                    ->maxLength(42)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('nipBaru')
-                    ->visibleOn('view')
-                    ->maxLength(18),
+                    ->maxLength(18)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('nipLama')
                     ->visibleOn('view')
                     ->maxLength(9),
                 Forms\Components\TextInput::make('jenisJabatan')
-                    ->visibleOn('view')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('instansiKerjaId')
-                    ->visibleOn('view')
-                    ->maxLength(42),
+                    ->maxLength(42)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('instansiKerjaNama')
-                    ->visibleOn('view')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('satuanKerjaId')
-                    ->visibleOn('view')
-                    ->maxLength(42),
+                    ->maxLength(42)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('satuanKerjaNama')
-                    ->visibleOn('view')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('unorId')
-                    ->visibleOn('view')
-                    ->maxLength(42),
+                    ->maxLength(42)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('unorNama')
-                    ->visibleOn('view')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('unorIndukId')
-                    ->visibleOn('view')
-                    ->maxLength(42),
+                    ->maxLength(42)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('unorIndukNama')
-                    ->visibleOn('view')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('eselon')
-                    ->visibleOn('view')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('eselonId')
-                    ->visibleOn('view')
-                    ->maxLength(42),
+                    ->maxLength(42)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('jabatanFungsionalId')
-                    ->visibleOn('view')
-                    ->maxLength(42),
+                    ->maxLength(42)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('jabatanFungsionalNama')
-                    ->visibleOn('view')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('jabatanFungsionalUmumId')
-                    ->visibleOn('view')
-                    ->maxLength(42),
+                    ->maxLength(42)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('jabatanFungsionalUmumNama')
-                    ->visibleOn('view')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('tmtJabatan')
-                    ->visibleOn('view')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('nomorSk')
-                    ->visibleOn('view')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('tanggalSk')
-                    ->visibleOn('view')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('namaUnor')
-                    ->visibleOn('view')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('namaJabatan')
-                    ->visibleOn('view')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('tmtPelantikan')
-                    ->visibleOn('view')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('path')
+                    ->visibleOn('view'),
+                Forms\Components\TextInput::make('jenjang')
                     ->visibleOn('view'),
 
                 Forms\Components\Select::make('jenisJabatan')
@@ -178,6 +182,7 @@ class PnsRwJabatanResource extends Resource
                 Forms\Components\DatePicker::make('tmtPelantikan')
                     ->format('d-m-Y')
                     ->date()
+                    ->required()
                     ->hiddenOn('view'),
             ]);
     }
@@ -344,6 +349,11 @@ class PnsRwJabatanResource extends Resource
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('jenjang')
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -365,10 +375,24 @@ class PnsRwJabatanResource extends Resource
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make()
                         ->action(function ($data, $record, $livewire) {
-                            (new PostJabatanSaveService($data, $record, $livewire->getOwnerRecord()->nip_baru))
-                                ->withNotification()
-                                ->withRefresh()
-                                ->send();
+                            try {
+                                (new PostJabatanSaveService($data, $record))
+                                    ->send()
+                                    ->pull($livewire->getOwnerRecord()->nip_baru);
+
+                                Notification::make()
+                                    ->title('Saved successfully')
+                                    ->success()
+                                    ->send();
+                            } catch (\Throwable $e) {
+                                Notification::make()
+                                    ->title('Something went wrong')
+                                    ->danger()
+                                    ->body($e->getMessage())
+                                    ->send();
+
+                                Log::error($e->getMessage());
+                            }
                         }),
                 ]),
             ])

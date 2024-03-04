@@ -4,13 +4,16 @@ namespace Kanekescom\Siasn\Simpeg\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PegawaiResource\RelationManagers\AngkakreditsRelationManager;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PnsRwAngkakreditResource\Pages;
 use Kanekescom\Siasn\Simpeg\Models\PnsRwAngkakredit;
+use Kanekescom\Siasn\Simpeg\Services\PostAngkakreditSaveService;
 
 class PnsRwAngkakreditResource extends Resource
 {
@@ -33,40 +36,97 @@ class PnsRwAngkakreditResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('id')
-                    ->maxLength(42),
+                    ->maxLength(42)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('pns')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('nomorSk')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('tanggalSk')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('bulanMulaiPenailan')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('tahunMulaiPenailan')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('bulanSelesaiPenailan')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('tahunSelesaiPenailan')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('kreditUtamaBaru')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('kreditPenunjangBaru')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('kreditBaruTotal')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('rwJabatan')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('namaJabatan')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('isAngkaKreditPertama')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('isIntegrasi')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('isKonversi')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('path'),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
+                Forms\Components\TextInput::make('path')
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('Sumber')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visibleOn('view'),
+
+                Forms\Components\TextInput::make('bulanMulaiPenailan')
+                    ->required()
+                    ->hiddenOn('view'),
+                Forms\Components\TextInput::make('bulanSelesaiPenailan')
+                    ->required()
+                    ->hiddenOn('view'),
+                Forms\Components\Toggle::make('isAngkaKreditPertama')
+                    ->hiddenOn('view'),
+                Forms\Components\Toggle::make('isIntegrasi')
+                    ->hiddenOn('view'),
+                Forms\Components\Toggle::make('isKonversi')
+                    ->hiddenOn('view'),
+                Forms\Components\TextInput::make('kreditBaruTotal')
+                    ->required()
+                    ->hiddenOn('view'),
+                Forms\Components\TextInput::make('kreditPenunjangBaru')
+                    ->required()
+                    ->hiddenOn('view'),
+                Forms\Components\TextInput::make('kreditUtamaBaru')
+                    ->required()
+                    ->hiddenOn('view'),
+                Forms\Components\TextInput::make('nomorSk')
+                    ->required()
+                    ->hiddenOn('view'),
+                // Forms\Components\TextInput::make('rwJabatanId')
+                //     ->required()
+                //     ->hiddenOn('view'),
+                Forms\Components\TextInput::make('tahunMulaiPenailan')
+                    ->required()
+                    ->hiddenOn('view'),
+                Forms\Components\TextInput::make('tahunSelesaiPenailan')
+                    ->required()
+                    ->hiddenOn('view'),
+                Forms\Components\DatePicker::make('tanggalSk')
+                    ->format('d-m-Y')
+                    ->date()
+                    ->required()
+                    ->hiddenOn('view'),
             ]);
     }
 
@@ -94,11 +154,13 @@ class PnsRwAngkakreditResource extends Resource
                     ->searchable(isIndividual: true)
                     ->label('Nama'),
                 Tables\Columns\TextColumn::make('id')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->label('ID'),
                 Tables\Columns\TextColumn::make('pns')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
@@ -149,6 +211,7 @@ class PnsRwAngkakreditResource extends Resource
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('rwJabatan')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
@@ -197,6 +260,27 @@ class PnsRwAngkakreditResource extends Resource
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
+                    Tables\Actions\EditAction::make()
+                        ->action(function ($data, $record, $livewire) {
+                            try {
+                                (new PostAngkakreditSaveService($data, $record))
+                                    ->send()
+                                    ->pull($livewire->getOwnerRecord()->nip_baru);
+
+                                Notification::make()
+                                    ->title('Saved successfully')
+                                    ->success()
+                                    ->send();
+                            } catch (\Throwable $e) {
+                                Notification::make()
+                                    ->title('Something went wrong')
+                                    ->danger()
+                                    ->body($e->getMessage())
+                                    ->send();
+
+                                Log::error($e->getMessage());
+                            }
+                        }),
                 ]),
             ])
             ->bulkActions([

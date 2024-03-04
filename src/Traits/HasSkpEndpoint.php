@@ -3,31 +3,33 @@
 namespace Kanekescom\Siasn\Simpeg\Traits;
 
 use Illuminate\Http\Client\Response;
-use Kanekescom\Siasn\Simpeg\Helpers\UrlParser;
+use Kanekescom\Siasn\Simpeg\Helpers\SkpIdResponseTransformer;
 
 trait HasSkpEndpoint
 {
-    public function postSkp2021Save(array $paths = [], array $query = []): Response
+    public function postSkp2021Save(array $query = []): Response
     {
-        $urlFormat = '/skp/2021/save';
-        $urlParsed = (new UrlParser($urlFormat))->parse($paths);
-
-        return $this->get($urlParsed, $query);
+        return $this->simpeg::{__FUNCTION__}([], $query);
     }
 
-    public function getSkpId(array $paths = [], array $query = []): Response
+    public function getSkpId($idRiwayatSkp)
     {
-        $urlFormat = '/skp/id/{idRiwayatSkp}';
-        $urlParsed = (new UrlParser($urlFormat))->parse($paths);
+        $paths = [
+            'idRiwayatSkp' => $idRiwayatSkp,
+        ];
 
-        return $this->get($urlParsed, $query);
+        $response = $this->simpeg::{__FUNCTION__}($paths);
+        $transformer = str(__FUNCTION__)->replaceFirst('get', '');
+        $transformerClass = "\\Kanekescom\\Siasn\\Simpeg\\Transformers\\{$transformer}Transformer";
+
+        return new SkpIdResponseTransformer(
+            $response,
+            new $transformerClass
+        );
     }
 
-    public function postSkpSave(array $paths = [], array $query = []): Response
+    public function postSkpSave(array $query = []): Response
     {
-        $urlFormat = '/skp/save';
-        $urlParsed = (new UrlParser($urlFormat))->parse($paths);
-
-        return $this->post($urlParsed, $query);
+        return $this->simpeg::{__FUNCTION__}([], $query);
     }
 }
