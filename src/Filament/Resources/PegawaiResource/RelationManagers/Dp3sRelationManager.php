@@ -7,6 +7,7 @@ use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Log;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PnsRwDp3Resource;
 use Kanekescom\Siasn\Simpeg\Services\PullRiwayatService;
 
@@ -47,6 +48,8 @@ class Dp3sRelationManager extends RelationManager
                                 ->danger()
                                 ->body($e->getMessage())
                                 ->send();
+
+                            Log::error($e->getMessage());
                         }
                     }),
             ]);
