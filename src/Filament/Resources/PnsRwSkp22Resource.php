@@ -108,7 +108,6 @@ class PnsRwSkp22Resource extends Resource
                 Tables\Columns\TextColumn::make('pegawai.nama')
                     ->hiddenOn(Skp22sRelationManager::class)
                     ->wrap()
-                    ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)

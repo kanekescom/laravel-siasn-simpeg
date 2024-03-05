@@ -96,7 +96,6 @@ class PnsRwPwkResource extends Resource
                 Tables\Columns\TextColumn::make('pegawai.nama')
                     ->hiddenOn(PwksRelationManager::class)
                     ->wrap()
-                    ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
