@@ -188,7 +188,7 @@ class PullRiwayatService
             $model = $model::where($pnsId, $this->pegawai->pns_id);
 
             DB::transaction(function () use ($model, $response, $pnsId) {
-                if (config('siasn-simpeg.delete_model_before_pull')) {
+                if (config('siasn-simpeg.truncate_model_before_pull')) {
                     $model->delete();
                 }
 
