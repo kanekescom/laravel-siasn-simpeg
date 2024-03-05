@@ -57,7 +57,7 @@ class PnsRwPendidikanResource extends Resource
                     ->maxLength(255)
                     ->visibleOn('view'),
                 Forms\Components\TextInput::make('tahunLulus')
-                    ->maxLength(255)
+                    ->maxLength(4)
                     ->visibleOn('view'),
                 Forms\Components\TextInput::make('tglLulus')
                     ->maxLength(255)
@@ -92,37 +92,47 @@ class PnsRwPendidikanResource extends Resource
                         Artisan::call('siasn-simpeg:pull-riwayat pns-rw-pendidikan --track --startOver');
                     }),
             ])
+            ->defaultPaginationPageOption(5)
+            ->defaultSort('tahunLulus', 'desc')
             ->columns([
-                // Tables\Columns\TextColumn::make('pegawai.nip_baru')
-                //     ->hiddenOn(PendidikansRelationManager::class)
-                //     ->copyable()
-                //     ->sortable()
-                //     ->searchable(isIndividual: true)
-                //     ->label('NIP'),
+                Tables\Columns\TextColumn::make('pegawai.nip_baru')
+                    ->hiddenOn(PendidikansRelationManager::class)
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true)
+                    ->label('NIP'),
                 Tables\Columns\TextColumn::make('pegawai.nama')
                     ->hiddenOn(PendidikansRelationManager::class)
+                    ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->label('Nama'),
                 Tables\Columns\TextColumn::make('id')
                     ->toggleable(isToggledHiddenByDefault: true)
+                    ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->label('ID'),
                 Tables\Columns\TextColumn::make('idPns')
+                    ->hiddenOn(PendidikansRelationManager::class)
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('nipBaru')
+                    ->hiddenOn(PendidikansRelationManager::class)
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('nipLama')
+                    ->hiddenOn(PendidikansRelationManager::class)
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
@@ -145,6 +155,7 @@ class PnsRwPendidikanResource extends Resource
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('tkPendidikanNama')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
@@ -155,31 +166,37 @@ class PnsRwPendidikanResource extends Resource
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('tglLulus')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('isPendidikanPertama')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('nomorIjasah')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('namaSekolah')
+                    ->grow()
                     ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('gelarDepan')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('gelarBelakang')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()

@@ -39,6 +39,12 @@ class PnsRwPenghargaanResource extends Resource
                     ->maxLength(42)
                     ->visibleOn('view'),
                 Forms\Components\TextInput::make('tahun')
+                    ->maxLength(4)
+                    ->visibleOn('view'),
+                Forms\Components\TextInput::make('hargaId')
+                    ->maxLength(42)
+                    ->visibleOn('view'),
+                Forms\Components\TextInput::make('hargaNama')
                     ->maxLength(255)
                     ->visibleOn('view'),
                 Forms\Components\TextInput::make('skNomor')
@@ -46,12 +52,6 @@ class PnsRwPenghargaanResource extends Resource
                     ->visibleOn('view'),
                 Forms\Components\TextInput::make('skDate')
                     ->maxLength(255)
-                    ->visibleOn('view'),
-                Forms\Components\TextInput::make('hargaNama')
-                    ->maxLength(255)
-                    ->visibleOn('view'),
-                Forms\Components\TextInput::make('hargaId')
-                    ->maxLength(42)
                     ->visibleOn('view'),
                 Forms\Components\TextInput::make('pnsOrangId')
                     ->maxLength(42)
@@ -71,41 +71,38 @@ class PnsRwPenghargaanResource extends Resource
                         Artisan::call('siasn-simpeg:pull-riwayat pns-rw-penghargaan --track --startOver');
                     }),
             ])
+            ->defaultPaginationPageOption(5)
+            ->defaultSort('tahun', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('pegawai.nip_baru')
                     ->hiddenOn(PenghargaansRelationManager::class)
+                    ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->label('NIP'),
                 Tables\Columns\TextColumn::make('pegawai.nama')
                     ->hiddenOn(PenghargaansRelationManager::class)
+                    ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->label('Nama'),
                 Tables\Columns\TextColumn::make('id')
                     ->toggleable(isToggledHiddenByDefault: true)
+                    ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->label('ID'),
+                Tables\Columns\TextColumn::make('pnsOrangId')
+                    ->hiddenOn(PenghargaansRelationManager::class)
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('tahun')
-                    ->wrap()
-                    ->copyable()
-                    ->sortable()
-                    ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('skNomor')
-                    ->wrap()
-                    ->copyable()
-                    ->sortable()
-                    ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('skDate')
-                    ->wrap()
-                    ->copyable()
-                    ->sortable()
-                    ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('hargaNama')
                     ->wrap()
                     ->copyable()
                     ->sortable()
@@ -116,8 +113,17 @@ class PnsRwPenghargaanResource extends Resource
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('pnsOrangId')
-                    ->toggleable(isToggledHiddenByDefault: true)
+                Tables\Columns\TextColumn::make('hargaNama')
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('skNomor')
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('skDate')
                     ->wrap()
                     ->copyable()
                     ->sortable()

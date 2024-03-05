@@ -10,16 +10,15 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
-use Kanekescom\Siasn\Referensi\Enums\JenisJabatanEnum;
 use Kanekescom\Siasn\Referensi\Models\Eselon;
 use Kanekescom\Siasn\Referensi\Models\JabatanFungsional;
 use Kanekescom\Siasn\Referensi\Models\JabatanFungsionalUmum;
+use Kanekescom\Siasn\Referensi\Models\JenisJabatan;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PegawaiResource\RelationManagers\JabatansRelationManager;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PnsRwJabatanResource\Pages;
 use Kanekescom\Siasn\Simpeg\Models\PnsRwJabatan;
 use Kanekescom\Siasn\Simpeg\Models\ReferensiRefUnor;
 use Kanekescom\Siasn\Simpeg\Services\PostJabatanSaveService;
-use Spatie\LaravelOptions\Options;
 
 class PnsRwJabatanResource extends Resource
 {
@@ -74,6 +73,9 @@ class PnsRwJabatanResource extends Resource
                 Forms\Components\TextInput::make('unorNama')
                     ->maxLength(255)
                     ->visibleOn('view'),
+                Forms\Components\TextInput::make('namaUnor')
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('unorIndukId')
                     ->maxLength(42)
                     ->visibleOn('view'),
@@ -85,6 +87,9 @@ class PnsRwJabatanResource extends Resource
                     ->visibleOn('view'),
                 Forms\Components\TextInput::make('eselonId')
                     ->maxLength(42)
+                    ->visibleOn('view'),
+                Forms\Components\TextInput::make('namaJabatan')
+                    ->maxLength(255)
                     ->visibleOn('view'),
                 Forms\Components\TextInput::make('jabatanFungsionalId')
                     ->maxLength(42)
@@ -98,6 +103,8 @@ class PnsRwJabatanResource extends Resource
                 Forms\Components\TextInput::make('jabatanFungsionalUmumNama')
                     ->maxLength(255)
                     ->visibleOn('view'),
+                Forms\Components\TextInput::make('jenjang')
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('tmtJabatan')
                     ->maxLength(255)
                     ->visibleOn('view'),
@@ -107,33 +114,22 @@ class PnsRwJabatanResource extends Resource
                 Forms\Components\TextInput::make('tanggalSk')
                     ->maxLength(255)
                     ->visibleOn('view'),
-                Forms\Components\TextInput::make('namaUnor')
-                    ->maxLength(255)
-                    ->visibleOn('view'),
-                Forms\Components\TextInput::make('namaJabatan')
-                    ->maxLength(255)
-                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('tmtPelantikan')
                     ->maxLength(255)
                     ->visibleOn('view'),
                 Forms\Components\TextInput::make('path')
                     ->visibleOn('view'),
-                Forms\Components\TextInput::make('jenjang')
-                    ->visibleOn('view'),
 
                 Forms\Components\Select::make('jenisJabatan')
                     ->live()
-                    ->options(JenisJabatanEnum::class)
-                    ->in(
-                        collect(Options::forEnum(JenisJabatanEnum::class)->toArray())
-                            ->pluck('value')
-                    )
+                    ->relationship('relJenisJabatan', 'nama')
+                    ->exists(table: JenisJabatan::class, column: 'id')
                     ->searchable()
                     ->preload()
                     ->required()
                     ->hiddenOn('view'),
                 Forms\Components\Select::make('eselonId')
-                    ->visible(fn ($get) => in_array($get('jenisJabatan'), [(JenisJabatanEnum::JABATANSTRUKTURAL)->value]))
+                    ->visible(fn ($get) => in_array($get('jenisJabatan'), [1]))
                     ->relationship('eselon', 'nama')
                     ->exists(table: Eselon::class, column: 'id')
                     ->searchable()
@@ -142,7 +138,7 @@ class PnsRwJabatanResource extends Resource
                     ->hiddenOn('view'),
                 Forms\Components\Select::make('jabatanFungsionalId')
                     ->columnSpanFull()
-                    ->visible(fn ($get) => in_array($get('jenisJabatan'), [(JenisJabatanEnum::JABATANFUNGSIONAL)->value]))
+                    ->visible(fn ($get) => in_array($get('jenisJabatan'), [2]))
                     ->relationship('jabatanFungsional', 'nama')
                     ->exists(table: JabatanFungsional::class, column: 'id')
                     ->searchable()
@@ -151,7 +147,7 @@ class PnsRwJabatanResource extends Resource
                     ->hiddenOn('view'),
                 Forms\Components\Select::make('jabatanFungsionalUmumId')
                     ->columnSpanFull()
-                    ->visible(fn ($get) => in_array($get('jenisJabatan'), [(JenisJabatanEnum::JABATANPELAKSANA)->value]))
+                    ->visible(fn ($get) => in_array($get('jenisJabatan'), [3]))
                     ->relationship('jabatanFungsionalUmum', 'nama')
                     ->exists(table: JabatanFungsionalUmum::class, column: 'id')
                     ->searchable()
@@ -197,44 +193,57 @@ class PnsRwJabatanResource extends Resource
                         Artisan::call('siasn-simpeg:pull-riwayat pns-rw-jabatan --track --startOver');
                     }),
             ])
+            ->defaultPaginationPageOption(5)
+            // ->defaultSort('', 'desc')
             ->columns([
-                // Tables\Columns\TextColumn::make('pegawai.nip_baru')
-                //     ->hiddenOn(JabatansRelationManager::class)
-                //     ->copyable()
-                //     ->sortable()
-                //     ->searchable(isIndividual: true)
-                //     ->label('NIP'),
+                Tables\Columns\TextColumn::make('pegawai.nip_baru')
+                    ->hiddenOn(JabatansRelationManager::class)
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true)
+                    ->label('NIP'),
                 Tables\Columns\TextColumn::make('pegawai.nama')
                     ->hiddenOn(JabatansRelationManager::class)
+                    ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->label('Nama'),
                 Tables\Columns\TextColumn::make('id')
                     ->toggleable(isToggledHiddenByDefault: true)
+                    ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->label('ID'),
                 Tables\Columns\TextColumn::make('idPns')
                     ->hiddenOn(JabatansRelationManager::class)
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('nipBaru')
                     ->hiddenOn(JabatansRelationManager::class)
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('nipLama')
                     ->hiddenOn(JabatansRelationManager::class)
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('jenisJabatan')
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('namaJabatan')
                     ->wrap()
                     ->copyable()
                     ->sortable()
@@ -275,6 +284,12 @@ class PnsRwJabatanResource extends Resource
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('namaUnor')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('unorIndukId')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
@@ -287,6 +302,7 @@ class PnsRwJabatanResource extends Resource
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('eselon')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
@@ -304,6 +320,7 @@ class PnsRwJabatanResource extends Resource
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('jabatanFungsionalNama')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
@@ -315,6 +332,13 @@ class PnsRwJabatanResource extends Resource
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('jabatanFungsionalUmumNama')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('jenjang')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
@@ -325,31 +349,19 @@ class PnsRwJabatanResource extends Resource
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('nomorSk')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('tanggalSk')
-                    ->wrap()
-                    ->copyable()
-                    ->sortable()
-                    ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('namaUnor')
-                    ->wrap()
-                    ->copyable()
-                    ->sortable()
-                    ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('namaJabatan')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('tmtPelantikan')
-                    ->wrap()
-                    ->copyable()
-                    ->sortable()
-                    ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('jenjang')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()

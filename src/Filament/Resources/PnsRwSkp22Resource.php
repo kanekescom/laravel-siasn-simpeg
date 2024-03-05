@@ -25,7 +25,7 @@ class PnsRwSkp22Resource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationLabel = 'SKP 2022';
+    protected static ?string $navigationLabel = 'Kinerja';
 
     protected static ?string $navigationGroup = 'Riwayat';
 
@@ -38,10 +38,19 @@ class PnsRwSkp22Resource extends Resource
                 Forms\Components\TextInput::make('id')
                     ->maxLength(42)
                     ->visibleOn('view'),
+                Forms\Components\TextInput::make('tahun')
+                    ->maxLength(4)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('hasilKinerja')
                     ->maxLength(255)
                     ->visibleOn('view'),
                 Forms\Components\TextInput::make('hasilKinerjaNilai')
+                    ->maxLength(255)
+                    ->visibleOn('view'),
+                Forms\Components\TextInput::make('perilakuKerja')
+                    ->maxLength(255)
+                    ->visibleOn('view'),
+                Forms\Components\TextInput::make('PerilakuKerjaNilai')
                     ->maxLength(255)
                     ->visibleOn('view'),
                 Forms\Components\TextInput::make('kuadranKinerja')
@@ -65,19 +74,10 @@ class PnsRwSkp22Resource extends Resource
                 Forms\Components\TextInput::make('penilaiUnorNm')
                     ->maxLength(255)
                     ->visibleOn('view'),
-                Forms\Components\TextInput::make('perilakuKerja')
-                    ->maxLength(255)
-                    ->visibleOn('view'),
-                Forms\Components\TextInput::make('PerilakuKerjaNilai')
-                    ->maxLength(255)
-                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('pnsDinilaiId')
                     ->maxLength(42)
                     ->visibleOn('view'),
                 Forms\Components\TextInput::make('statusPenilai')
-                    ->maxLength(255)
-                    ->visibleOn('view'),
-                Forms\Components\TextInput::make('tahun')
                     ->maxLength(255)
                     ->visibleOn('view'),
                 Forms\Components\TextInput::make('path')
@@ -95,66 +95,43 @@ class PnsRwSkp22Resource extends Resource
                         Artisan::call('siasn-simpeg:pull-riwayat pns-rw-skp22 --track --startOver');
                     }),
             ])
+            ->defaultPaginationPageOption(5)
+            ->defaultSort('tahun', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('pegawai.nip_baru')
                     ->hiddenOn(Skp22sRelationManager::class)
+                    ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->label('NIP'),
                 Tables\Columns\TextColumn::make('pegawai.nama')
                     ->hiddenOn(Skp22sRelationManager::class)
+                    ->wrap()
+                    ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->label('Nama'),
                 Tables\Columns\TextColumn::make('id')
                     ->toggleable(isToggledHiddenByDefault: true)
+                    ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->label('ID'),
+                Tables\Columns\TextColumn::make('tahun')
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('hasilKinerja')
                     ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('hasilKinerjaNilai')
-                    ->wrap()
-                    ->copyable()
-                    ->sortable()
-                    ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('kuadranKinerja')
-                    ->wrap()
-                    ->copyable()
-                    ->sortable()
-                    ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('KuadranKinerjaNilai')
-                    ->wrap()
-                    ->copyable()
-                    ->sortable()
-                    ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('namaPenilai')
-                    ->wrap()
-                    ->copyable()
-                    ->sortable()
-                    ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('nipNrpPenilai')
-                    ->wrap()
-                    ->copyable()
-                    ->sortable()
-                    ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('penilaiGolonganId')
-                    ->wrap()
-                    ->copyable()
-                    ->sortable()
-                    ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('penilaiJabatanNm')
-                    ->wrap()
-                    ->copyable()
-                    ->sortable()
-                    ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('penilaiUnorNm')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
@@ -165,6 +142,46 @@ class PnsRwSkp22Resource extends Resource
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('PerilakuKerjaNilai')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('kuadranKinerja')
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('KuadranKinerjaNilai')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('namaPenilai')
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('nipNrpPenilai')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('penilaiGolonganId')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('penilaiJabatanNm')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('penilaiUnorNm')
                     ->wrap()
                     ->copyable()
                     ->sortable()
@@ -176,11 +193,7 @@ class PnsRwSkp22Resource extends Resource
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('statusPenilai')
-                    ->wrap()
-                    ->copyable()
-                    ->sortable()
-                    ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('tahun')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()

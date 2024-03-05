@@ -56,10 +56,10 @@ class PnsRwPnsunorResource extends Resource
                 Forms\Components\TextInput::make('asalNama')
                     ->maxLength(255)
                     ->visibleOn('view'),
-                Forms\Components\TextInput::make('instansi')
+                Forms\Components\TextInput::make('asalNamaLabel')
                     ->maxLength(255)
                     ->visibleOn('view'),
-                Forms\Components\TextInput::make('asalNamaLabel')
+                Forms\Components\TextInput::make('instansi')
                     ->maxLength(255)
                     ->visibleOn('view'),
                 Forms\Components\TextInput::make('path'),
@@ -76,31 +76,39 @@ class PnsRwPnsunorResource extends Resource
                         Artisan::call('siasn-simpeg:pull-riwayat pns-rw-pnsunor --track --startOver');
                     }),
             ])
+            ->defaultPaginationPageOption(5)
+            // ->defaultSort('', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('pegawai.nip_baru')
                     ->hiddenOn(PnsunorsRelationManager::class)
+                    ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->label('NIP'),
                 Tables\Columns\TextColumn::make('pegawai.nama')
                     ->hiddenOn(PnsunorsRelationManager::class)
+                    ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->label('Nama'),
                 Tables\Columns\TextColumn::make('id')
                     ->toggleable(isToggledHiddenByDefault: true)
+                    ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->label('ID'),
-                Tables\Columns\TextColumn::make('unorBaru')
+                Tables\Columns\TextColumn::make('pnsOrang')
+                    ->hiddenOn(PnsunorsRelationManager::class)
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('pnsOrang')
+                Tables\Columns\TextColumn::make('unorBaru')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
@@ -127,16 +135,18 @@ class PnsRwPnsunorResource extends Resource
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('asalNama')
-                    ->wrap()
-                    ->copyable()
-                    ->sortable()
-                    ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('instansi')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('asalNamaLabel')
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('instansi')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()

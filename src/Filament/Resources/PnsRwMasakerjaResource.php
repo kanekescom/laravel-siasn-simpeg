@@ -47,12 +47,6 @@ class PnsRwMasakerjaResource extends Resource
                 Forms\Components\TextInput::make('pengalaman')
                     ->maxLength(255)
                     ->visibleOn('view'),
-                Forms\Components\TextInput::make('tanggalAwal')
-                    ->maxLength(255)
-                    ->visibleOn('view'),
-                Forms\Components\TextInput::make('tanggalSelesai')
-                    ->maxLength(255)
-                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('nomorSk')
                     ->maxLength(255)
                     ->visibleOn('view'),
@@ -69,6 +63,12 @@ class PnsRwMasakerjaResource extends Resource
                     ->maxLength(255)
                     ->visibleOn('view'),
                 Forms\Components\TextInput::make('masaKerjaBulan')
+                    ->maxLength(255)
+                    ->visibleOn('view'),
+                Forms\Components\TextInput::make('tanggalAwal')
+                    ->maxLength(255)
+                    ->visibleOn('view'),
+                Forms\Components\TextInput::make('tanggalSelesai')
                     ->maxLength(255)
                     ->visibleOn('view'),
                 Forms\Components\TextInput::make('dinilai')
@@ -89,52 +89,53 @@ class PnsRwMasakerjaResource extends Resource
                         Artisan::call('siasn-simpeg:pull-riwayat pns-rw-masakerja --track --startOver');
                     }),
             ])
+            ->defaultPaginationPageOption(5)
+            // ->defaultSort('', 'desc')
             ->columns([
-                // Tables\Columns\TextColumn::make('pegawai.nip_baru')
-                //     ->hiddenOn(MasakerjasRelationManager::class)
-                //     ->copyable()
-                //     ->sortable()
-                //     ->searchable(isIndividual: true)
-                //     ->label('NIP'),
+                Tables\Columns\TextColumn::make('pegawai.nip_baru')
+                    ->hiddenOn(MasakerjasRelationManager::class)
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true)
+                    ->label('NIP'),
                 Tables\Columns\TextColumn::make('pegawai.nama')
                     ->hiddenOn(MasakerjasRelationManager::class)
+                    ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->label('Nama'),
                 Tables\Columns\TextColumn::make('id')
                     ->toggleable(isToggledHiddenByDefault: true)
+                    ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->label('ID'),
                 Tables\Columns\TextColumn::make('idPns')
+                    ->hiddenOn(MasakerjasRelationManager::class)
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('nipBaru')
+                    ->hiddenOn(MasakerjasRelationManager::class)
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('nipLama')
+                    ->hiddenOn(MasakerjasRelationManager::class)
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('pengalaman')
-                    ->wrap()
-                    ->copyable()
-                    ->sortable()
-                    ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('tanggalAwal')
-                    ->wrap()
-                    ->copyable()
-                    ->sortable()
-                    ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('tanggalSelesai')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
@@ -150,11 +151,13 @@ class PnsRwMasakerjaResource extends Resource
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('nomorBkn')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('tanggalBkn')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
@@ -169,7 +172,20 @@ class PnsRwMasakerjaResource extends Resource
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('tanggalAwal')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('tanggalSelesai')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('dinilai')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()

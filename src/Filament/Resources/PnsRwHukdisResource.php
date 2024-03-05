@@ -38,10 +38,10 @@ class PnsRwHukdisResource extends Resource
                 Forms\Components\TextInput::make('id')
                     ->maxLength(42)
                     ->visibleOn('view'),
-                Forms\Components\TextInput::make('rwHukumanDisiplin')
-                    ->maxLength(255)
+                Forms\Components\TextInput::make('pnsOrang')
+                    ->maxLength(42)
                     ->visibleOn('view'),
-                Forms\Components\TextInput::make('golongan')
+                Forms\Components\TextInput::make('rwHukumanDisiplin')
                     ->maxLength(255)
                     ->visibleOn('view'),
                 Forms\Components\TextInput::make('kedudukanHukum')
@@ -50,7 +50,18 @@ class PnsRwHukdisResource extends Resource
                 Forms\Components\TextInput::make('jenisHukuman')
                     ->maxLength(255)
                     ->visibleOn('view'),
-                Forms\Components\TextInput::make('pnsOrang')
+                Forms\Components\TextInput::make('jenisHukumanNama')
+                    ->maxLength(255)
+                    ->visibleOn('view'),
+                Forms\Components\TextInput::make('jenisTingkatHukumanId')
+                    ->maxLength(42),
+                Forms\Components\TextInput::make('alasanHukumanDisiplin')
+                    ->maxLength(255)
+                    ->visibleOn('view'),
+                Forms\Components\TextInput::make('alasanHukumanDisiplinNama')
+                    ->maxLength(255)
+                    ->visibleOn('view'),
+                Forms\Components\TextInput::make('nomorPp')
                     ->maxLength(255)
                     ->visibleOn('view'),
                 Forms\Components\TextInput::make('skNomor')
@@ -71,34 +82,23 @@ class PnsRwHukdisResource extends Resource
                 Forms\Components\TextInput::make('akhirHukumTanggal')
                     ->maxLength(255)
                     ->visibleOn('view'),
-                Forms\Components\TextInput::make('nomorPp')
-                    ->maxLength(255)
-                    ->visibleOn('view'),
-                Forms\Components\TextInput::make('golonganLama')
-                    ->maxLength(255)
-                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('skPembatalanNomor')
                     ->maxLength(255)
                     ->visibleOn('view'),
                 Forms\Components\TextInput::make('skPembatalanTanggal')
                     ->maxLength(255)
                     ->visibleOn('view'),
-                Forms\Components\TextInput::make('alasanHukumanDisiplin')
+                Forms\Components\TextInput::make('golonganLama')
                     ->maxLength(255)
                     ->visibleOn('view'),
-                Forms\Components\TextInput::make('alasanHukumanDisiplinNama')
+                Forms\Components\TextInput::make('golongan')
                     ->maxLength(255)
-                    ->visibleOn('view'),
-                Forms\Components\TextInput::make('jenisHukumanNama')
-                    ->maxLength(255)
-                    ->visibleOn('view'),
-                Forms\Components\TextInput::make('path')
                     ->visibleOn('view'),
                 Forms\Components\TextInput::make('keterangan')
                     ->maxLength(255)
                     ->visibleOn('view'),
-                Forms\Components\TextInput::make('jenisTingkatHukumanId')
-                    ->maxLength(42),
+                Forms\Components\TextInput::make('path')
+                    ->visibleOn('view'),
             ]);
     }
 
@@ -112,45 +112,80 @@ class PnsRwHukdisResource extends Resource
                         Artisan::call('siasn-simpeg:pull-riwayat pns-rw-hukdis --track --startOver');
                     }),
             ])
+            ->defaultPaginationPageOption(5)
+            // ->defaultSort('', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('pegawai.nip_baru')
                     ->hiddenOn(HukdisesRelationManager::class)
+                    ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->label('NIP'),
                 Tables\Columns\TextColumn::make('pegawai.nama')
                     ->hiddenOn(HukdisesRelationManager::class)
+                    ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->label('Nama'),
                 Tables\Columns\TextColumn::make('id')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->label('ID'),
-                Tables\Columns\TextColumn::make('rwHukumanDisiplin')
+                Tables\Columns\TextColumn::make('pnsOrang')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->hiddenOn(HukdisesRelationManager::class)
                     ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('golongan')
+                Tables\Columns\TextColumn::make('rwHukumanDisiplin')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('kedudukanHukum')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('jenisHukuman')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('pnsOrang')
+                Tables\Columns\TextColumn::make('jenisHukumanNama')
+                    ->grow()
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('jenisTingkatHukumanId')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('alasanHukumanDisiplin')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('alasanHukumanDisiplinNama')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('nomorPp')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
@@ -172,11 +207,13 @@ class PnsRwHukdisResource extends Resource
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('masaTahun')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('masaBulan')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
@@ -186,47 +223,32 @@ class PnsRwHukdisResource extends Resource
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('nomorPp')
-                    ->wrap()
-                    ->copyable()
-                    ->sortable()
-                    ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('golonganLama')
-                    ->wrap()
-                    ->copyable()
-                    ->sortable()
-                    ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('skPembatalanNomor')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('skPembatalanTanggal')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('alasanHukumanDisiplin')
+                Tables\Columns\TextColumn::make('golongan')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('alasanHukumanDisiplinNama')
-                    ->wrap()
-                    ->copyable()
-                    ->sortable()
-                    ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('jenisHukumanNama')
+                Tables\Columns\TextColumn::make('golonganLama')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('keterangan')
-                    ->wrap()
-                    ->copyable()
-                    ->sortable()
-                    ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('jenisTingkatHukumanId')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()

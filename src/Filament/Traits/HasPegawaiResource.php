@@ -150,6 +150,8 @@ trait HasPegawaiResource
                 Forms\Components\Textarea::make('satuan_kerja_kerja_nama')
                     ->maxLength(65535)
                     ->columnSpanFull(),
+                Forms\Components\TextInput::make('is_valid_nik')
+                    ->maxLength(1),
             ]);
     }
 
@@ -531,6 +533,12 @@ trait HasPegawaiResource
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('satuan_kerja_kerja_nama')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('is_valid_nik')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()

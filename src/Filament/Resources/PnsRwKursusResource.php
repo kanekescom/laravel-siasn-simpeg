@@ -47,40 +47,40 @@ class PnsRwKursusResource extends Resource
                 Forms\Components\TextInput::make('nipLama')
                     ->maxLength(9)
                     ->visibleOn('view'),
+                Forms\Components\TextInput::make('jenisDiklatId')
+                    ->maxLength(42)
+                    ->visibleOn('view'),
+                Forms\Components\TextInput::make('jenisKursusId')
+                    ->maxLength(42)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('jenisKursusNama')
                     ->maxLength(255)
                     ->visibleOn('view'),
                 Forms\Components\TextInput::make('jenisKursusSertifikat')
                     ->maxLength(255)
                     ->visibleOn('view'),
+                Forms\Components\TextInput::make('namaKursus')
+                    ->maxLength(255)
+                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('institusiPenyelenggara')
                     ->maxLength(255)
                     ->visibleOn('view'),
-                Forms\Components\TextInput::make('jenisKursusId')
-                    ->maxLength(42)
-                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('jumlahJam')
-                    ->maxLength(255)
-                    ->visibleOn('view'),
-                Forms\Components\TextInput::make('namaKursus')
                     ->maxLength(255)
                     ->visibleOn('view'),
                 Forms\Components\TextInput::make('noSertipikat')
                     ->maxLength(255)
                     ->visibleOn('view'),
                 Forms\Components\TextInput::make('tahunKursus')
-                    ->maxLength(255)
+                    ->maxLength(4)
                     ->visibleOn('view'),
                 Forms\Components\TextInput::make('tanggalKursus')
                     ->maxLength(255)
                     ->visibleOn('view'),
-                Forms\Components\TextInput::make('path')
-                    ->visibleOn('view'),
-                Forms\Components\TextInput::make('jenisDiklatId')
-                    ->maxLength(42)
-                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('tanggalSelesaiKursus')
                     ->maxLength(255)
+                    ->visibleOn('view'),
+                Forms\Components\TextInput::make('path')
                     ->visibleOn('view'),
             ]);
     }
@@ -95,52 +95,53 @@ class PnsRwKursusResource extends Resource
                         Artisan::call('siasn-simpeg:pull-riwayat pns-rw-kursus --track --startOver');
                     }),
             ])
+            ->defaultPaginationPageOption(5)
+            ->defaultSort('tahunKursus', 'desc')
             ->columns([
-                // Tables\Columns\TextColumn::make('pegawai.nip_baru')
-                //     ->hiddenOn(KursusesRelationManager::class)
-                //     ->copyable()
-                //     ->sortable()
-                //     ->searchable(isIndividual: true)
-                //     ->label('NIP'),
+                Tables\Columns\TextColumn::make('pegawai.nip_baru')
+                    ->hiddenOn(KursusesRelationManager::class)
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true)
+                    ->label('NIP'),
                 Tables\Columns\TextColumn::make('pegawai.nama')
                     ->hiddenOn(KursusesRelationManager::class)
+                    ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->label('Nama'),
                 Tables\Columns\TextColumn::make('id')
                     ->toggleable(isToggledHiddenByDefault: true)
+                    ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->label('ID'),
                 Tables\Columns\TextColumn::make('idPns')
-                    ->wrap()
-                    ->copyable()
-                    ->sortable()
-                    ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('nipBaru')
-                    ->wrap()
-                    ->copyable()
-                    ->sortable()
-                    ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('nipLama')
+                    ->hiddenOn(KursusesRelationManager::class)
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('jenisKursusNama')
+                Tables\Columns\TextColumn::make('nipBaru')
+                    ->hiddenOn(KursusesRelationManager::class)
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('jenisKursusSertifikat')
+                Tables\Columns\TextColumn::make('nipLama')
+                    ->hiddenOn(KursusesRelationManager::class)
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('institusiPenyelenggara')
+                Tables\Columns\TextColumn::make('jenisDiklatId')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
@@ -151,7 +152,13 @@ class PnsRwKursusResource extends Resource
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('jumlahJam')
+                Tables\Columns\TextColumn::make('jenisKursusNama')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('jenisKursusSertifikat')
                     ->wrap()
                     ->copyable()
                     ->sortable()
@@ -161,7 +168,20 @@ class PnsRwKursusResource extends Resource
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('institusiPenyelenggara')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('jumlahJam')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('noSertipikat')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
@@ -172,16 +192,13 @@ class PnsRwKursusResource extends Resource
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('tanggalKursus')
-                    ->wrap()
-                    ->copyable()
-                    ->sortable()
-                    ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('jenisDiklatId')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('tanggalSelesaiKursus')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()

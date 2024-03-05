@@ -38,14 +38,14 @@ class PnsRwKinerjaperiodikResource extends Resource
                 Forms\Components\TextInput::make('id')
                     ->maxLength(42)
                     ->visibleOn('view'),
-                Forms\Components\TextInput::make('tahun')
-                    ->maxLength(255)
-                    ->visibleOn('view'),
                 Forms\Components\TextInput::make('nip')
                     ->maxLength(255)
                     ->visibleOn('view'),
                 Forms\Components\TextInput::make('nama')
                     ->maxLength(255)
+                    ->visibleOn('view'),
+                Forms\Components\TextInput::make('tahun')
+                    ->maxLength(4)
                     ->visibleOn('view'),
                 Forms\Components\TextInput::make('hasilKinerja')
                     ->maxLength(255)
@@ -134,36 +134,44 @@ class PnsRwKinerjaperiodikResource extends Resource
                         Artisan::call('siasn-simpeg:pull-riwayat pns-rw-kinerjaperiodik --track --startOver');
                     }),
             ])
+            ->defaultPaginationPageOption(5)
+            ->defaultSort('tahun', 'desc')
             ->columns([
-                // Tables\Columns\TextColumn::make('pegawai.nip_baru')
-                //     ->hiddenOn(KinerjaperiodiksRelationManager::class)
-                //     ->copyable()
-                //     ->sortable()
-                //     ->searchable(isIndividual: true)
-                //     ->label('NIP'),
+                Tables\Columns\TextColumn::make('pegawai.nip_baru')
+                    ->hiddenOn(KinerjaperiodiksRelationManager::class)
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true)
+                    ->label('NIP'),
                 Tables\Columns\TextColumn::make('pegawai.nama')
                     ->hiddenOn(KinerjaperiodiksRelationManager::class)
+                    ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->label('Nama'),
                 Tables\Columns\TextColumn::make('id')
                     ->toggleable(isToggledHiddenByDefault: true)
+                    ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->label('ID'),
+                Tables\Columns\TextColumn::make('nip')
+                    ->hiddenOn(KinerjaperiodiksRelationManager::class)
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('tahun')
                     ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('nip')
-                    ->wrap()
-                    ->copyable()
-                    ->sortable()
-                    ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('nama')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
@@ -174,6 +182,7 @@ class PnsRwKinerjaperiodikResource extends Resource
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('hasilKinerjaNilai')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
@@ -232,6 +241,7 @@ class PnsRwKinerjaperiodikResource extends Resource
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('penilaiNipNrp')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
@@ -253,6 +263,7 @@ class PnsRwKinerjaperiodikResource extends Resource
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('perilakuKerjaNilai')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
@@ -280,6 +291,7 @@ class PnsRwKinerjaperiodikResource extends Resource
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('statusPenilai')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()

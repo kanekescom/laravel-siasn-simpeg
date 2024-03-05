@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Kanekescom\Siasn\Referensi\Enums\JenisJabatanEnum;
 use Kanekescom\Siasn\Referensi\Models\Eselon;
 use Kanekescom\Siasn\Referensi\Models\JabatanFungsional;
 use Kanekescom\Siasn\Referensi\Models\JabatanFungsionalUmum;
+use Kanekescom\Siasn\Referensi\Models\JenisJabatan;
 
 class PnsRwJabatan extends Model
 {
@@ -31,7 +31,6 @@ class PnsRwJabatan extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'jenisJabatan' => JenisJabatanEnum::class,
         'path' => 'array',
     ];
 
@@ -63,5 +62,10 @@ class PnsRwJabatan extends Model
     public function unor(): BelongsTo
     {
         return $this->belongsTo(ReferensiRefUnor::class, 'unorId');
+    }
+
+    public function relJenisJabatan(): BelongsTo
+    {
+        return $this->belongsTo(JenisJabatan::class, 'jenisJabatan');
     }
 }

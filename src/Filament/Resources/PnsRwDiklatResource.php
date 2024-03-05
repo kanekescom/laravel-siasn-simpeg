@@ -38,8 +38,40 @@ class PnsRwDiklatResource extends Resource
                 Forms\Components\TextInput::make('id')
                     ->maxLength(42)
                     ->visibleOn('view'),
-                Forms\Components\TextInput::make('jenis_diklat')
+                Forms\Components\TextInput::make('idPns')
+                    ->maxLength(42)
+                    ->visibleOn('view'),
+                Forms\Components\TextInput::make('nipBaru')
+                    ->maxLength(18)
+                    ->visibleOn('view'),
+                Forms\Components\TextInput::make('nipLama')
+                    ->maxLength(9)
+                    ->visibleOn('view'),
+                Forms\Components\TextInput::make('latihanStrukturalId')
+                    ->maxLength(42)
+                    ->visibleOn('view'),
+                Forms\Components\TextInput::make('latihanStrukturalNama')
                     ->maxLength(255)
+                    ->visibleOn('view'),
+                Forms\Components\TextInput::make('tahun')
+                    ->maxLength(4)
+                    ->visibleOn('view'),
+                Forms\Components\TextInput::make('nomor')
+                    ->maxLength(255)
+                    ->visibleOn('view'),
+                Forms\Components\TextInput::make('jumlahJam')
+                    ->maxLength(255)
+                    ->visibleOn('view'),
+                Forms\Components\TextInput::make('tanggal')
+                    ->maxLength(255)
+                    ->visibleOn('view'),
+                Forms\Components\TextInput::make('tanggalSelesai')
+                    ->maxLength(255)
+                    ->visibleOn('view'),
+                Forms\Components\TextInput::make('institusiPenyelenggara')
+                    ->maxLength(255)
+                    ->visibleOn('view'),
+                Forms\Components\TextInput::make('path')
                     ->visibleOn('view'),
             ]);
     }
@@ -54,25 +86,92 @@ class PnsRwDiklatResource extends Resource
                         Artisan::call('siasn-simpeg:pull-riwayat pns-rw-diklat --track --startOver');
                     }),
             ])
+            ->defaultPaginationPageOption(5)
+            ->defaultSort('tahun', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('pegawai.nip_baru')
                     ->hiddenOn(DiklatsRelationManager::class)
+                    ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->label('NIP'),
                 Tables\Columns\TextColumn::make('pegawai.nama')
                     ->hiddenOn(DiklatsRelationManager::class)
+                    ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->label('Nama'),
                 Tables\Columns\TextColumn::make('id')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->label('ID'),
-                Tables\Columns\TextColumn::make('jenis_diklat')
+                Tables\Columns\TextColumn::make('idPns')
+                    ->hiddenOn(DiklatsRelationManager::class)
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('nipBaru')
+                    ->hiddenOn(DiklatsRelationManager::class)
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('nipLama')
+                    ->hiddenOn(DiklatsRelationManager::class)
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('latihanStrukturalId')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('latihanStrukturalNama')
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('tahun')
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('nomor')
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('jumlahJam')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('tanggal')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('tanggalSelesai')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->wrap()
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('institusiPenyelenggara')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->wrap()
                     ->copyable()
                     ->sortable()
