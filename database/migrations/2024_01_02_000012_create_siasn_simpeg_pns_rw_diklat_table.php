@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('latihanStrukturalNama')->nullable();
             $table->string('nomor')->nullable();
             $table->string('tanggal')->nullable();
-            $table->string('tahun')->nullable()->index('12_tahun');
+            $table->string('tahun', 4)->nullable()->index('12_tahun');
             $table->json('path')->nullable();
             $table->string('jumlahJam')->nullable();
             $table->string('tanggalSelesai')->nullable();

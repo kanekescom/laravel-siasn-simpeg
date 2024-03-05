@@ -45,7 +45,7 @@ return new class extends Migration
             $table->string('tkPendidikanTerakhir')->nullable();
             $table->string('pendidikanTerakhirId', 42)->nullable()->index('6_pendidikanTerakhirId');
             $table->string('pendidikanTerakhirNama')->nullable();
-            $table->string('tahunLulus')->nullable();
+            $table->string('tahunLulus', 4)->nullable();
             $table->string('tmtPns')->nullable();
             $table->string('tmtPensiun')->nullable();
             $table->string('bupPensiun', 2)->nullable();

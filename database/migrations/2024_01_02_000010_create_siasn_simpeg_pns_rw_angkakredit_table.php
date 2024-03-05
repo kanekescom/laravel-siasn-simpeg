@@ -17,9 +17,9 @@ return new class extends Migration
             $table->string('nomorSk')->nullable();
             $table->string('tanggalSk')->nullable();
             $table->string('bulanMulaiPenailan')->nullable();
-            $table->string('tahunMulaiPenailan')->nullable();
+            $table->string('tahunMulaiPenailan', 4)->nullable();
             $table->string('bulanSelesaiPenailan')->nullable();
-            $table->string('tahunSelesaiPenailan')->nullable();
+            $table->string('tahunSelesaiPenailan', 4)->nullable();
             $table->string('kreditUtamaBaru')->nullable();
             $table->string('kreditPenunjangBaru')->nullable();
             $table->string('kreditBaruTotal')->nullable();
