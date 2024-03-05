@@ -27,7 +27,9 @@ class SiasnSimpegPanelProvider extends PanelProvider
 
         return $panel
             ->default()
+            ->id(config('siasn-simpeg.filament.id'))
             ->path(config('siasn-simpeg.filament.path'))
+            ->profile(isSimple: false)
             ->login()
             ->brandLogo(config('siasn-simpeg.filament.brandLogo'))
             ->favicon(config('siasn-simpeg.filament.favicon'))

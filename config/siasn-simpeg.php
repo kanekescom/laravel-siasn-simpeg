@@ -14,7 +14,7 @@ return [
 
         'path' => 'siasn/simpeg',
 
-        'topbar' => false,
+        'topbar' => true,
 
         'brandLogo' => null,
 
