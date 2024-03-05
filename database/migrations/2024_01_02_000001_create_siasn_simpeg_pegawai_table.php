@@ -61,7 +61,7 @@ return new class extends Migration
             $table->string('tingkat_pendidikan_nama')->nullable();
             $table->string('pendidikan_id')->nullable()->index('1_pendidikan_id');
             $table->string('pendidikan_nama')->nullable();
-            $table->string('tahun_lulus')->nullable()->index('1_tahun_lulus');
+            $table->string('tahun_lulus', 4)->nullable()->index('1_tahun_lulus');
             $table->string('kpkn_id')->nullable()->index('1_kpkn_id');
             $table->string('kpkn_nama')->nullable();
             $table->string('lokasi_kerja_id')->nullable()->index('1_lokasi_kerja_id');
@@ -76,6 +76,7 @@ return new class extends Migration
             $table->text('satuan_kerja_induk_nama')->nullable();
             $table->string('satuan_kerja_kerja_id')->nullable()->index('1_satuan_kerja_kerja_id');
             $table->text('satuan_kerja_kerja_nama')->nullable();
+            $table->string('is_valid_nik', 1)->nullable()->index('is_valid_nik');
             $table->timestamps();
             $table->softDeletes();
         });

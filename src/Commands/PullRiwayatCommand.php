@@ -99,8 +99,17 @@ class PullRiwayatCommand extends Command
         $iPegawai = $skip;
 
         if ($startOver && $hasPullTracking) {
-            $hasPullTracking->delete();
-            $hasPullTracking = null;
+            try {
+                $hasPullTracking->errors()->delete();
+                $hasPullTracking->delete();
+                $hasPullTracking = null;
+            } catch (\Exception $e) {
+                $this->error($e);
+                $this->newLine();
+
+                return self::FAILURE;
+            }
+
             $skip = 0;
 
             $this->info(str('Start over command.')->upper());
@@ -196,7 +205,7 @@ class PullRiwayatCommand extends Command
                         $model = $model->where($this->pnsId[$endpoint], $pegawai->pns_id);
 
                         DB::transaction(function () use ($endpoint, $model, $response, $bar) {
-                            if (config('siasn-simpeg.delete_model_before_pull')) {
+                            if (config('siasn-simpeg.truncate_model_before_pull')) {
                                 $model->delete();
                             }
 

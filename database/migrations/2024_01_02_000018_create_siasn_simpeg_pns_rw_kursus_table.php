@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('jumlahJam')->nullable();
             $table->string('namaKursus')->nullable();
             $table->string('noSertipikat')->nullable();
-            $table->string('tahunKursus')->nullable()->index('18_tahunKursus');
+            $table->string('tahunKursus', 4)->nullable()->index('18_tahunKursus');
             $table->string('tanggalKursus')->nullable();
             $table->json('path')->nullable();
             $table->string('jenisDiklatId', 42)->nullable()->index('18_jenisDiklatId');

@@ -45,7 +45,7 @@ class PullReferensiRefUnorCommand extends Command
                 $model = new ReferensiRefUnor;
 
                 DB::transaction(function () use ($model, $response, $bar) {
-                    if (config('siasn-simpeg.delete_model_before_pull')) {
+                    if (config('siasn-simpeg.truncate_model_before_pull')) {
                         $model->delete();
                     }
 

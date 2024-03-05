@@ -3,23 +3,28 @@
 namespace Kanekescom\Siasn\Simpeg\Traits;
 
 use Illuminate\Http\Client\Response;
-use Kanekescom\Siasn\Simpeg\Helpers\UrlParser;
+use Kanekescom\Siasn\Simpeg\Helpers\PenghargaanIdResponseTransformer;
 
 trait HasPenghargaanEndpoint
 {
-    public function getPenghargaanId(array $paths = [], array $query = []): Response
+    public function getPenghargaanId($idRiwayatPenghargaan)
     {
-        $urlFormat = '/penghargaan/id/{idRiwayatPenghargaan}';
-        $urlParsed = (new UrlParser($urlFormat))->parse($paths);
+        $paths = [
+            'idRiwayatPenghargaan' => $idRiwayatPenghargaan,
+        ];
 
-        return $this->get($urlParsed, $query);
+        $response = $this->simpeg::{__FUNCTION__}($paths);
+        $transformer = str(__FUNCTION__)->replaceFirst('get', '');
+        $transformerClass = "\\Kanekescom\\Siasn\\Simpeg\\Transformers\\{$transformer}Transformer";
+
+        return new PenghargaanIdResponseTransformer(
+            $response,
+            new $transformerClass
+        );
     }
 
-    public function postPenghargaanSave(array $paths = [], array $query = []): Response
+    public function postPenghargaanSave(array $query = []): Response
     {
-        $urlFormat = '/penghargaan/save';
-        $urlParsed = (new UrlParser($urlFormat))->parse($paths);
-
-        return $this->post($urlParsed, $query);
+        return $this->simpeg::{__FUNCTION__}([], $query);
     }
 }

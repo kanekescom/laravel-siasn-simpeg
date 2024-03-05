@@ -16,13 +16,13 @@ class PnsPhotoResource extends Resource
 
     protected static ?string $slug = 'pns-photo';
 
-    protected static ?string $pluralLabel = 'PNS Photo';
+    protected static ?string $pluralLabel = 'Photo';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationLabel = 'PNS Photo';
+    protected static ?string $navigationLabel = 'Photo';
 
-    protected static ?string $navigationGroup = 'SIASN SIMPEG';
+    protected static ?string $navigationGroup = 'PNS';
 
     protected static bool $shouldRegisterNavigation = true;
 
@@ -43,10 +43,10 @@ class PnsPhotoResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id')
-                    ->label('ID')
                     ->copyable()
                     ->sortable()
-                    ->searchable(isIndividual: true),
+                    ->searchable(isIndividual: true)
+                    ->label('ID'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

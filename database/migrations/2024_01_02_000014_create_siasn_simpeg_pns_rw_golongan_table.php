@@ -30,6 +30,7 @@ return new class extends Migration
             $table->string('masaKerjaGolonganTahun')->nullable();
             $table->string('masaKerjaGolonganBulan')->nullable();
             $table->json('path')->nullable();
+            $table->string('pangkat')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

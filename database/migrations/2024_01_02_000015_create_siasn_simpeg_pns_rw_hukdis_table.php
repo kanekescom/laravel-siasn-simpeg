@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('golongan')->nullable();
             $table->string('kedudukanHukum')->nullable();
             $table->string('jenisHukuman')->nullable()->index('15_jenisHukuman');
-            $table->string('pnsOrang')->nullable()->index('15_pnsOrang');
+            $table->string('pnsOrang', 42)->nullable()->index('15_pnsOrang');
             $table->string('skNomor')->nullable();
             $table->string('skTanggal')->nullable();
             $table->string('hukumanTanggal')->nullable();

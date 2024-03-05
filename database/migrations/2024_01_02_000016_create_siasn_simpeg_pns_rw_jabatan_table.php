@@ -38,6 +38,7 @@ return new class extends Migration
             $table->string('namaJabatan')->nullable();
             $table->string('tmtPelantikan')->nullable();
             $table->json('path')->nullable();
+            $table->string('jenjang')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

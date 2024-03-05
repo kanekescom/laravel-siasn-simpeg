@@ -16,13 +16,13 @@ class PnsDataOrtuResource extends Resource
 
     protected static ?string $slug = 'pns-data-ortu';
 
-    protected static ?string $pluralLabel = 'PNS Data Ortu';
+    protected static ?string $pluralLabel = 'Data Ortu';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationLabel = 'PNS Data Ortu';
+    protected static ?string $navigationLabel = 'Data Ortu';
 
-    protected static ?string $navigationGroup = 'SIASN SIMPEG';
+    protected static ?string $navigationGroup = 'PNS';
 
     protected static bool $shouldRegisterNavigation = true;
 
@@ -46,21 +46,24 @@ class PnsDataOrtuResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id')
-                    ->label('ID')
                     ->copyable()
                     ->sortable()
-                    ->searchable(isIndividual: true),
+                    ->searchable(isIndividual: true)
+                    ->label('ID'),
                 Tables\Columns\TextColumn::make('idPns')
+                    ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('ayah_id')
                     ->toggleable(isToggledHiddenByDefault: true)
+                    ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('ibu_id')
                     ->toggleable(isToggledHiddenByDefault: true)
+                    ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true),

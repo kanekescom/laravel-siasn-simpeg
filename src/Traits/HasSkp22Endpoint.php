@@ -3,23 +3,28 @@
 namespace Kanekescom\Siasn\Simpeg\Traits;
 
 use Illuminate\Http\Client\Response;
-use Kanekescom\Siasn\Simpeg\Helpers\UrlParser;
+use Kanekescom\Siasn\Simpeg\Helpers\Skp22IdResponseTransformer;
 
 trait HasSkp22Endpoint
 {
-    public function getSkp22Id(array $paths = [], array $query = []): Response
+    public function getSkp22Id($idRiwayatSkp)
     {
-        $urlFormat = '/skp22/id/{idRiwayatSkp}';
-        $urlParsed = (new UrlParser($urlFormat))->parse($paths);
+        $paths = [
+            'idRiwayatSkp' => $idRiwayatSkp,
+        ];
 
-        return $this->get($urlParsed, $query);
+        $response = $this->simpeg::{__FUNCTION__}($paths);
+        $transformer = str(__FUNCTION__)->replaceFirst('get', '');
+        $transformerClass = "\\Kanekescom\\Siasn\\Simpeg\\Transformers\\{$transformer}Transformer";
+
+        return new Skp22IdResponseTransformer(
+            $response,
+            new $transformerClass
+        );
     }
 
-    public function postSkp22Save(array $paths = [], array $query = []): Response
+    public function postSkp22Save(array $query = []): Response
     {
-        $urlFormat = '/skp22/save';
-        $urlParsed = (new UrlParser($urlFormat))->parse($paths);
-
-        return $this->post($urlParsed, $query);
+        return $this->simpeg::{__FUNCTION__}([], $query);
     }
 }

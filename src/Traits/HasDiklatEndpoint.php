@@ -3,23 +3,28 @@
 namespace Kanekescom\Siasn\Simpeg\Traits;
 
 use Illuminate\Http\Client\Response;
-use Kanekescom\Siasn\Simpeg\Helpers\UrlParser;
+use Kanekescom\Siasn\Simpeg\Helpers\DiklatIdResponseTransformer;
 
 trait HasDiklatEndpoint
 {
-    public function getDiklatId(array $paths = [], array $query = []): Response
+    public function getDiklatId($idRiwayatDiklat)
     {
-        $urlFormat = '/diklat/id/{idRiwayatDiklat}';
-        $urlParsed = (new UrlParser($urlFormat))->parse($paths);
+        $paths = [
+            'idRiwayatDiklat' => $idRiwayatDiklat,
+        ];
 
-        return $this->get($urlParsed, $query);
+        $response = $this->simpeg::{__FUNCTION__}($paths);
+        $transformer = str(__FUNCTION__)->replaceFirst('get', '');
+        $transformerClass = "\\Kanekescom\\Siasn\\Simpeg\\Transformers\\{$transformer}Transformer";
+
+        return new DiklatIdResponseTransformer(
+            $response,
+            new $transformerClass
+        );
     }
 
-    public function postDiklatSave(array $paths = [], array $query = []): Response
+    public function postDiklatSave(array $query = []): Response
     {
-        $urlFormat = '/diklat/save';
-        $urlParsed = (new UrlParser($urlFormat))->parse($paths);
-
-        return $this->post($urlParsed, $query);
+        return $this->simpeg::{__FUNCTION__}([], $query);
     }
 }

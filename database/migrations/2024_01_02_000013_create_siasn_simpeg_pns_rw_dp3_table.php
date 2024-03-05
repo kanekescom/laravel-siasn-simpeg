@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('siasn_simpeg_pns_rw_dp3', function (Blueprint $table) {
             $table->string('id', 42)->primary();
             $table->string('pnsId', 42)->nullable()->index('13_pnsId');
-            $table->string('tahun')->nullable()->index('13_tahun');
+            $table->string('tahun', 4)->nullable()->index('13_tahun');
             $table->string('atasanNonPns')->nullable();
             $table->string('atasanPejabatPenilaiId', 42)->nullable()->index('13_atasanPejabatPenilaiId');
             $table->string('atasanPenilaiGolongan')->nullable();

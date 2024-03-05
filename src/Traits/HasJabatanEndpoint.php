@@ -23,11 +23,8 @@ trait HasJabatanEndpoint
         return $this->get($urlParsed, $query);
     }
 
-    public function postJabatanSave(array $paths = [], array $query = []): Response
+    public function postJabatanSave(array $query = []): Response
     {
-        $urlFormat = '/jabatan/save';
-        $urlParsed = (new UrlParser($urlFormat))->parse($paths);
-
-        return $this->post($urlParsed, $query);
+        return $this->simpeg::{__FUNCTION__}([], $query);
     }
 }

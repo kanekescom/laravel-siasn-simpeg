@@ -3,23 +3,28 @@
 namespace Kanekescom\Siasn\Simpeg\Traits;
 
 use Illuminate\Http\Client\Response;
-use Kanekescom\Siasn\Simpeg\Helpers\UrlParser;
+use Kanekescom\Siasn\Simpeg\Helpers\KursusIdResponseTransformer;
 
 trait HasKursusEndpoint
 {
-    public function getKursusId(array $paths = [], array $query = []): Response
+    public function getKursusId($idRiwayatKursus)
     {
-        $urlFormat = '/kursus/id/{idRiwayatKursus}';
-        $urlParsed = (new UrlParser($urlFormat))->parse($paths);
+        $paths = [
+            'idRiwayatKursus' => $idRiwayatKursus,
+        ];
 
-        return $this->get($urlParsed, $query);
+        $response = $this->simpeg::{__FUNCTION__}($paths);
+        $transformer = str(__FUNCTION__)->replaceFirst('get', '');
+        $transformerClass = "\\Kanekescom\\Siasn\\Simpeg\\Transformers\\{$transformer}Transformer";
+
+        return new KursusIdResponseTransformer(
+            $response,
+            new $transformerClass
+        );
     }
 
-    public function postKursusSave(array $paths = [], array $query = []): Response
+    public function postKursusSave(array $query = []): Response
     {
-        $urlFormat = '/kursus/save';
-        $urlParsed = (new UrlParser($urlFormat))->parse($paths);
-
-        return $this->post($urlParsed, $query);
+        return $this->simpeg::{__FUNCTION__}([], $query);
     }
 }

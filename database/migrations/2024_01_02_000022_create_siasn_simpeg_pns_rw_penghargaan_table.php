@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('siasn_simpeg_pns_rw_penghargaan', function (Blueprint $table) {
             $table->string('id', 42)->primary();
-            $table->string('tahun')->nullable()->index('22_tahun');
+            $table->string('tahun', 4)->nullable()->index('22_tahun');
             $table->string('skNomor')->nullable();
             $table->string('skDate')->nullable();
             $table->string('hargaNama')->nullable();

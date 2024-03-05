@@ -116,7 +116,7 @@ class PullPnsDataUtamaCommand extends Command
                 $model = new PnsDataUtama;
 
                 DB::transaction(function () use ($model, $response) {
-                    if (config('siasn-simpeg.delete_model_before_pull')) {
+                    if (config('siasn-simpeg.truncate_model_before_pull')) {
                         $model->delete();
                     }
 

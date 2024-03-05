@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('pendidikanNama')->nullable();
             $table->string('tkPendidikanId', 42)->nullable()->index('21_tkPendidikanId');
             $table->string('tkPendidikanNama')->nullable();
-            $table->string('tahunLulus')->nullable()->index('21_tahunLulus');
+            $table->string('tahunLulus', 4)->nullable()->index('21_tahunLulus');
             $table->string('tglLulus')->nullable();
             $table->string('isPendidikanPertama')->nullable()->index('21_isPendidikanPertama');
             $table->string('nomorIjasah')->nullable();
