@@ -7,6 +7,8 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PullTrackingResource\Pages;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PullTrackingResource\RelationManagers\ErrorsRelationManager;
 use Kanekescom\Siasn\Simpeg\Models\PullTracking;
@@ -108,6 +110,14 @@ class PullTrackingResource extends Resource
         return [
             ErrorsRelationManager::class,
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 
     public static function getPages(): array

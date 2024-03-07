@@ -7,6 +7,8 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\ReferensiRefUnorResource\Pages;
 use Kanekescom\Siasn\Simpeg\Models\ReferensiRefUnor;
 
@@ -150,6 +152,14 @@ class ReferensiRefUnorResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     //
                 ]),
+            ]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
             ]);
     }
 
