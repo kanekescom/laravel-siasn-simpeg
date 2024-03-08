@@ -3,6 +3,7 @@
 namespace Kanekescom\Siasn\Simpeg\Services;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 use Kanekescom\Siasn\Simpeg\Exceptions\FailedPostRiwayatException;
 use Kanekescom\Siasn\Simpeg\Facades\Simpeg;
 
@@ -21,6 +22,8 @@ class PostRiwayatBase
     protected $response;
 
     protected $success = false;
+
+    protected $message = null;
 
     public function __construct(array $data, Model $record)
     {
@@ -51,9 +54,11 @@ class PostRiwayatBase
     {
         $this->response = Simpeg::{$this->pushMethod}($this->buildQuery());
         $this->success = $this->response->object()->success;
+        $this->message = $this->response->object()->message;
 
         if ($this->success === false) {
-            throw new FailedPostRiwayatException($this->response->object()->message);
+            throw new FailedPostRiwayatException($this->message);
+            Log::error($this->message);
         }
 
         return $this;
