@@ -58,7 +58,6 @@ class PostRiwayatBase
 
         if ($this->success === false) {
             throw new FailedPostRiwayatException($this->message);
-
             Log::error($this->message);
         }
 
