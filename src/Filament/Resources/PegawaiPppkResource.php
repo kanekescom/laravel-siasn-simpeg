@@ -5,6 +5,8 @@ namespace Kanekescom\Siasn\Simpeg\Filament\Resources;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PegawaiPppkResource\Pages;
 use Kanekescom\Siasn\Simpeg\Filament\Traits\HasPegawaiResource;
 use Kanekescom\Siasn\Simpeg\Models\Pegawai;
@@ -36,6 +38,14 @@ class PegawaiPppkResource extends Resource
     {
         return self::defaultTable($table)
             ->modifyQueryUsing(fn ($query) => $query->pppk());
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 
     public static function getPages(): array

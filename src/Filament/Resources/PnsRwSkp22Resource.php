@@ -108,7 +108,6 @@ class PnsRwSkp22Resource extends Resource
                 Tables\Columns\TextColumn::make('pegawai.nama')
                     ->hiddenOn(Skp22sRelationManager::class)
                     ->wrap()
-                    ->wrap()
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true)
@@ -212,7 +211,7 @@ class PnsRwSkp22Resource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
@@ -244,6 +243,14 @@ class PnsRwSkp22Resource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     //
                 ]),
+            ]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
             ]);
     }
 

@@ -7,6 +7,8 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PnsListPensiunInstansiResource\Pages;
 use Kanekescom\Siasn\Simpeg\Models\PnsListPensiunInstansi;
 
@@ -191,7 +193,7 @@ class PnsListPensiunInstansiResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
@@ -202,6 +204,14 @@ class PnsListPensiunInstansiResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     //
                 ]),
+            ]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
             ]);
     }
 
