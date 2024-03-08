@@ -178,7 +178,7 @@ class PnsRwDiklatResource extends Resource
                     ->searchable(isIndividual: true),
             ])
             ->filters([
-                //
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
