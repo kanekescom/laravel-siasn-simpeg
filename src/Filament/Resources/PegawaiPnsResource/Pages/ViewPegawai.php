@@ -2,22 +2,10 @@
 
 namespace Kanekescom\Siasn\Simpeg\Filament\Resources\PegawaiPnsResource\Pages;
 
-use Filament\Resources\Pages\ViewRecord;
 use Kanekescom\Siasn\Simpeg\Filament\Resources\PegawaiPnsResource;
+use Kanekescom\Siasn\Simpeg\Filament\Resources\PegawaiResource\Pages\ViewPegawai as PagesViewPegawai;
 
-class ViewPegawai extends ViewRecord
+class ViewPegawai extends PagesViewPegawai
 {
     protected static string $resource = PegawaiPnsResource::class;
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            //
-        ];
-    }
-
-    public function hasCombinedRelationManagerTabsWithContent(): bool
-    {
-        return true;
-    }
 }
