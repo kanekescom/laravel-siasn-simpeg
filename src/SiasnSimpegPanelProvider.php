@@ -15,7 +15,6 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use ShuvroRoy\FilamentSpatieLaravelBackup\FilamentSpatieLaravelBackupPlugin;
 
 class SiasnSimpegPanelProvider extends PanelProvider
 {
@@ -48,7 +47,13 @@ class SiasnSimpegPanelProvider extends PanelProvider
                 //
             ])
             ->navigationGroups(config('siasn-simpeg.filament.navigationGroups'))
-            ->plugin(FilamentSpatieLaravelBackupPlugin::make())
+            ->plugins([
+                \ShuvroRoy\FilamentSpatieLaravelBackup\FilamentSpatieLaravelBackupPlugin::make()
+                    ->usingPage(\Kanekescom\Siasn\Referensi\Filament\Pages\Backups::class),
+            ])
+            ->spa()
+            ->unsavedChangesAlerts()
+            ->databaseTransactions()
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
