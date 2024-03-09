@@ -48,7 +48,8 @@ class SiasnSimpegPanelProvider extends PanelProvider
             ])
             ->navigationGroups(config('siasn-simpeg.filament.navigationGroups'))
             ->plugins([
-                \ShuvroRoy\FilamentSpatieLaravelBackup\FilamentSpatieLaravelBackupPlugin::make(),
+                \ShuvroRoy\FilamentSpatieLaravelBackup\FilamentSpatieLaravelBackupPlugin::make()
+                    ->usingPage(\Kanekescom\Siasn\Referensi\Filament\Pages\Backups::class),
             ])
             ->spa()
             ->unsavedChangesAlerts()
