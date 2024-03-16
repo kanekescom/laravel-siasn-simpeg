@@ -52,6 +52,18 @@ class SimpegServiceProvider extends PackageServiceProvider
             ->hasCommand(Commands\ImportCommand::class)
             ->hasCommand(Commands\PullPnsDataUtamaCommand::class)
             ->hasCommand(Commands\PullRiwayatCommand::class)
-            ->hasCommand(Commands\PullReferensiRefUnorCommand::class);
+            ->hasCommand(Commands\PullReferensiRefUnorCommand::class)
+            ->hasInstallCommand(function ($command) {
+                $command
+                    ->startWith(function ($command) {
+                        $command->info('Hello, and welcome to my great laravel package!');
+                    })
+                    ->publishConfigFile()
+                    ->askToRunMigrations()
+                    ->askToStarRepoOnGitHub('kanekescom/laravel-siasn-simpeg')
+                    ->endWith(function ($command) {
+                        $command->info('Have a great day!');
+                    });
+            });
     }
 }
