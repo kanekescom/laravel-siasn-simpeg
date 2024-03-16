@@ -38,6 +38,12 @@ You can publish the config file with:
 php artisan vendor:publish --tag="siasn-simpeg-config"
 ```
 
+Or, all installations can be completed with the install command:
+
+```bash
+php artisan siasn-simpeg:install
+```
+
 ## Usage
 
 ### Import pegawai
