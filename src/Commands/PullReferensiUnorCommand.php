@@ -21,7 +21,7 @@ class PullReferensiUnorCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Pull referensi ref unor to database from endpoint on SIASN Simpeg API';
+    protected $description = 'Pull referensi ref unor to database from endpoint on SIASN SIMPEG API';
 
     /**
      * Execute the console command.
