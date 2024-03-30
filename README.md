@@ -59,13 +59,13 @@ php artisan siasn-simpeg:install
 Import pegawai to database via csv file exported from SIASN Export Data ASN.
 
 ```bash
-php artisan siasn-simpeg:import {filePath}
+php artisan siasn-simpeg:import-pegawai {filePath}
 ```
 
 Import pegawai by truncate data first.
 
 ```bash
-php artisan siasn-simpeg:import {filePath} --truncate
+php artisan siasn-simpeg:import-pegawai {filePath} --truncate
 ```
 
 ### Pull riwayat pegawai
@@ -84,7 +84,9 @@ Use ```--track``` option to track the data pulling process.
 
 And use ```--startOver``` option to start over the data pulling process from the begining.
 
-### Pull referensi ref unor
+### Pull referensi
+
+Pull unor referensi
 
 ```bash
 php artisan siasn-simpeg:pull-referensi-unor

@@ -17,7 +17,7 @@ class SimpegServiceProvider extends PackageServiceProvider
                 // '2024_01_02_000002_create_siasn_simpeg_pengadaan_list_pengadaan_instansi_table',
                 // '2024_01_02_000006_create_siasn_simpeg_pns_data_utama_table',
                 // '2024_01_02_000007_create_siasn_simpeg_pns_list_kp_instansi_table',
-                // '2024_01_02_000008_create_siasn_simpeg_pns_list_pensiun_instansi_table',
+                '2024_01_02_000008_create_siasn_simpeg_pns_list_pensiun_instansi_table',
                 // '2024_01_02_000010_create_siasn_simpeg_pns_rw_angkakredit_table',
                 // '2024_01_02_000011_create_siasn_simpeg_pns_rw_cltn_table',
                 // '2024_01_02_000012_create_siasn_simpeg_pns_rw_diklat_table',
@@ -39,7 +39,7 @@ class SimpegServiceProvider extends PackageServiceProvider
                 '2024_01_02_000028_create_siasn_simpeg_referensi_ref_unor_table',
             ])
             ->runsMigrations()
-            ->hasCommand(Commands\PegawaiImportCommand::class)
+            ->hasCommand(Commands\ImportPegawaiCommand::class)
             // ->hasCommand(Commands\PullPnsDataUtamaCommand::class)
             // ->hasCommand(Commands\PullRiwayatCommand::class)
             ->hasCommand(Commands\PullReferensiUnorCommand::class)
