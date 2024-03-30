@@ -30,8 +30,8 @@ return new class extends Migration
             $table->string('tmtKp')->nullable();
             $table->date('tmtKp_')->nullable();
             $table->text('path_preview_sk')->nullable();
-            $table->bigInteger('gaji_pokok_baru')->nullable();
-            $table->bigInteger('gaji_pokok_lama')->nullable();
+            $table->unsignedBigInteger('gaji_pokok_baru')->nullable()->autoIncrement(false);
+            $table->unsignedBigInteger('gaji_pokok_lama')->nullable()->autoIncrement(false);
             $table->timestamps();
             $table->softDeletes();
         });
