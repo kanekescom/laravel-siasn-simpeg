@@ -86,6 +86,16 @@ And use ```--startOver``` option to start over the data pulling process from the
 
 ### Pemberhentian
 
+Pull kp list to database from endpoint on SIASN SIMPEG API
+
+```bash
+php artisan siasn-simpeg:pull-kp-list {periode}
+```
+
+**periode** format is yyyy-mm-dd
+
+### Pemberhentian
+
 Pull pemberhentian pensiun list to database from endpoint on SIASN SIMPEG API
 
 ```bash

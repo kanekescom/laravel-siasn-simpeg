@@ -16,7 +16,7 @@ class SimpegServiceProvider extends PackageServiceProvider
                 '2024_01_02_000001_create_siasn_simpeg_pegawai_table',
                 // '2024_01_02_000002_create_siasn_simpeg_pengadaan_list_pengadaan_instansi_table',
                 // '2024_01_02_000006_create_siasn_simpeg_pns_data_utama_table',
-                // '2024_01_02_000007_create_siasn_simpeg_pns_list_kp_instansi_table',
+                '2024_01_02_000007_create_siasn_simpeg_pns_list_kp_instansi_table',
                 '2024_01_02_000008_create_siasn_simpeg_pns_list_pensiun_instansi_table',
                 // '2024_01_02_000010_create_siasn_simpeg_pns_rw_angkakredit_table',
                 // '2024_01_02_000011_create_siasn_simpeg_pns_rw_cltn_table',
@@ -43,6 +43,7 @@ class SimpegServiceProvider extends PackageServiceProvider
                 Commands\ImportPegawaiCommand::class,
                 // Commands\PullPnsDataUtamaCommand::class,
                 // Commands\PullRiwayatCommand::class,
+                Commands\PullKpListCommand::class,
                 Commands\PullPemberhentianPensiunListCommand::class,
                 Commands\PullReferensiUnorCommand::class,
             ])
