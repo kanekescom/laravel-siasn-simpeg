@@ -40,7 +40,7 @@ class Pegawai extends Model
 
     public function getTable()
     {
-        return 'siasn_simpeg_' . str(class_basename(__CLASS__))->snake();
+        return 'siasn_simpeg_'.str(class_basename(__CLASS__))->snake();
     }
 
     public function dataUtama(): HasOne
