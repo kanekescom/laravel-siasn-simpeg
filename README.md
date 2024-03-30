@@ -68,7 +68,7 @@ Import pegawai by truncate data first
 php artisan siasn-simpeg:import-pegawai {filePath} --truncate
 ```
 
-Pull riwayat pegawai to database from endpoint on SIASN Simpeg API
+Pull riwayat pegawai to database from endpoint on SIASN SIMPEG API
 
 ```bash
 php artisan siasn-simpeg:pull-riwayat
@@ -84,9 +84,17 @@ Use ```--track``` option to track the data pulling process
 
 And use ```--startOver``` option to start over the data pulling process from the begining
 
+### Pemberhentian
+
+Pull pemberhentian pensiun list to database from endpoint on SIASN SIMPEG API
+
+```bash
+php artisan siasn-simpeg:pull-pemberhentian-pensiun-list {tahun}
+```
+
 ### Referensi
 
-Pull referensi ref unor to database from endpoint on SIASN Simpeg API
+Pull referensi ref unor to database from endpoint on SIASN SIMPEG API
 
 ```bash
 php artisan siasn-simpeg:pull-referensi-unor

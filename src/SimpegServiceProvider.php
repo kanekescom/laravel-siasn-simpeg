@@ -39,10 +39,13 @@ class SimpegServiceProvider extends PackageServiceProvider
                 '2024_01_02_000028_create_siasn_simpeg_referensi_ref_unor_table',
             ])
             ->runsMigrations()
-            ->hasCommand(Commands\ImportPegawaiCommand::class)
-            // ->hasCommand(Commands\PullPnsDataUtamaCommand::class)
-            // ->hasCommand(Commands\PullRiwayatCommand::class)
-            ->hasCommand(Commands\PullReferensiUnorCommand::class)
+            ->hasCommands([
+                Commands\ImportPegawaiCommand::class,
+                // Commands\PullPnsDataUtamaCommand::class,
+                // Commands\PullRiwayatCommand::class,
+                Commands\PullPemberhentianPensiunListCommand::class,
+                Commands\PullReferensiUnorCommand::class,
+            ])
             ->hasInstallCommand(function ($command) {
                 $command
                     ->startWith(function ($command) {
