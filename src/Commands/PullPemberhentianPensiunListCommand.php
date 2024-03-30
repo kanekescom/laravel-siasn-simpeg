@@ -52,9 +52,11 @@ class PullPemberhentianPensiunListCommand extends Command
 
                 $model = new PnsListPensiunInstansi;
 
-                DB::transaction(function () use ($model, $response, $bar) {
+                DB::transaction(function () use ($model, $response, $bar, $tahun) {
                     if (config('siasn-simpeg.truncate_model_before_pull')) {
-                        $model->delete();
+                        $model->query()
+                            ->whereYear('tmtPensiun_', $tahun)
+                            ->delete();
                     }
 
                     $response->chunk(config('siasn-simpeg.chunk_data'))->each(function ($item) use ($model, $bar) {
@@ -70,6 +72,8 @@ class PullPemberhentianPensiunListCommand extends Command
                 $bar->finish();
 
                 $this->newLine(2);
+
+                $this->comment("Processed in {$start->shortAbsoluteDiffForHumans(now(), 1)}");
             } catch (\Exception $e) {
                 $this->error($e);
                 $this->newLine();
@@ -77,8 +81,6 @@ class PullPemberhentianPensiunListCommand extends Command
                 return self::FAILURE;
             }
         }
-
-        $this->comment("Processed in {$start->shortAbsoluteDiffForHumans(now(), 1)}");
 
         return self::SUCCESS;
     }
