@@ -54,39 +54,39 @@ php artisan siasn-simpeg:install
 
 ## Usage
 
-### Import pegawai
+### Pegawai
 
-Import pegawai to database via csv file exported from SIASN Export Data ASN.
+Import pegawai to database via csv file exported from SIASN Export Data ASN
 
 ```bash
 php artisan siasn-simpeg:import-pegawai {filePath}
 ```
 
-Import pegawai by truncate data first.
+Import pegawai by truncate data first
 
 ```bash
 php artisan siasn-simpeg:import-pegawai {filePath} --truncate
 ```
 
-### Pull riwayat pegawai
+Pull riwayat pegawai to database from endpoint on SIASN Simpeg API
 
 ```bash
 php artisan siasn-simpeg:pull-riwayat
 ```
 
-You can also use the ```endpoint``` argument to specify only certain endpoints to be pulled.
+You can also use the ```endpoint``` argument to specify only certain endpoints to be pulled
 
-Use ```--nipBaru=``` option to select only certain pegawai.
+Use ```--nipBaru=``` option to select only certain pegawai
 
-Use ```--skip=0``` option to skip N pegawai.
+Use ```--skip=0``` option to skip N pegawai
 
-Use ```--track``` option to track the data pulling process.
+Use ```--track``` option to track the data pulling process
 
-And use ```--startOver``` option to start over the data pulling process from the begining.
+And use ```--startOver``` option to start over the data pulling process from the begining
 
-### Pull referensi
+### Referensi
 
-Pull unor referensi
+Pull referensi ref unor to database from endpoint on SIASN Simpeg API
 
 ```bash
 php artisan siasn-simpeg:pull-referensi-unor
