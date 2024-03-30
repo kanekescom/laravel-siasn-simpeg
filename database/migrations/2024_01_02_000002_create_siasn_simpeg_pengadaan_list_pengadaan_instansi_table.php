@@ -13,21 +13,25 @@ return new class extends Migration
     {
         Schema::create('siasn_simpeg_pengadaan_list_pengadaan_instansi', function (Blueprint $table) {
             $table->string('id', 42)->primary();
-            $table->string('orang_id')->nullable()->index('2_orang_id');
-            $table->string('no_peserta')->nullable()->index('2_no_peserta');
-            $table->string('nip')->nullable()->index('2_nip');
+            $table->string('orang_id', 42)->nullable()->index('2_orang_id');
+            $table->string('no_peserta', 16)->nullable()->index('2_no_peserta');
+            $table->string('nip', 18)->nullable()->index('2_nip');
             $table->string('nama')->nullable();
-            $table->string('periode')->nullable()->index('2_periode');
-            $table->string('instansi_id')->nullable()->index('2_instansi_id');
+            $table->year('periode')->nullable()->index('2_periode');
+            $table->string('instansi_id', 42)->nullable()->index('2_instansi_id');
             $table->string('no_pertek')->nullable();
             $table->string('no_sk')->nullable();
-            $table->string('path_ttd_sk')->nullable();
-            $table->string('path_ttd_pertek')->nullable();
+            $table->text('path_ttd_sk')->nullable();
+            $table->text('path_ttd_pertek')->nullable();
             $table->string('tgl_pertek')->nullable();
+            $table->dateTime('tgl_pertek_')->nullable();
             $table->string('tgl_sk')->nullable();
+            $table->dateTime('tgl_sk_')->nullable();
             $table->string('tgl_kontrak_mulai')->nullable();
+            $table->date('tgl_kontrak_mulai_')->nullable();
             $table->string('tgl_kontrak_akhir')->nullable();
-            $table->string('jenis_formasi_id')->nullable()->index('2_jenis_formasi_id');
+            $table->date('tgl_kontrak_akhir_')->nullable();
+            $table->string('jenis_formasi_id', 4)->nullable()->index('2_jenis_formasi_id');
             $table->string('jenis_formasi_nama')->nullable();
             $table->timestamps();
             $table->softDeletes();

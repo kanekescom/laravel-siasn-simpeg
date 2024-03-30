@@ -84,6 +84,14 @@ Use ```--track``` option to track the data pulling process
 
 And use ```--startOver``` option to start over the data pulling process from the begining
 
+### Pengadaan
+
+Pull pengadaan list to database from endpoint on SIASN SIMPEG API
+
+```bash
+php artisan siasn-simpeg:pull-pengadaan-list {tahun}
+```
+
 ### Pemberhentian
 
 Pull kp list to database from endpoint on SIASN SIMPEG API
