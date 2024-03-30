@@ -6,7 +6,7 @@ use Illuminate\Http\Client\Response;
 use Kanekescom\Helperia\Support\ClassExtender;
 use League\Fractal\TransformerAbstract;
 
-class ReferensiResponseTransformer extends ClassExtender
+class ReferensiUnorResponseTransformer extends ClassExtender
 {
     public function __construct(Response $response, TransformerAbstract $transformer)
     {
