@@ -87,7 +87,7 @@ And use ```--startOver``` option to start over the data pulling process from the
 ### Pull referensi ref unor
 
 ```bash
-php artisan siasn-simpeg:pull-referensi-ref-unor
+php artisan siasn-simpeg:pull-referensi-unor
 ```
 
 ## Testing

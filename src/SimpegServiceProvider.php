@@ -36,13 +36,13 @@ class SimpegServiceProvider extends PackageServiceProvider
                 // '2024_01_02_000025_create_siasn_simpeg_pns_rw_pwk_table',
                 // '2024_01_02_000026_create_siasn_simpeg_pns_rw_skp_table',
                 // '2024_01_02_000027_create_siasn_simpeg_pns_rw_skp22_table',
-                // '2024_01_02_000028_create_siasn_simpeg_referensi_ref_unor_table',
+                '2024_01_02_000028_create_siasn_simpeg_referensi_ref_unor_table',
             ])
             ->runsMigrations()
             ->hasCommand(Commands\PegawaiImportCommand::class)
             // ->hasCommand(Commands\PullPnsDataUtamaCommand::class)
             // ->hasCommand(Commands\PullRiwayatCommand::class)
-            // ->hasCommand(Commands\PullReferensiRefUnorCommand::class)
+            ->hasCommand(Commands\PullReferensiUnorCommand::class)
             ->hasInstallCommand(function ($command) {
                 $command
                     ->startWith(function ($command) {
