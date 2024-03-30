@@ -64,6 +64,8 @@ class PullReferensiUnorCommand extends Command
                 $bar->finish();
 
                 $this->newLine(2);
+
+                $this->comment("Processed in {$start->shortAbsoluteDiffForHumans(now(), 1)}");
             } catch (\Exception $e) {
                 $this->error($e);
                 $this->newLine();
@@ -71,8 +73,6 @@ class PullReferensiUnorCommand extends Command
                 return self::FAILURE;
             }
         }
-
-        $this->comment("Processed in {$start->shortAbsoluteDiffForHumans(now(), 1)}");
 
         return self::SUCCESS;
     }
