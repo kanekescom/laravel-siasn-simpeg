@@ -8,10 +8,10 @@ use Kanekescom\Siasn\Simpeg\Transformers\ReferensiRefUnorTransformer;
 
 class Referensi
 {
-    public static function getUnor()
+    public static function getUnor(array $paths = [], array $query = [])
     {
         return new ReferensiUnorResponseTransformer(
-            ReferensiClient::getUnor(),
+            ReferensiClient::getUnor($paths, $query),
             new ReferensiRefUnorTransformer
         );
     }
