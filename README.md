@@ -17,6 +17,14 @@ Want to provide tangible support? Use the following platform to contribute to op
 
 We highly appreciate you sending us a few cups of coffee to accompany us while writing code. Super thanks.
 
+## Use pro version
+
+We also offer a professional version. We're excited for you to try it out, as it allows us to consistently deliver high-quality software. Don't hesitate to contact us at kanekescom@gmail.com for further information.
+
+- Laravel SIASN Referensi Panel
+- Laravel SIASN SIMPEG Panel
+- SIMPEGDA App
+
 ## Installation
 
 You can install the package via composer:

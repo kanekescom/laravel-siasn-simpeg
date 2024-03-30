@@ -41,7 +41,7 @@ class PostRiwayatBase
         $data = collect($this->data)
             ->merge($this->transform());
 
-        $this->record->path = array_values($this->record->path);
+        $this->record->path = array_values($this->record->path ?? []);
 
         return collect($this->record->toArray())
             ->merge($data)

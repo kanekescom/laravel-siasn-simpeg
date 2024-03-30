@@ -15,7 +15,7 @@ class PegawaiImport implements ToModel, WithHeadingRow, WithProgressBar
 
     public function model(array $row)
     {
-        $row = Arr::map($row, function ($value, $key) {
+        $row = Arr::map($row, function ($value) {
             $cleanedString = preg_replace('/[^\p{L}\p{N}\p{P}\p{S}\s]/u', '', $value);
             $cleanedString = str_replace("'", '', $cleanedString);
 
@@ -24,11 +24,9 @@ class PegawaiImport implements ToModel, WithHeadingRow, WithProgressBar
 
         $row = Arr::add($row, 'deleted_at', null);
 
-        return Pegawai::withTrashed()->updateOrCreate(['pns_id' => $row[self::getField('pns_id')]], $row);
-    }
-
-    protected static function getField($var): ?string
-    {
-        return str($var)->slug('_');
+        return Pegawai::withTrashed()
+            ->updateOrCreate([
+                'pns_id' => $row['pns_id'],
+            ], $row);
     }
 }

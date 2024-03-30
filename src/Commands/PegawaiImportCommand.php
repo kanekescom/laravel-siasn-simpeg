@@ -6,14 +6,14 @@ use Illuminate\Console\Command;
 use Kanekescom\Siasn\Simpeg\Imports\PegawaiImport;
 use Kanekescom\Siasn\Simpeg\Models\Pegawai;
 
-class ImportCommand extends Command
+class PegawaiImportCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'siasn-simpeg:import
+    protected $signature = 'siasn-simpeg:pegawai-import
                             {filePath : File path}
                             {--truncate : Truncate data before run import}';
 
