@@ -48,7 +48,8 @@ class PullReferensiUnorCommand extends Command
 
                 DB::transaction(function () use ($model, $response, $bar) {
                     if (config('siasn-simpeg.truncate_model_before_pull')) {
-                        $model->delete();
+                        $model->query()
+                            ->delete();
                     }
 
                     $response->chunk(config('siasn-simpeg.chunk_data'))->each(function ($item) use ($model, $bar) {
