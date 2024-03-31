@@ -4,8 +4,8 @@ namespace Kanekescom\Siasn\Simpeg\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use Kanekescom\Siasn\Simpeg\Http\Client\Pengadaan;
 use Kanekescom\Siasn\Simpeg\Models\PengadaanListPengadaanInstansi;
+use Kanekescom\Siasn\Simpeg\Pengadaan;
 
 class PullPengadaanListCommand extends Command
 {

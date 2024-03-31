@@ -4,7 +4,7 @@ namespace Kanekescom\Siasn\Simpeg\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use Kanekescom\Siasn\Simpeg\Http\Client\Kp;
+use Kanekescom\Siasn\Simpeg\Kp;
 use Kanekescom\Siasn\Simpeg\Models\PnsListKpInstansi;
 
 class PullKpListCommand extends Command

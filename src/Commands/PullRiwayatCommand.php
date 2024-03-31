@@ -6,9 +6,9 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Number;
 use Kanekescom\Siasn\Simpeg\Exceptions\BadEndpointCallException;
-use Kanekescom\Siasn\Simpeg\Http\Client\Riwayat;
 use Kanekescom\Siasn\Simpeg\Models;
 use Kanekescom\Siasn\Simpeg\Models\Pegawai;
+use Kanekescom\Siasn\Simpeg\Riwayat;
 
 class PullRiwayatCommand extends Command
 {
@@ -18,7 +18,7 @@ class PullRiwayatCommand extends Command
      * @var string
      */
     protected $signature = 'siasn-simpeg:pull-riwayat
-                            {endpoint? : Endpoint API}}
+                            {endpoint?* : Endpoint API}}
                             {--nipBaru= : nipBaru. Can be separated by commas.}
                             {--skip=0: skip value}';
 
@@ -130,13 +130,13 @@ class PullRiwayatCommand extends Command
         $endpointOptions = collect($this->endpoints)
             ->keys()
             ->mapWithKeys(fn ($item) => [$item => $item]);
-        $endpoint = $this->argument('endpoint');
+        $endpoints = collect($this->argument('endpoint'));
 
-        if (blank($endpoints = $endpointOptions->only($endpoint))) {
+        if (filled($endpoints->first()) && blank($endpoints = $endpointOptions->only($endpoints))) {
             throw new BadEndpointCallException('Endpoint does not exist.');
         }
 
-        if (blank($endpoint)) {
+        if (blank($endpoints->first())) {
             $endpoints = collect($this->choice(
                 'What do you want to call endpoint? Separate with commas.',
                 collect(['all' => 'all'])->merge($endpointOptions)->keys()->toArray(),
@@ -145,7 +145,11 @@ class PullRiwayatCommand extends Command
                 true,
             ));
 
-            $endpoints = $endpoints->contains('all') ? $endpointOptions : $endpointOptions->only($endpoints);
+            if ($endpoints->contains('all')) {
+                $endpoints = $endpointOptions;
+            } else {
+                $endpoints = $endpointOptions->only($endpoints);
+            }
         }
 
         $startPegawai = now();

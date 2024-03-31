@@ -4,8 +4,8 @@ namespace Kanekescom\Siasn\Simpeg\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use Kanekescom\Siasn\Simpeg\Http\Client\Referensi;
 use Kanekescom\Siasn\Simpeg\Models\ReferensiRefUnor;
+use Kanekescom\Siasn\Simpeg\Referensi;
 
 class PullReferensiUnorCommand extends Command
 {

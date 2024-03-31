@@ -1,10 +1,9 @@
 <?php
 
-namespace Kanekescom\Siasn\Simpeg\Http\Client;
+namespace Kanekescom\Siasn\Simpeg;
 
-use Kanekescom\Siasn\Simpeg\Api\Http\Client\Riwayat as RiwayatClient;
+use Kanekescom\Siasn\Simpeg\Api\Riwayat as RiwayatClient;
 use Kanekescom\Siasn\Simpeg\Helpers\RiwayatResponseTransformer;
-use Kanekescom\Siasn\Simpeg\Transformers;
 
 class Riwayat
 {

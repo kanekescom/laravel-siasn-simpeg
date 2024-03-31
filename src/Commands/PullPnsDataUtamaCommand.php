@@ -5,9 +5,9 @@ namespace Kanekescom\Siasn\Simpeg\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Number;
-use Kanekescom\Siasn\Simpeg\Http\Client\Pns;
 use Kanekescom\Siasn\Simpeg\Models\Pegawai;
 use Kanekescom\Siasn\Simpeg\Models\PnsDataUtama;
+use Kanekescom\Siasn\Simpeg\Pns;
 
 class PullPnsDataUtamaCommand extends Command
 {
