@@ -1,3 +1,3 @@
 # Changelog
 
-All notable changes to `laravel-siasn-simpeg-api` will be documented in this file.
+All notable changes to `laravel-siasn-simpeg` will be documented in this file.

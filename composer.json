@@ -1,16 +1,16 @@
 {
     "name": "kanekescom/laravel-siasn-simpeg",
-    "description": "SIASN Simpeg for Laravel",
+    "description": "SIASN SIMPEG for Laravel",
     "keywords": [
         "kanekescom",
         "laravel",
         "laravel-siasn-simpeg-api",
+        "laravel-siasn-simpeg",
         "siasn-api",
         "simpeg-api",
         "sian",
         "api",
-        "bkn",
-        "laravel-siasn-simpeg"
+        "bkn"
     ],
     "homepage": "https://github.com/kanekescom/laravel-siasn-simpeg",
     "license": "MIT",
@@ -24,15 +24,13 @@
     ],
     "require": {
         "php": "^8.1",
-        "eightynine/filament-excel-import": "^3.0",
-        "filament/filament": "^3.2",
         "guzzlehttp/guzzle": "^7.2",
-        "illuminate/contracts": "^10.0",
+        "illuminate/contracts": "^10.0|^11.0",
         "kanekescom/laravel-helperia": "^2.0",
         "kanekescom/laravel-siasn-api": "^2.0",
         "kanekescom/laravel-siasn-referensi": "^2.0",
         "kanekescom/laravel-siasn-simpeg-api": "^2.0",
-        "shuvroroy/filament-spatie-laravel-backup": "^2.1",
+        "maatwebsite/excel": "^3.1",
         "spatie/laravel-fractal": "^6.0",
         "spatie/laravel-package-tools": "^1.14.0"
     },
@@ -62,7 +60,7 @@
     },
     "scripts": {
         "post-autoload-dump": "@composer run prepare",
-        "clear": "@php vendor/bin/testbench package:purge-laravel-siasn-simpeg-api --ansi",
+        "clear": "@php vendor/bin/testbench package:purge-laravel-siasn-simpeg --ansi",
         "prepare": "@php vendor/bin/testbench package:discover --ansi",
         "build": [
             "@composer run prepare",
@@ -88,12 +86,8 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Kanekescom\\Siasn\\Simpeg\\SimpegServiceProvider",
-                "Kanekescom\\Siasn\\Simpeg\\SiasnSimpegPanelProvider"
-            ],
-            "aliases": {
-                "Simpeg": "Kanekescom\\Siasn\\Simpeg\\Facades\\Simpeg"
-            }
+                "Kanekescom\\Siasn\\Simpeg\\SimpegServiceProvider"
+            ]
         },
         "branch-alias": {
             "dev-main": "2.x-dev"
