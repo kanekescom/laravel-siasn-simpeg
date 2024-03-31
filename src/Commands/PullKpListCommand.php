@@ -15,7 +15,7 @@ class PullKpListCommand extends Command
      * @var string
      */
     protected $signature = 'siasn-simpeg:pull-kp-list
-                            {periode : periode}';
+                            {periode : periode (yyyy-mm-dd)}';
 
     /**
      * The console command description.
