@@ -63,13 +63,10 @@ class PullPnsDataUtamaCommand extends Command
             try {
                 $model = new PnsDataUtama;
 
-                DB::transaction(function () use ($model, $response) {
-                    if (config('siasn-simpeg.truncate_model_before_pull')) {
-                        $model->delete();
-                    }
-
+                DB::transaction(function () use ($model, $response, $pegawai) {
                     $model->updateOrCreate($response->toArray());
                     $model->withTrashed()
+                        ->where('id', $pegawai->nip_baru)
                         ->restore();
                 });
             } catch (\Exception $e) {
@@ -81,7 +78,7 @@ class PullPnsDataUtamaCommand extends Command
 
             $executedItems = Number::format($iPegawai - $skip);
 
-            $this->info(str("The task has run so far for {$start->shortAbsoluteDiffForHumans(now(), 1)} and {$executedItems} items have been executed.")->upper());
+            $this->info(str("The task has run so far for {$start->shortAbsoluteDiffForHumans(now(), 1)} and {$executedItems} items have been executed")->upper());
             $this->newLine();
         });
 
