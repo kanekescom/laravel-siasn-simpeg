@@ -84,6 +84,20 @@ Use ```--track``` option to track the data pulling process
 
 And use ```--startOver``` option to start over the data pulling process from the begining
 
+### PNS
+
+Pull PNS data utama to database from endpoint on SIASN SIMPEG API
+
+> For this time, this command will encounter an error on the 9th iteration due to limitations imposed by the SIASN API. So far, I haven't found the solution.
+
+```bash
+php artisan siasn-simpeg:pull-pns-data-utama
+```
+
+Use ```--nipBaru={nipBaru}``` option to select only certain pegawai (separated by commas)
+
+Use ```--skip={number}``` option to skip N pegawai
+
 ### Pengadaan
 
 Pull pengadaan list to database from endpoint on SIASN SIMPEG API
