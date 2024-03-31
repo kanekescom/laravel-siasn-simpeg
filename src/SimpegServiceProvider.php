@@ -35,14 +35,14 @@ class SimpegServiceProvider extends PackageServiceProvider
                 // '2024_01_02_000024_create_siasn_simpeg_pns_rw_pnsunor_table',
                 // '2024_01_02_000025_create_siasn_simpeg_pns_rw_pwk_table',
                 // '2024_01_02_000026_create_siasn_simpeg_pns_rw_skp_table',
-                // '2024_01_02_000027_create_siasn_simpeg_pns_rw_skp22_table',
+                '2024_01_02_000027_create_siasn_simpeg_pns_rw_skp22_table',
                 '2024_01_02_000028_create_siasn_simpeg_referensi_ref_unor_table',
             ])
             ->runsMigrations()
             ->hasCommands([
                 Commands\ImportPegawaiCommand::class,
                 Commands\PullPnsDataUtamaCommand::class,
-                // Commands\PullRiwayatCommand::class,
+                Commands\PullRiwayatCommand::class,
                 Commands\PullPengadaanListCommand::class,
                 Commands\PullKpListCommand::class,
                 Commands\PullPemberhentianPensiunListCommand::class,

@@ -68,21 +68,45 @@ Import pegawai by truncate data first
 php artisan siasn-simpeg:import-pegawai {filePath} --truncate
 ```
 
-Pull riwayat pegawai to database from endpoint on SIASN SIMPEG API
+### Riwayat
+
+Pull riwayat pegawai to database from endpoint on SIASN Simpeg API
 
 ```bash
 php artisan siasn-simpeg:pull-riwayat
 ```
 
+Pull specific riwayat pegawai to database from endpoint on SIASN Simpeg API
+
+```bash
+php artisan siasn-simpeg:pull-riwayat agama
+```
+
 You can also use the ```endpoint``` argument to specify only certain endpoints to be pulled
 
-Use ```--nipBaru=``` option to select only certain pegawai
+Available endpoints:
+- angkakredit
+- cltn
+- diklat
+- dp3
+- golongan
+- hukdis
+- jabatan
+- kinerjaperiodik
+- kursus
+- masakerja
+- pemberhentian
+- pendidikan
+- penghargaan
+- pindahinstansi
+- pnsunor
+- pwk
+- skp
+- skp22
 
-Use ```--skip=0``` option to skip N pegawai
+Use ```--nipBaru={nipBaru}``` option to select only certain pegawai (separated by commas)
 
-Use ```--track``` option to track the data pulling process
-
-And use ```--startOver``` option to start over the data pulling process from the begining
+Use ```--skip={number}``` option to skip N pegawai
 
 ### PNS
 

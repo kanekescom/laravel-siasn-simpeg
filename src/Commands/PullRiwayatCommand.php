@@ -3,14 +3,12 @@
 namespace Kanekescom\Siasn\Simpeg\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Number;
 use Kanekescom\Siasn\Simpeg\Exceptions\BadEndpointCallException;
-use Kanekescom\Siasn\Simpeg\Facades\Simpeg;
+use Kanekescom\Siasn\Simpeg\Http\Client\Riwayat;
+use Kanekescom\Siasn\Simpeg\Models;
 use Kanekescom\Siasn\Simpeg\Models\Pegawai;
-use Kanekescom\Siasn\Simpeg\Models\PullTracking;
-use Kanekescom\Siasn\Simpeg\Models\PullTrackingError;
-use Kanekescom\Siasn\Simpeg\Services\PullTrackingErrorService;
 
 class PullRiwayatCommand extends Command
 {
@@ -21,10 +19,8 @@ class PullRiwayatCommand extends Command
      */
     protected $signature = 'siasn-simpeg:pull-riwayat
                             {endpoint? : Endpoint API}}
-                            {--nipBaru= : NIP Baru}
-                            {--skip=0}
-                            {--track}
-                            {--startOver}';
+                            {--nipBaru= : nipBaru. Can be separated by commas.}
+                            {--skip=0: skip value}';
 
     /**
      * The console command description.
@@ -34,45 +30,96 @@ class PullRiwayatCommand extends Command
     protected $description = 'Pull riwayat pegawai to database from endpoint on SIASN Simpeg API';
 
     protected $endpoints = [
-        'pns-rw-angkakredit',
-        'pns-rw-cltn',
-        'pns-rw-diklat',
-        'pns-rw-dp3',
-        'pns-rw-golongan',
-        'pns-rw-hukdis',
-        'pns-rw-jabatan',
-        'pns-rw-kinerjaperiodik',
-        'pns-rw-kursus',
-        'pns-rw-masakerja',
-        'pns-rw-pemberhentian',
-        'pns-rw-pendidikan',
-        'pns-rw-penghargaan',
-        'pns-rw-pindahinstansi',
-        'pns-rw-pnsunor',
-        'pns-rw-pwk',
-        'pns-rw-skp',
-        'pns-rw-skp22',
-    ];
-
-    protected $pnsId = [
-        'pns-rw-angkakredit' => 'pns',
-        'pns-rw-cltn' => 'pnsOrangId',
-        'pns-rw-diklat' => 'idPns',
-        'pns-rw-dp3' => 'pnsId',
-        'pns-rw-golongan' => 'idPns',
-        'pns-rw-hukdis' => 'pnsOrang',
-        'pns-rw-jabatan' => 'idPns',
-        'pns-rw-kinerjaperiodik' => 'pnsDinilaiId',
-        'pns-rw-kursus' => 'idPns',
-        'pns-rw-masakerja' => 'idPns',
-        'pns-rw-pemberhentian' => 'pnsOrang',
-        'pns-rw-pendidikan' => 'idPns',
-        'pns-rw-penghargaan' => 'pnsOrangId',
-        'pns-rw-pindahinstansi' => 'pnsOrang',
-        'pns-rw-pnsunor' => 'pnsOrang',
-        'pns-rw-pwk' => 'pnsOrang',
-        'pns-rw-skp' => 'pns',
-        'pns-rw-skp22' => 'pnsDinilaiId',
+        'angkakredit' => [
+            'model' => Models\PnsRwAngkakredit::class,
+            'method' => 'getAngkakredit',
+            'pnsId' => 'pns',
+        ],
+        'cltn' => [
+            'model' => Models\PnsRwCltn::class,
+            'method' => 'getCltn',
+            'pnsId' => 'pnsOrangId',
+        ],
+        'diklat' => [
+            'model' => Models\PnsRwDiklat::class,
+            'method' => 'getDiklat',
+            'pnsId' => 'idPns',
+        ],
+        'dp3' => [
+            'model' => Models\PnsRwDp3::class,
+            'method' => 'getDp3',
+            'pnsId' => 'pnsId',
+        ],
+        'golongan' => [
+            'model' => Models\PnsRwGolongan::class,
+            'method' => 'getGolongan',
+            'pnsId' => 'idPns',
+        ],
+        'hukdis' => [
+            'model' => Models\PnsRwHukdis::class,
+            'method' => 'getHukdis',
+            'pnsId' => 'pnsOrang',
+        ],
+        'jabatan' => [
+            'model' => Models\PnsRwJabatan::class,
+            'method' => 'getJabatan',
+            'pnsId' => 'idPns',
+        ],
+        'kinerjaperiodik' => [
+            'model' => Models\PnsRwKinerjaperiodik::class,
+            'method' => 'getKinerjaperiodik',
+            'pnsId' => 'pnsDinilaiId',
+        ],
+        'kursus' => [
+            'model' => Models\PnsRwKursus::class,
+            'method' => 'getKursus',
+            'pnsId' => 'idPns',
+        ],
+        'masakerja' => [
+            'model' => Models\PnsRwMasakerja::class,
+            'method' => 'getMasakerja',
+            'pnsId' => 'pnsOrang',
+        ],
+        'pemberhentian' => [
+            'model' => Models\PnsRwPemberhentian::class,
+            'method' => 'getPemberhentian',
+            'pnsId' => 'pns',
+        ],
+        'pendidikan' => [
+            'model' => Models\PnsRwPendidikan::class,
+            'method' => 'getPendidikan',
+            'pnsId' => 'idPns',
+        ],
+        'penghargaan' => [
+            'model' => Models\PnsRwPenghargaan::class,
+            'method' => 'getPenghargaan',
+            'pnsId' => 'pnsOrangId',
+        ],
+        'pindahinstansi' => [
+            'model' => Models\PnsRwPindahinstansi::class,
+            'method' => 'getPindahinstansi',
+            'pnsId' => 'pnsOrang',
+        ],
+        'pnsunor' => [
+            'model' => Models\PnsRwPnsunor::class,
+            'method' => 'getPnsunor',
+            'pnsId' => 'pnsOrang',
+        ],
+        'pwk' => [
+            'model' => Models\PnsRwPwk::class,
+            'method' => 'getPwk',
+            'pnsId' => 'pnsOrang',
+        ],
+        'skp' => [
+            'model' => Models\PnsRwSkp::class,
+            'method' => 'getSkp',
+            'pnsId' => 'pns',
+        ],
+        'skp22' => [
+            'model' => Models\PnsRwSkp22::class,
+            'method' => 'getSkp22',
+            'pnsId' => 'pnsDinilaiId',
+        ],
     ];
 
     /**
@@ -80,43 +127,16 @@ class PullRiwayatCommand extends Command
      */
     public function handle()
     {
-        $endpointOptions = collect($this->endpoints)->mapWithKeys(fn ($item) => [$item => $item]);
+        $endpointOptions = collect($this->endpoints)
+            ->keys()
+            ->mapWithKeys(fn ($item) => [$item => $item]);
         $endpoint = $this->argument('endpoint');
-        $nipBaru = $this->option('nipBaru');
-        $track = $this->option('track');
-        $startOver = $this->option('startOver');
-        $skip = $startOver ? 0 : $this->option('skip');
 
         if (blank($endpoints = $endpointOptions->only($endpoint))) {
             throw new BadEndpointCallException('Endpoint does not exist.');
         }
 
-        $pullTrackingCommandName = 'siasn-simpeg:pull-riwayat';
-        $pullTrackingCommandName .= $endpoint ? " {$endpoint}" : $endpoint;
-        $hasPullTracking = $nipBaru ? null : PullTracking::where('command', $pullTrackingCommandName)->first();
-        $lastTryPullTracking = $startOver ? 0 : $hasPullTracking?->last_try;
-        $skip = (int) ($skip > $lastTryPullTracking ? $skip : $lastTryPullTracking);
-        $iPegawai = $skip;
-
-        if ($startOver && $hasPullTracking) {
-            try {
-                $hasPullTracking->errors()->delete();
-                $hasPullTracking->delete();
-                $hasPullTracking = null;
-            } catch (\Exception $e) {
-                $this->error($e);
-                $this->newLine();
-
-                return self::FAILURE;
-            }
-
-            $skip = 0;
-
-            $this->info(str('Start over command.')->upper());
-            $this->newLine();
-        }
-
-        if (blank($endpoint) && ! ($track && $hasPullTracking)) {
+        if (blank($endpoint)) {
             $endpoints = collect($this->choice(
                 'What do you want to call endpoint? Separate with commas.',
                 collect(['all' => 'all'])->merge($endpointOptions)->keys()->toArray(),
@@ -131,14 +151,10 @@ class PullRiwayatCommand extends Command
         $startPegawai = now();
         $endpoints = $endpoints->keys();
         $endpointCount = $endpoints->count();
-        $pullTracking = new PullTracking;
-        $pullTrackingError = new PullTrackingError;
-        $pegawais = Pegawai::get();
-
-        if ($nipBaru) {
-            $pegawais = Pegawai::where('nip_baru', $nipBaru)->get();
-        }
-
+        $nipBaru = $this->option('nipBaru') ? explode(',', $this->option('nipBaru')) : [];
+        $skip = (int) $this->option('skip');
+        $iPegawai = $skip;
+        $pegawais = filled($nipBaru) ? Pegawai::whereIn('nip_baru', $nipBaru)->get() : Pegawai::get();
         $pegawaiCount = $pegawais->count();
 
         if ($skip >= $pegawaiCount) {
@@ -147,48 +163,23 @@ class PullRiwayatCommand extends Command
             return self::FAILURE;
         }
 
-        if ($nipBaru == null && $track) {
-            $pullTracking = PullTracking::updateOrCreate(['command' => $pullTrackingCommandName], [
-                'start_from' => $skip,
-                'amount' => $pegawaiCount,
-            ]);
-        }
-
-        if ($nipBaru == null && $track && ! $startOver && $hasPullTracking && $hasPullTracking->done_at) {
-            $this->info('Pull command has been completed. Use --startOver to re-pull from the beginning.');
-
-            return self::SUCCESS;
-        }
-
-        if ($nipBaru == null && $track && ! $startOver && $hasPullTracking) {
-            $pullingStartingForm = $skip + 1;
-
-            $this->info(str("Continue pulling starting from {$pullingStartingForm}")->upper());
-            $this->newLine();
-        }
-
         $pegawais = $pegawais->skip($skip);
-        $pegawais->each(function ($pegawai) use ($pegawaiCount, &$iPegawai, $endpoints, $endpointCount, $startPegawai, $pullTracking, $pullTrackingError, $skip, $nipBaru, $track) {
+        $pegawais->each(function ($pegawai) use ($pegawaiCount, &$iPegawai, $endpoints, $endpointCount, $startPegawai, $skip) {
             $startEndpoint = now();
             $iPegawai++;
             $iEndpoint = 0;
 
             $this->info("PEGAWAI: [{$iPegawai}/{$pegawaiCount}] {$pegawai->nip_baru}");
 
-            $endpoints->each(function ($endpoint) use ($pegawai, $endpointCount, &$iEndpoint, $pullTracking, $pullTrackingError, $nipBaru, $track) {
+            $endpoints->each(function ($endpoint) use ($pegawai, $endpointCount, &$iEndpoint) {
                 $iEndpoint++;
-                $modelName = str($endpoint)->studly();
-                $modelClass = "Kanekescom\\Siasn\\Simpeg\\Models\\{$modelName}";
-                $model = new $modelClass;
-                $simpegMethod = 'get'.$modelName;
+                $model = new $this->endpoints[$endpoint]['model'];
+                $method = $this->endpoints[$endpoint]['method'];
+                $pnsId = $this->endpoints[$endpoint]['pnsId'];
 
                 try {
-                    $response = Simpeg::$simpegMethod($pegawai->nip_baru);
+                    $response = Riwayat::$method($pegawai->nip_baru);
                 } catch (\Exception $e) {
-                    if ($nipBaru == null && $track) {
-                        new PullTrackingErrorService($e, $pullTrackingError, $pullTracking, $pegawai->pns_id);
-                    }
-
                     $this->error($e);
                     $this->newLine();
 
@@ -202,27 +193,23 @@ class PullRiwayatCommand extends Command
                         $bar = $this->output->createProgressBar($response->count());
                         $bar->start();
 
-                        $model = $model->where($this->pnsId[$endpoint], $pegawai->pns_id);
+                        $modelItem = $model->where($pnsId, $pegawai->pns_id);
 
-                        DB::transaction(function () use ($endpoint, $model, $response, $bar) {
+                        DB::transaction(function () use ($pnsId, $modelItem, $response, $bar) {
                             if (config('siasn-simpeg.truncate_model_before_pull')) {
-                                $model->delete();
+                                $modelItem->delete();
                             }
 
-                            $response->chunk(config('siasn-simpeg.chunk_data'))->each(function ($item) use ($model, $endpoint, $bar) {
+                            $response->chunk(config('siasn-simpeg.chunk_data'))->each(function ($item) use ($modelItem, $pnsId, $bar) {
                                 $item = $item->map(function ($item) {
                                     if (isset($item['path'])) {
                                         $item['path'] = collect($item['path'])->toJson();
                                     }
 
-                                    return Arr::except($item, [
-                                        'created_at',
-                                        'updated_at',
-                                        'deleted_at',
-                                    ]);
+                                    return $item;
                                 });
-                                $model->upsert($item->toArray(), $this->pnsId[$endpoint]);
-                                $model->withTrashed()
+                                $modelItem->upsert($item->toArray(), $pnsId);
+                                $modelItem->withTrashed()
                                     ->whereIn('id', $item->pluck('id'))
                                     ->restore();
 
@@ -234,10 +221,6 @@ class PullRiwayatCommand extends Command
 
                         $this->newLine(2);
                     } catch (\Exception $e) {
-                        if ($nipBaru == null && $track) {
-                            new PullTrackingErrorService($e, $pullTrackingError, $pullTracking, $pegawai->pns_id);
-                        }
-
                         $this->error($e);
                         $this->newLine();
 
@@ -246,15 +229,12 @@ class PullRiwayatCommand extends Command
                 }
             });
 
-            $pullTracking?->update(['last_try' => $iPegawai]);
-            $executedItems = $iPegawai - $skip;
+            $executedItems = Number::format($iPegawai - $skip);
 
-            $this->info("All endpoint tasks for {$pegawai->nip_baru} are processed in {$startEndpoint->shortAbsoluteDiffForHumans(now(), 1)}.");
-            $this->info(str("All tasks are running for {$startPegawai->shortAbsoluteDiffForHumans(now(), 1)} and {$executedItems} items have been executed.")->upper());
+            $this->warn("All endpoint tasks for {$pegawai->nip_baru} are processed in {$startEndpoint->shortAbsoluteDiffForHumans(now(), 1)}.");
+            $this->info(str("The task has run so far for {$startPegawai->shortAbsoluteDiffForHumans(now(), 1)} and {$executedItems} items have been executed.")->upper());
             $this->newLine();
         });
-
-        $pullTracking?->update(['done_at' => now()]);
 
         return self::SUCCESS;
     }

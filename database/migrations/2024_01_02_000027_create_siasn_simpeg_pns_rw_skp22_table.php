@@ -14,16 +14,16 @@ return new class extends Migration
         Schema::create('siasn_simpeg_pns_rw_skp22', function (Blueprint $table) {
             $table->string('id', 42)->primary();
             $table->string('hasilKinerja')->nullable();
-            $table->string('hasilKinerjaNilai')->nullable();
+            $table->decimal('hasilKinerjaNilai', 3, 2)->nullable();
             $table->string('kuadranKinerja')->nullable();
-            $table->string('KuadranKinerjaNilai')->nullable();
+            $table->decimal('KuadranKinerjaNilai', 3, 2)->nullable();
             $table->string('namaPenilai')->nullable();
             $table->string('nipNrpPenilai')->nullable()->index('27_nipNrpPenilai');
             $table->string('penilaiGolonganId', 42)->nullable()->index('27_penilaiGolonganId');
             $table->string('penilaiJabatanNm')->nullable();
             $table->string('penilaiUnorNm')->nullable();
             $table->string('perilakuKerja')->nullable();
-            $table->string('PerilakuKerjaNilai')->nullable();
+            $table->decimal('PerilakuKerjaNilai', 3, 2)->nullable();
             $table->string('pnsDinilaiId', 42)->nullable()->index('27_pnsDinilaiId');
             $table->string('statusPenilai')->nullable()->index('27_statusPenilai');
             $table->string('tahun')->nullable()->index('27_tahun');
