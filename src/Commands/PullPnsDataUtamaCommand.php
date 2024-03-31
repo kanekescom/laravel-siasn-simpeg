@@ -32,17 +32,11 @@ class PullPnsDataUtamaCommand extends Command
      */
     public function handle()
     {
+        $start = now();
         $nipBaru = $this->option('nipBaru') ? explode(',', $this->option('nipBaru')) : [];
         $skip = (int) $this->option('skip');
-
         $iPegawai = $skip;
-        $startPegawai = now();
-        $pegawais = Pegawai::get();
-
-        if (filled($nipBaru)) {
-            $pegawais = Pegawai::whereIn('nip_baru', $nipBaru)->get();
-        }
-
+        $pegawais = filled($nipBaru) ? Pegawai::whereIn('nip_baru', $nipBaru)->get() : Pegawai::get();
         $pegawaiCount = $pegawais->count();
 
         if ($skip >= $pegawaiCount) {
@@ -52,7 +46,7 @@ class PullPnsDataUtamaCommand extends Command
         }
 
         $pegawais = $pegawais->skip($skip);
-        $pegawais->each(function ($pegawai) use ($pegawaiCount, &$iPegawai, $startPegawai, $skip) {
+        $pegawais->each(function ($pegawai) use ($pegawaiCount, &$iPegawai, $start, $skip) {
             $iPegawai++;
 
             $this->info("PEGAWAI: [{$iPegawai}/{$pegawaiCount}] {$pegawai->nip_baru}");
@@ -87,7 +81,7 @@ class PullPnsDataUtamaCommand extends Command
 
             $executedItems = Number::format($iPegawai - $skip);
 
-            $this->info(str("The task has run so far for {$startPegawai->shortAbsoluteDiffForHumans(now(), 1)} and {$executedItems} items have been executed.")->upper());
+            $this->info(str("The task has run so far for {$start->shortAbsoluteDiffForHumans(now(), 1)} and {$executedItems} items have been executed.")->upper());
             $this->newLine();
         });
 
