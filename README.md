@@ -79,7 +79,7 @@ php artisan siasn-simpeg:pull-riwayat
 Pull specific riwayat pegawai to database from endpoint on SIASN Simpeg API
 
 ```bash
-php artisan siasn-simpeg:pull-riwayat agama
+php artisan siasn-simpeg:pull-riwayat angkakredit
 ```
 
 You can also use the ```endpoint``` argument to specify only certain endpoints to be pulled
@@ -111,8 +111,6 @@ Use ```--skip={number}``` option to skip N pegawai
 ### PNS
 
 Pull PNS data utama to database from endpoint on SIASN SIMPEG API
-
-> For this time, this command will encounter an error on the 9th iteration due to limitations imposed by the SIASN API. So far, I haven't found the solution.
 
 ```bash
 php artisan siasn-simpeg:pull-pns-data-utama
