@@ -90,7 +90,7 @@
             ]
         },
         "branch-alias": {
-            "dev-main": "2.x-dev"
+            "dev-main": "1.x-dev"
         }
     },
     "funding": [
