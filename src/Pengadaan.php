@@ -1,8 +1,8 @@
 <?php
 
-namespace Kanekescom\Siasn\Simpeg\Http\Client;
+namespace Kanekescom\Siasn\Simpeg;
 
-use Kanekescom\Siasn\Simpeg\Api\Http\Client\Pengadaan as PengadaanClient;
+use Kanekescom\Siasn\Simpeg\Api\Pengadaan as PengadaanClient;
 use Kanekescom\Siasn\Simpeg\Helpers\PengadaanListResponseTransformer;
 use Kanekescom\Siasn\Simpeg\Transformers\PengadaanListPengadaanInstansiTransformer;
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace Kanekescom\Siasn\Simpeg\Http\Client;
+namespace Kanekescom\Siasn\Simpeg;
 
-use Kanekescom\Siasn\Simpeg\Api\Http\Client\Kp as KpClient;
+use Kanekescom\Siasn\Simpeg\Api\Kp as KpClient;
 use Kanekescom\Siasn\Simpeg\Helpers\KpListResponseTransformer;
 use Kanekescom\Siasn\Simpeg\Transformers\PnsListKpInstansiTransformer;
 

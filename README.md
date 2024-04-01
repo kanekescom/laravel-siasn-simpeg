@@ -108,6 +108,8 @@ Use ```--nipBaru={nipBaru}``` option to select only certain pegawai (separated b
 
 Use ```--skip={number}``` option to skip N pegawai
 
+Use ```--onlyDoesntHave``` option to only pegawai those that do not have data. Works if only one endpoint is selected.
+
 ### PNS
 
 Pull PNS data utama to database from endpoint on SIASN SIMPEG API
@@ -119,6 +121,8 @@ php artisan siasn-simpeg:pull-pns-data-utama
 Use ```--nipBaru={nipBaru}``` option to select only certain pegawai (separated by commas)
 
 Use ```--skip={number}``` option to skip N pegawai
+
+Use ```--onlyDoesntHave``` option to only pegawai those that do not have data
 
 ### Pengadaan
 

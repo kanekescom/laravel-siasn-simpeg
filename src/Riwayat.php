@@ -1,10 +1,9 @@
 <?php
 
-namespace Kanekescom\Siasn\Simpeg\Http\Client;
+namespace Kanekescom\Siasn\Simpeg;
 
-use Kanekescom\Siasn\Simpeg\Api\Http\Client\Riwayat as RiwayatClient;
+use Kanekescom\Siasn\Simpeg\Api\Riwayat as RiwayatClient;
 use Kanekescom\Siasn\Simpeg\Helpers\RiwayatResponseTransformer;
-use Kanekescom\Siasn\Simpeg\Transformers;
 
 class Riwayat
 {
@@ -120,10 +119,10 @@ class Riwayat
         );
     }
 
-    public static function getPnsunor(array|string $paths = [], array $query = [])
+    public static function getUnor(array|string $paths = [], array $query = [])
     {
         return new RiwayatResponseTransformer(
-            RiwayatClient::getPnsunor($paths, $query),
+            RiwayatClient::getUnor($paths, $query),
             new Transformers\PnsRwPnsunorTransformer
         );
     }

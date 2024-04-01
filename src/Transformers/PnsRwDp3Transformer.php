@@ -13,6 +13,8 @@ class PnsRwDp3Transformer extends TransformerAbstract
      */
     public function transform(array $item)
     {
+        $item['penilaiTmtGolongan_'] = convert_date_format($item['penilaiTmtGolongan'], 'd-m-Y', 'Y-m-d');
+
         return $item;
     }
 }

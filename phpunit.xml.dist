@@ -36,6 +36,7 @@
         </include>
     </source>
     <php>
+        <!-- SIASN -->
         <env name="SIASN_MODE" value="training"/>
         <env name="SIASN_DEBUG" value="false"/>
         <env name="SIASN_APIM_USERNAME" value=""/>
@@ -45,5 +46,44 @@
         <env name="SIASN_SSO_PASSWORD" value=""/>
         <env name="SIASN_CONST_INSTANSI_ID" value=""/>
         <env name="SIASN_CONST_SATUAN_KERJA_ID" value=""/>
+        <env name="SIASN_PARAMS_TEST_NIPBARU" value=""/>
+
+        <!-- Pengadaan -->
+        <env name="SIASN_PARAMS_TEST_PULL_PENGADAAN_LIST_PENGADAAN_INSTANSI_TAHUN" value=""/>
+
+        <!-- PNS -->
+        <env name="SIASN_PARAMS_TEST_PULL_PNS_DATA_ANAK_NIPBARU" value=""/>
+        <env name="SIASN_PARAMS_TEST_PULL_PNS_DATA_ORTU_BARU" value=""/>
+        <env name="SIASN_PARAMS_TEST_PULL_PNS_DATA_PASANGAN_NIPBARU" value=""/>
+        <env name="SIASN_PARAMS_TEST_PULL_PNS_DATA_UTAMA_NIPBARU" value=""/>
+
+        <!-- KP -->
+        <env name="SIASN_PARAMS_TEST_PULL_PNS_LIST_KP_INSTANSI_PERIODE" value=""/>
+
+        <!-- Pemberhentian -->
+        <env name="SIASN_PARAMS_TEST_PULL_PNS_LIST_PENSIUN_INSTANSI_TAHUN" value=""/>
+
+        <!-- Riwayat -->
+        <env name="SIASN_PARAMS_TEST_PULL_PNS_RW_ANGKAKREDIT_NIPBARU" value=""/>
+        <env name="SIASN_PARAMS_TEST_PULL_PNS_RW_CLTN_NIPBARU" value=""/>
+        <env name="SIASN_PARAMS_TEST_PULL_PNS_RW_DIKLAT_NIPBARU" value=""/>
+        <env name="SIASN_PARAMS_TEST_PULL_PNS_RW_DP3_NIPBARU" value=""/>
+        <env name="SIASN_PARAMS_TEST_PULL_PNS_RW_GOLONGAN_NIPBARU" value=""/>
+        <env name="SIASN_PARAMS_TEST_PULL_PNS_RW_HUKDIS_NIPBARU" value=""/>
+        <env name="SIASN_PARAMS_TEST_PULL_PNS_RW_JABATAN_NIPBARU" value=""/>
+        <env name="SIASN_PARAMS_TEST_PULL_PNS_RW_KINERJAPERIODIK_NIPBARU" value=""/>
+        <env name="SIASN_PARAMS_TEST_PULL_PNS_RW_KURSUS_NIPBARU" value=""/>
+        <env name="SIASN_PARAMS_TEST_PULL_PNS_RW_MASAKERJA_NIPBARU" value=""/>
+        <env name="SIASN_PARAMS_TEST_PULL_PNS_RW_PEMBERHENTIAN_NIPBARU" value=""/>
+        <env name="SIASN_PARAMS_TEST_PULL_PNS_RW_PENDIDIKAN_NIPBARU" value=""/>
+        <env name="SIASN_PARAMS_TEST_PULL_PNS_RW_PENGHARGAAN_NIPBARU" value=""/>
+        <env name="SIASN_PARAMS_TEST_PULL_PNS_RW_PINDAHINSTANSI_NIPBARU" value=""/>
+        <env name="SIASN_PARAMS_TEST_PULL_PNS_RW_PNSUNOR_NIPBARU" value=""/>
+        <env name="SIASN_PARAMS_TEST_PULL_PNS_RW_PWK_NIPBARU" value=""/>
+        <env name="SIASN_PARAMS_TEST_PULL_PNS_RW_SKP_NIPBARU" value=""/>
+        <env name="SIASN_PARAMS_TEST_PULL_PNS_RW_SKP22_NIPBARU" value=""/>
+
+        <!-- Referensi -->
+        <env name="SIASN_PARAMS_TEST_PULL_REFERENSI_REF_UNOR" value=""/>
     </php>
 </phpunit>

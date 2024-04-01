@@ -1,8 +1,8 @@
 <?php
 
-namespace Kanekescom\Siasn\Simpeg\Http\Client;
+namespace Kanekescom\Siasn\Simpeg;
 
-use Kanekescom\Siasn\Simpeg\Api\Http\Client\Pns as PnsClient;
+use Kanekescom\Siasn\Simpeg\Api\Pns as PnsClient;
 use Kanekescom\Siasn\Simpeg\Helpers\PnsDataUtamaResponseTransformer;
 use Kanekescom\Siasn\Simpeg\Transformers\PnsDataUtamaTransformer;
 

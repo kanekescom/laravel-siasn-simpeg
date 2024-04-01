@@ -1,8 +1,8 @@
 <?php
 
-namespace Kanekescom\Siasn\Simpeg\Http\Client;
+namespace Kanekescom\Siasn\Simpeg;
 
-use Kanekescom\Siasn\Simpeg\Api\Http\Client\Pemberhentian as PemberhentianClient;
+use Kanekescom\Siasn\Simpeg\Api\Pemberhentian as PemberhentianClient;
 use Kanekescom\Siasn\Simpeg\Helpers\PemberhentianPensiunListResponseTransformer;
 use Kanekescom\Siasn\Simpeg\Transformers\PnsListPensiunInstansiTransformer;
 

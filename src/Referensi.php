@@ -1,8 +1,8 @@
 <?php
 
-namespace Kanekescom\Siasn\Simpeg\Http\Client;
+namespace Kanekescom\Siasn\Simpeg;
 
-use Kanekescom\Siasn\Simpeg\Api\Http\Client\Referensi as ReferensiClient;
+use Kanekescom\Siasn\Simpeg\Api\Referensi as ReferensiClient;
 use Kanekescom\Siasn\Simpeg\Helpers\ReferensiUnorResponseTransformer;
 use Kanekescom\Siasn\Simpeg\Transformers\ReferensiRefUnorTransformer;
 

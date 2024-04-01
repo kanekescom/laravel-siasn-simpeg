@@ -45,7 +45,7 @@ class Pegawai extends Model
 
     public function dataUtama(): HasOne
     {
-        return $this->hasOne(PnsDataUtama::class, 'pns_id');
+        return $this->hasOne(PnsDataUtama::class, 'id');
     }
 
     public function angkakredits(): HasMany

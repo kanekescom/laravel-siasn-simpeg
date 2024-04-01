@@ -4,7 +4,7 @@ namespace Kanekescom\Siasn\Simpeg\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use Kanekescom\Siasn\Simpeg\Http\Client\Kp;
+use Kanekescom\Siasn\Simpeg\Kp;
 use Kanekescom\Siasn\Simpeg\Models\PnsListKpInstansi;
 
 class PullKpListCommand extends Command
@@ -15,7 +15,7 @@ class PullKpListCommand extends Command
      * @var string
      */
     protected $signature = 'siasn-simpeg:pull-kp-list
-                            {periode : periode}';
+                            {periode : periode (yyyy-mm-dd)}';
 
     /**
      * The console command description.
@@ -40,6 +40,8 @@ class PullKpListCommand extends Command
         } catch (\Exception $e) {
             $this->error($e);
             $this->newLine();
+
+            logger()->error($e->getMessage());
 
             return self::FAILURE;
         }
@@ -74,6 +76,8 @@ class PullKpListCommand extends Command
             } catch (\Exception $e) {
                 $this->error($e);
                 $this->newLine();
+
+                logger()->error($e->getMessage());
 
                 return self::FAILURE;
             }

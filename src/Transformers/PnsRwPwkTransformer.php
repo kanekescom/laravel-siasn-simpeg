@@ -13,6 +13,9 @@ class PnsRwPwkTransformer extends TransformerAbstract
      */
     public function transform(array $item)
     {
+        $item['skTanggal_'] = convert_date_format($item['skTanggal'], 'd-m-Y', 'Y-m-d');
+        $item['tmtPwk_'] = convert_date_format($item['tmtPwk'], 'd-m-Y', 'Y-m-d');
+
         return $item;
     }
 }
