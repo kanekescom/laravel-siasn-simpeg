@@ -5,5 +5,6 @@ it('can pull pns list pensiun instansi', function () {
 
     expect($tahun)->not->toBeEmpty();
 
-    $this->artisan("siasn-simpeg:pull-pemberhentian-pensiun-list {$tahun}")->assertSuccessful();
+    $this->artisan("siasn-simpeg:pull-pemberhentian-pensiun-list {$tahun}")
+        ->assertSuccessful();
 });
