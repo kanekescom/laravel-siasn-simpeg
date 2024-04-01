@@ -20,7 +20,8 @@ class PullRiwayatCommand extends Command
     protected $signature = 'siasn-simpeg:pull-riwayat
                             {endpoint?* : Endpoint API}}
                             {--nipBaru= : nipBaru. Can be separated by commas.}
-                            {--skip=0: skip value}';
+                            {--skip=0 : skip value}
+                            {--onlyDoesntHave : only those that do not have data}';
 
     /**
      * The console command description.
@@ -157,8 +158,16 @@ class PullRiwayatCommand extends Command
         $endpointCount = $endpoints->count();
         $nipBaru = $this->option('nipBaru') ? explode(',', $this->option('nipBaru')) : [];
         $skip = (int) $this->option('skip');
+        $onlyDoesntHave = $this->option('onlyDoesntHave');
         $iPegawai = $skip;
-        $pegawais = filled($nipBaru) ? Pegawai::whereIn('nip_baru', $nipBaru)->get() : Pegawai::get();
+        $pegawais = filled($nipBaru) ? Pegawai::whereIn('nip_baru', $nipBaru) : new Pegawai;
+
+        if ($onlyDoesntHave && filled($endpoints->count() == 1)) {
+            $relationName = str($endpoints->first())
+                ->plural();
+            $pegawais = $pegawais->doesntHave($relationName);
+        }
+
         $pegawaiCount = $pegawais->count();
 
         if ($skip >= $pegawaiCount) {
@@ -167,65 +176,23 @@ class PullRiwayatCommand extends Command
             return self::FAILURE;
         }
 
-        $pegawais = $pegawais->skip($skip);
-        $pegawais->each(function ($pegawai) use ($pegawaiCount, &$iPegawai, $endpoints, $endpointCount, $startPegawai, $skip) {
-            $startEndpoint = now();
-            $iPegawai++;
-            $iEndpoint = 0;
+        $pegawais->get()
+            ->skip($skip)
+            ->each(function ($pegawai) use ($pegawaiCount, &$iPegawai, $endpoints, $endpointCount, $startPegawai, $skip) {
+                $startEndpoint = now();
+                $iPegawai++;
+                $iEndpoint = 0;
 
-            $this->info("PEGAWAI: [{$iPegawai}/{$pegawaiCount}] {$pegawai->nip_baru}");
+                $this->info("PEGAWAI: [{$iPegawai}/{$pegawaiCount}] {$pegawai->nip_baru}");
 
-            $endpoints->each(function ($endpoint) use ($pegawai, $endpointCount, &$iEndpoint) {
-                $iEndpoint++;
-                $model = new $this->endpoints[$endpoint]['model'];
-                $method = $this->endpoints[$endpoint]['method'];
-                $pnsId = $this->endpoints[$endpoint]['pnsId'];
+                $endpoints->each(function ($endpoint) use ($pegawai, $endpointCount, &$iEndpoint) {
+                    $iEndpoint++;
+                    $model = new $this->endpoints[$endpoint]['model'];
+                    $method = $this->endpoints[$endpoint]['method'];
+                    $pnsId = $this->endpoints[$endpoint]['pnsId'];
 
-                try {
-                    $response = Riwayat::$method($pegawai->nip_baru);
-                } catch (\Exception $e) {
-                    $this->error($e);
-                    $this->newLine();
-
-                    logger()->error($e->getMessage());
-
-                    return self::FAILURE;
-                }
-
-                $this->comment("ENDPOINT: [{$iEndpoint}/{$endpointCount}] {$endpoint}");
-
-                if ($response->count()) {
                     try {
-                        $bar = $this->output->createProgressBar($response->count());
-                        $bar->start();
-
-                        $modelItem = $model->where($pnsId, $pegawai->pns_id);
-
-                        DB::transaction(function () use ($pnsId, $modelItem, $response, $bar) {
-                            if (config('siasn-simpeg.truncate_model_before_pull')) {
-                                $modelItem->delete();
-                            }
-
-                            $response->chunk(config('siasn-simpeg.chunk_data'))->each(function ($item) use ($modelItem, $pnsId, $bar) {
-                                $item = $item->map(function ($item) {
-                                    if (isset($item['path'])) {
-                                        $item['path'] = collect($item['path'])->toJson();
-                                    }
-
-                                    return $item;
-                                });
-                                $modelItem->upsert($item->toArray(), $pnsId);
-                                $modelItem->withTrashed()
-                                    ->whereIn('id', $item->pluck('id'))
-                                    ->restore();
-
-                                $bar->advance($item->count());
-                            });
-                        });
-
-                        $bar->finish();
-
-                        $this->newLine(2);
+                        $response = Riwayat::$method($pegawai->nip_baru);
                     } catch (\Exception $e) {
                         $this->error($e);
                         $this->newLine();
@@ -234,15 +201,58 @@ class PullRiwayatCommand extends Command
 
                         return self::FAILURE;
                     }
-                }
+
+                    $this->comment("ENDPOINT: [{$iEndpoint}/{$endpointCount}] {$endpoint}");
+
+                    if ($response->count()) {
+                        try {
+                            $bar = $this->output->createProgressBar($response->count());
+                            $bar->start();
+
+                            $modelItem = $model->where($pnsId, $pegawai->pns_id);
+
+                            DB::transaction(function () use ($pnsId, $modelItem, $response, $bar) {
+                                if (config('siasn-simpeg.truncate_model_before_pull')) {
+                                    $modelItem->delete();
+                                }
+
+                                $response->chunk(config('siasn-simpeg.chunk_data'))->each(function ($item) use ($modelItem, $pnsId, $bar) {
+                                    $item = $item->map(function ($item) {
+                                        if (isset($item['path'])) {
+                                            $item['path'] = collect($item['path'])->toJson();
+                                        }
+
+                                        return $item;
+                                    });
+                                    $modelItem->upsert($item->toArray(), $pnsId);
+                                    $modelItem->withTrashed()
+                                        ->whereIn('id', $item->pluck('id'))
+                                        ->restore();
+
+                                    $bar->advance($item->count());
+                                });
+                            });
+
+                            $bar->finish();
+
+                            $this->newLine(2);
+                        } catch (\Exception $e) {
+                            $this->error($e);
+                            $this->newLine();
+
+                            logger()->error($e->getMessage());
+
+                            return self::FAILURE;
+                        }
+                    }
+                });
+
+                $executedItems = Number::format($iPegawai - $skip);
+
+                $this->warn("All endpoint tasks for {$pegawai->nip_baru} are processed in {$startEndpoint->shortAbsoluteDiffForHumans(now(), 1)}");
+                $this->info(str("The task has run so far for {$startPegawai->shortAbsoluteDiffForHumans(now(), 1)} and {$executedItems} items have been executed")->upper());
+                $this->newLine();
             });
-
-            $executedItems = Number::format($iPegawai - $skip);
-
-            $this->warn("All endpoint tasks for {$pegawai->nip_baru} are processed in {$startEndpoint->shortAbsoluteDiffForHumans(now(), 1)}");
-            $this->info(str("The task has run so far for {$startPegawai->shortAbsoluteDiffForHumans(now(), 1)} and {$executedItems} items have been executed")->upper());
-            $this->newLine();
-        });
 
         return self::SUCCESS;
     }

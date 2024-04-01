@@ -18,7 +18,8 @@ class PullPnsDataUtamaCommand extends Command
      */
     protected $signature = 'siasn-simpeg:pull-pns-data-utama
                             {--nipBaru= : nipBaru. Can be separated by commas.}
-                            {--skip=0 : skip value}';
+                            {--skip=0 : skip value}
+                            {--onlyDoesntHave : only those that do not have data}';
 
     /**
      * The console command description.
@@ -35,56 +36,63 @@ class PullPnsDataUtamaCommand extends Command
         $start = now();
         $nipBaru = $this->option('nipBaru') ? explode(',', $this->option('nipBaru')) : [];
         $skip = (int) $this->option('skip');
+        $onlyDoesntHave = $this->option('onlyDoesntHave');
         $iPegawai = $skip;
-        $pegawais = filled($nipBaru) ? Pegawai::whereIn('nip_baru', $nipBaru)->get() : Pegawai::get();
+        $pegawais = filled($nipBaru) ? Pegawai::whereIn('nip_baru', $nipBaru) : new Pegawai;
+
+        if ($onlyDoesntHave) {
+            $pegawais = $pegawais->doesntHave('dataUtama');
+        }
+
         $pegawaiCount = $pegawais->count();
 
         if ($skip >= $pegawaiCount) {
-            $this->components->error('Skip option value exceeds number of pegawai.');
+            $this->components->error('Skip option value exceeds number of pegawai or not found.');
 
             return self::FAILURE;
         }
 
-        $pegawais = $pegawais->skip($skip);
-        $pegawais->each(function ($pegawai) use ($pegawaiCount, &$iPegawai, $start, $skip) {
-            $iPegawai++;
+        $pegawais->get()
+            ->skip($skip)
+            ->each(function ($pegawai) use ($pegawaiCount, &$iPegawai, $start, $skip) {
+                $iPegawai++;
 
-            $this->info("PEGAWAI: [{$iPegawai}/{$pegawaiCount}] {$pegawai->nip_baru}");
+                $this->info("PEGAWAI: [{$iPegawai}/{$pegawaiCount}] {$pegawai->nip_baru}");
 
-            try {
-                $response = Pns::getDataUtama($pegawai->nip_baru);
-            } catch (\Exception $e) {
-                $this->error($e);
+                try {
+                    $response = Pns::getDataUtama($pegawai->nip_baru);
+                } catch (\Exception $e) {
+                    $this->error($e);
+                    $this->newLine();
+
+                    logger()->error($e->getMessage());
+
+                    return self::FAILURE;
+                }
+
+                try {
+                    $model = new PnsDataUtama;
+
+                    DB::transaction(function () use ($model, $response, $pegawai) {
+                        $model->updateOrCreate($response->toArray());
+                        $model->withTrashed()
+                            ->where('id', $pegawai->nip_baru)
+                            ->restore();
+                    });
+                } catch (\Exception $e) {
+                    $this->error($e);
+                    $this->newLine();
+
+                    logger()->error($e->getMessage());
+
+                    return self::FAILURE;
+                }
+
+                $executedItems = Number::format($iPegawai - $skip);
+
+                $this->info(str("The task has run so far for {$start->shortAbsoluteDiffForHumans(now(), 1)} and {$executedItems} items have been executed")->upper());
                 $this->newLine();
-
-                logger()->error($e->getMessage());
-
-                return self::FAILURE;
-            }
-
-            try {
-                $model = new PnsDataUtama;
-
-                DB::transaction(function () use ($model, $response, $pegawai) {
-                    $model->updateOrCreate($response->toArray());
-                    $model->withTrashed()
-                        ->where('id', $pegawai->nip_baru)
-                        ->restore();
-                });
-            } catch (\Exception $e) {
-                $this->error($e);
-                $this->newLine();
-
-                logger()->error($e->getMessage());
-
-                return self::FAILURE;
-            }
-
-            $executedItems = Number::format($iPegawai - $skip);
-
-            $this->info(str("The task has run so far for {$start->shortAbsoluteDiffForHumans(now(), 1)} and {$executedItems} items have been executed")->upper());
-            $this->newLine();
-        });
+            });
 
         return self::SUCCESS;
     }
