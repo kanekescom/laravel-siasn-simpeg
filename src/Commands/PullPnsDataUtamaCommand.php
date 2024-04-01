@@ -18,7 +18,7 @@ class PullPnsDataUtamaCommand extends Command
      */
     protected $signature = 'siasn-simpeg:pull-pns-data-utama
                             {--nipBaru= : nipBaru. Can be separated by commas.}
-                            {--skip=0: skip value}';
+                            {--skip=0 : skip value}';
 
     /**
      * The console command description.
