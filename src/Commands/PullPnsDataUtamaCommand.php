@@ -57,6 +57,8 @@ class PullPnsDataUtamaCommand extends Command
                 $this->error($e);
                 $this->newLine();
 
+                logger()->error($e->getMessage());
+
                 return self::FAILURE;
             }
 
@@ -72,6 +74,8 @@ class PullPnsDataUtamaCommand extends Command
             } catch (\Exception $e) {
                 $this->error($e);
                 $this->newLine();
+
+                logger()->error($e->getMessage());
 
                 return self::FAILURE;
             }

@@ -41,6 +41,8 @@ class PullPengadaanListCommand extends Command
             $this->error($e);
             $this->newLine();
 
+            logger()->error($e->getMessage());
+
             return self::FAILURE;
         }
 
@@ -74,6 +76,8 @@ class PullPengadaanListCommand extends Command
             } catch (\Exception $e) {
                 $this->error($e);
                 $this->newLine();
+
+                logger()->error($e->getMessage());
 
                 return self::FAILURE;
             }

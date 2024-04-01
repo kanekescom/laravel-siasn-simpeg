@@ -36,6 +36,8 @@ class PullReferensiUnorCommand extends Command
             $this->error($e);
             $this->newLine();
 
+            logger()->error($e->getMessage());
+
             return self::FAILURE;
         }
 
@@ -70,6 +72,8 @@ class PullReferensiUnorCommand extends Command
             } catch (\Exception $e) {
                 $this->error($e);
                 $this->newLine();
+
+                logger()->error($e->getMessage());
 
                 return self::FAILURE;
             }

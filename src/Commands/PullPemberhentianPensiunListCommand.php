@@ -42,6 +42,8 @@ class PullPemberhentianPensiunListCommand extends Command
             $this->error($e);
             $this->newLine();
 
+            logger()->error($e->getMessage());
+
             return self::FAILURE;
         }
 
@@ -77,6 +79,8 @@ class PullPemberhentianPensiunListCommand extends Command
             } catch (\Exception $e) {
                 $this->error($e);
                 $this->newLine();
+
+                logger()->error($e->getMessage());
 
                 return self::FAILURE;
             }
