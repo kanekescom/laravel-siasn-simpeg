@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('siasn_simpeg_pns_rw_kinerjaperiodik', function (Blueprint $table) {
             $table->string('id', 42)->primary();
             $table->string('tahun', 4)->nullable()->index('17_tahun');
-            $table->string('nip')->nullable()->index('17_nip');
+            $table->string('nip', 18)->nullable()->index('17_nip');
             $table->string('nama')->nullable();
             $table->string('hasilKinerja')->nullable();
             $table->string('hasilKinerjaNilai')->nullable();

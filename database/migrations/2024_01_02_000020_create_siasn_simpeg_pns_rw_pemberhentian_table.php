@@ -13,14 +13,15 @@ return new class extends Migration
     {
         Schema::create('siasn_simpeg_pns_rw_pemberhentian', function (Blueprint $table) {
             $table->string('id', 42)->primary();
-            $table->string('jenisHenti')->nullable();
-            $table->string('kedudukanHukumPns')->nullable();
-            $table->string('pnsOrang')->nullable();
+            $table->string('jenisHenti', 2)->nullable()->index('20_jenisHenti');
+            $table->string('kedudukanHukumPns', 2)->nullable()->index('20_kedudukanHukumPns');
+            $table->string('pnsOrang', 42)->nullable()->index('20_pnsOrang');
             $table->string('skNomor')->nullable();
             $table->string('skTanggal')->nullable();
+            $table->date('skTanggal_')->nullable();
             $table->string('asalId', 42)->nullable()->index('20_asalId');
             $table->string('asalNama')->nullable();
-            $table->string('asalNamaLabel')->nullable()->index('20_asalNamaLabel');
+            $table->string('asalNamaLabel')->nullable();
             $table->json('path')->nullable();
             $table->timestamps();
             $table->softDeletes();

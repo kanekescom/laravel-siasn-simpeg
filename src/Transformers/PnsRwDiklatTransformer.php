@@ -13,6 +13,9 @@ class PnsRwDiklatTransformer extends TransformerAbstract
      */
     public function transform(array $item)
     {
+        $item['tanggal_'] = convert_date_format($item['tanggal'], 'd-m-Y', 'Y-m-d');
+        $item['tanggalSelesai_'] = convert_date_format($item['tanggalSelesai'], 'd-m-Y', 'Y-m-d');
+
         return $item;
     }
 }

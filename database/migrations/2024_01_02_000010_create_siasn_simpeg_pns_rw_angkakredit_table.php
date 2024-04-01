@@ -13,24 +13,27 @@ return new class extends Migration
     {
         Schema::create('siasn_simpeg_pns_rw_angkakredit', function (Blueprint $table) {
             $table->string('id', 42)->primary();
-            $table->string('pns')->nullable()->index('10_pns');
+            $table->string('pns', 42)->nullable()->index('10_pns');
             $table->string('nomorSk')->nullable();
             $table->string('tanggalSk')->nullable();
-            $table->string('bulanMulaiPenailan')->nullable();
+            $table->date('tanggalSk_')->nullable();
+            $table->string('bulanMulaiPenailan', 2)->nullable();
             $table->string('tahunMulaiPenailan', 4)->nullable();
-            $table->string('bulanSelesaiPenailan')->nullable();
+            $table->string('bulanSelesaiPenailan', 2)->nullable();
             $table->string('tahunSelesaiPenailan', 4)->nullable();
-            $table->string('kreditUtamaBaru')->nullable();
-            $table->string('kreditPenunjangBaru')->nullable();
-            $table->string('kreditBaruTotal')->nullable();
+            $table->decimal('kreditUtamaBaru', 6, 3)->nullable();
+            $table->decimal('kreditPenunjangBaru', 6, 3)->nullable();
+            $table->decimal('kreditBaruTotal', 6, 3)->nullable();
             $table->string('rwJabatan')->nullable();
             $table->string('namaJabatan')->nullable();
-            $table->string('isAngkaKreditPertama')->nullable()->index('10_isAngkaKreditPertama');
-            $table->string('isIntegrasi')->nullable()->index('10_isIntegrasi');
-            $table->string('isKonversi')->nullable()->index('10_isKonversi');
+            $table->boolean('isAngkaKreditPertama')->nullable()->index('10_isAngkaKreditPertama');
+            $table->boolean('isIntegrasi')->nullable()->index('10_isIntegrasi');
+            $table->boolean('isKonversi')->nullable()->index('10_isKonversi');
             $table->json('path')->nullable();
             $table->string('Sumber')->nullable();
-            $table->timestamps();
+            $table->dateTime('created_at');
+            $table->dateTime('updated_at');
+            // $table->timestamps();
             $table->softDeletes();
         });
     }

@@ -13,6 +13,8 @@ class PnsRwPenghargaanTransformer extends TransformerAbstract
      */
     public function transform(array $item)
     {
+        $item['skDate_'] = convert_date_format($item['skDate'], 'd-m-Y', 'Y-m-d');
+
         return $item;
     }
 }

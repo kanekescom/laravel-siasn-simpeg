@@ -14,15 +14,16 @@ return new class extends Migration
         Schema::create('siasn_simpeg_pns_rw_pendidikan', function (Blueprint $table) {
             $table->string('id', 42)->primary();
             $table->string('idPns', 42)->nullable()->index('21_idPns');
-            $table->string('nipBaru', 18)->nullable();
-            $table->string('nipLama', 9)->nullable();
+            $table->string('nipBaru', 18)->index('21_nipBaru')->nullable();
+            $table->string('nipLama', 9)->index('21_nipLama')->nullable();
             $table->string('pendidikanId', 42)->nullable()->index('21_pendidikanId');
             $table->string('pendidikanNama')->nullable();
-            $table->string('tkPendidikanId', 42)->nullable()->index('21_tkPendidikanId');
+            $table->string('tkPendidikanId', 2)->nullable()->index('21_tkPendidikanId');
             $table->string('tkPendidikanNama')->nullable();
             $table->string('tahunLulus', 4)->nullable()->index('21_tahunLulus');
             $table->string('tglLulus')->nullable();
-            $table->string('isPendidikanPertama')->nullable()->index('21_isPendidikanPertama');
+            $table->date('tglLulus_')->nullable();
+            $table->boolean('isPendidikanPertama')->nullable()->index('21_isPendidikanPertama');
             $table->string('nomorIjasah')->nullable();
             $table->string('namaSekolah')->nullable();
             $table->string('gelarDepan')->nullable();

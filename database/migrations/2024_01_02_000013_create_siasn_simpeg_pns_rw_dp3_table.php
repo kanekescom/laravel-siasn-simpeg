@@ -35,9 +35,10 @@ return new class extends Migration
             $table->string('penilaiGolongan')->nullable();
             $table->string('penilaiJabatan')->nullable();
             $table->string('penilaiNama')->nullable();
-            $table->string('penilaiNipNrp')->nullable();
+            $table->string('penilaiNipNrp')->nullable()->index('13_penilaiNipNrp');
             $table->string('penilaiNonPns')->nullable();
             $table->string('penilaiTmtGolongan')->nullable();
+            $table->date('penilaiTmtGolongan_')->nullable();
             $table->string('penilaiUnorNama')->nullable();
             $table->string('prakarsa')->nullable();
             $table->string('prestasiKerja')->nullable();

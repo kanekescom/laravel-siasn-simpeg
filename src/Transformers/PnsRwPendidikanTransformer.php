@@ -13,6 +13,9 @@ class PnsRwPendidikanTransformer extends TransformerAbstract
      */
     public function transform(array $item)
     {
+        $item['tglLulus_'] = convert_date_format($item['tglLulus'], 'd-m-Y', 'Y-m-d');
+        $item['isPendidikanPertama'] = (bool) $item['isPendidikanPertama'];
+
         return $item;
     }
 }

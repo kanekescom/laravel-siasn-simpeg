@@ -78,7 +78,7 @@ class PullRiwayatCommand extends Command
         'masakerja' => [
             'model' => Models\PnsRwMasakerja::class,
             'method' => 'getMasakerja',
-            'pnsId' => 'pnsOrang',
+            'pnsId' => 'idPns',
         ],
         'pemberhentian' => [
             'model' => Models\PnsRwPemberhentian::class,
@@ -100,9 +100,9 @@ class PullRiwayatCommand extends Command
             'method' => 'getPindahinstansi',
             'pnsId' => 'pnsOrang',
         ],
-        'pnsunor' => [
+        'unor' => [
             'model' => Models\PnsRwPnsunor::class,
-            'method' => 'getPnsunor',
+            'method' => 'getUnor',
             'pnsId' => 'pnsOrang',
         ],
         'pwk' => [
@@ -162,7 +162,7 @@ class PullRiwayatCommand extends Command
         $pegawaiCount = $pegawais->count();
 
         if ($skip >= $pegawaiCount) {
-            $this->components->error('Skip option value exceeds number of pegawai.');
+            $this->components->error('Skip option value exceeds number of pegawai or not found.');
 
             return self::FAILURE;
         }
@@ -186,6 +186,8 @@ class PullRiwayatCommand extends Command
                 } catch (\Exception $e) {
                     $this->error($e);
                     $this->newLine();
+
+                    logger()->error($e->getMessage());
 
                     return self::FAILURE;
                 }
@@ -227,6 +229,8 @@ class PullRiwayatCommand extends Command
                     } catch (\Exception $e) {
                         $this->error($e);
                         $this->newLine();
+
+                        logger()->error($e->getMessage());
 
                         return self::FAILURE;
                     }

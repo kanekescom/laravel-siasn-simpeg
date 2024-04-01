@@ -16,8 +16,9 @@ return new class extends Migration
             $table->string('tahun', 4)->nullable()->index('22_tahun');
             $table->string('skNomor')->nullable();
             $table->string('skDate')->nullable();
+            $table->date('skDate_')->nullable();
             $table->string('hargaNama')->nullable();
-            $table->string('hargaId', 42)->nullable()->index('22_hargaId');
+            $table->string('hargaId', 3)->nullable()->index('22_hargaId');
             $table->string('pnsOrangId', 42)->nullable()->index('22_pnsOrangId');
             $table->json('path')->nullable();
             $table->timestamps();
