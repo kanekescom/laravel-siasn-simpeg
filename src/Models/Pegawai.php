@@ -43,97 +43,110 @@ class Pegawai extends Model
         return 'siasn_simpeg_'.str(class_basename(__CLASS__))->snake();
     }
 
+    public function getNamaGelarAttribute()
+    {
+        return ($this->gelar_depan ? "{$this->gelar_depan} " : '')
+            .$this->nama
+            .($this->gelar_belakang ? ", {$this->gelar_belakang}" : '');
+    }
+
+    public function getTtlAttribute()
+    {
+        return $this->tempat_lahir_nama
+            .', '.$this->tanggal_lahir;
+    }
+
     public function dataUtama(): HasOne
     {
         return $this->hasOne(PnsDataUtama::class, 'id');
     }
 
-    public function angkakredits(): HasMany
+    public function rwAngkakredits(): HasMany
     {
         return $this->hasMany(PnsRwAngkakredit::class, 'pns');
     }
 
-    public function cltns(): HasMany
+    public function rwCltns(): HasMany
     {
         return $this->hasMany(PnsRwCltn::class, 'pnsOrangId');
     }
 
-    public function diklats(): HasMany
+    public function rwDiklats(): HasMany
     {
         return $this->hasMany(PnsRwDiklat::class, 'idPns');
     }
 
-    public function dp3s(): HasMany
+    public function rwDp3s(): HasMany
     {
         return $this->hasMany(PnsRwDp3::class, 'pnsId');
     }
 
-    public function golongans(): HasMany
+    public function rwGolongans(): HasMany
     {
         return $this->hasMany(PnsRwGolongan::class, 'idPns');
     }
 
-    public function hukdises(): HasMany
+    public function rwHukdises(): HasMany
     {
         return $this->hasMany(PnsRwHukdis::class, 'pnsOrang');
     }
 
-    public function jabatans(): HasMany
+    public function rwJabatans(): HasMany
     {
         return $this->hasMany(PnsRwJabatan::class, 'idPns');
     }
 
-    public function kinerjaperiodiks(): HasMany
+    public function rwKinerjaperiodiks(): HasMany
     {
         return $this->hasMany(PnsRwKinerjaperiodik::class, 'pnsDinilaiId');
     }
 
-    public function kursuses(): HasMany
+    public function rwKursuses(): HasMany
     {
         return $this->hasMany(PnsRwKursus::class, 'idPns');
     }
 
-    public function masakerjas(): HasMany
+    public function rwMasakerjas(): HasMany
     {
         return $this->hasMany(PnsRwMasakerja::class, 'idPns');
     }
 
-    public function pemberhentians(): HasMany
+    public function rwPemberhentians(): HasMany
     {
         return $this->hasMany(PnsRwPemberhentian::class, 'pnsOrang');
     }
 
-    public function pendidikans(): HasMany
+    public function rwPendidikans(): HasMany
     {
         return $this->hasMany(PnsRwPendidikan::class, 'idPns');
     }
 
-    public function penghargaans(): HasMany
+    public function rwPenghargaans(): HasMany
     {
         return $this->hasMany(PnsRwPenghargaan::class, 'pnsOrangId');
     }
 
-    public function pindahinstansis(): HasMany
+    public function rwPindahinstansis(): HasMany
     {
         return $this->hasMany(PnsRwPindahinstansi::class, 'pnsOrang');
     }
 
-    public function pnsunors(): HasMany
+    public function rwPnsunors(): HasMany
     {
         return $this->hasMany(PnsRwPnsunor::class, 'pnsOrang');
     }
 
-    public function pwks(): HasMany
+    public function rwPwks(): HasMany
     {
         return $this->hasMany(PnsRwPwk::class, 'pnsOrang');
     }
 
-    public function skps(): HasMany
+    public function rwSkps(): HasMany
     {
         return $this->hasMany(PnsRwSkp::class, 'pns');
     }
 
-    public function skp22s(): HasMany
+    public function rwSkp22s(): HasMany
     {
         return $this->hasMany(PnsRwSkp22::class, 'pnsDinilaiId');
     }
