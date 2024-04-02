@@ -43,6 +43,19 @@ class Pegawai extends Model
         return 'siasn_simpeg_'.str(class_basename(__CLASS__))->snake();
     }
 
+    public function getNamaGelarAttribute()
+    {
+        return ($this->gelar_depan ? "{$this->gelar_depan} " : '')
+            .$this->nama
+            .($this->gelar_belakang ? ", {$this->gelar_belakang}" : '');
+    }
+
+    public function getTtlAttribute()
+    {
+        return $this->tempat_lahir_nama
+            .', '.$this->tanggal_lahir;
+    }
+
     public function dataUtama(): HasOne
     {
         return $this->hasOne(PnsDataUtama::class, 'id');
