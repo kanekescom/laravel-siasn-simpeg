@@ -84,7 +84,7 @@ return new class extends Migration
             $table->string('satuan_kerja_induk_nama')->nullable();
             $table->string('satuan_kerja_kerja_id', 42)->nullable()->index('1_satuan_kerja_kerja_id');
             $table->string('satuan_kerja_kerja_nama')->nullable();
-            $table->boolean('is_valid_nik', 1)->nullable()->index('is_valid_nik');
+            $table->boolean('is_valid_nik')->nullable()->index('is_valid_nik');
             $table->timestamps();
             $table->softDeletes();
         });

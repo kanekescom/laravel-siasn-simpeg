@@ -4,9 +4,16 @@ namespace Kanekescom\Siasn\Simpeg\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Kanekescom\Siasn\Referensi\Models\Golongan;
+use Kanekescom\Siasn\Referensi\Models\JenisJabatan;
+use Kanekescom\Siasn\Referensi\Models\KedudukanHukum;
+use Kanekescom\Siasn\Referensi\Models\Lokasi;
+use Kanekescom\Siasn\Referensi\Models\Pendidikan;
+use Kanekescom\Siasn\Referensi\Models\TingkatPendidikan;
 
 class Pegawai extends Model
 {
@@ -54,6 +61,41 @@ class Pegawai extends Model
     {
         return $this->tempat_lahir_nama
             .', '.$this->tanggal_lahir;
+    }
+
+    public function golongan(): BelongsTo
+    {
+        return $this->belongsTo(Golongan::class, 'gol_akhir_id');
+    }
+
+    public function kedudukanHukum(): BelongsTo
+    {
+        return $this->belongsTo(KedudukanHukum::class, 'kedudukan_hukum_id');
+    }
+
+    public function jenisJabatan(): BelongsTo
+    {
+        return $this->belongsTo(JenisJabatan::class, 'jenis_jabatan_id');
+    }
+
+    public function tingkatPendidikan(): BelongsTo
+    {
+        return $this->belongsTo(TingkatPendidikan::class, 'tingkat_pendidikan_id');
+    }
+
+    public function pendidikan(): BelongsTo
+    {
+        return $this->belongsTo(Pendidikan::class, 'pendidikan_id');
+    }
+
+    public function lokasiKerja(): BelongsTo
+    {
+        return $this->belongsTo(Lokasi::class, 'lokasi_kerja_id');
+    }
+
+    public function unor(): BelongsTo
+    {
+        return $this->belongsTo(ReferensiRefUnor::class, 'unor_id');
     }
 
     public function dataUtama(): HasOne
