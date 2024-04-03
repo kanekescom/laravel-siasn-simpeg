@@ -98,6 +98,11 @@ class Pegawai extends Model
         return $this->belongsTo(ReferensiRefUnor::class, 'unor_id');
     }
 
+    public function pengadaan(): HasOne
+    {
+        return $this->hasOne(PengadaanListPengadaanInstansi::class, 'orang_id');
+    }
+
     public function dataUtama(): HasOne
     {
         return $this->hasOne(PnsDataUtama::class, 'id');
