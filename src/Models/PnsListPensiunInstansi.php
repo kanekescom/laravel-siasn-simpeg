@@ -4,7 +4,10 @@ namespace Kanekescom\Siasn\Simpeg\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Kanekescom\Siasn\Referensi\Models\Golongan;
 
 class PnsListPensiunInstansi extends Model
 {
@@ -32,5 +35,20 @@ class PnsListPensiunInstansi extends Model
     public function getTable()
     {
         return 'siasn_simpeg_'.str(class_basename(__CLASS__))->snake();
+    }
+
+    public function pegawai(): HasOne
+    {
+        return $this->hasOne(Pegawai::class, 'pns_id', 'pnsId');
+    }
+
+    public function golongan(): BelongsTo
+    {
+        return $this->belongsTo(Golongan::class, 'golonganId');
+    }
+
+    public function golonganKpp(): BelongsTo
+    {
+        return $this->belongsTo(Golongan::class, 'golonganKppId');
     }
 }
