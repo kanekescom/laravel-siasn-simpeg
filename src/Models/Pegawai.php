@@ -209,4 +209,16 @@ class Pegawai extends Model
         return $query
             ->whereIn('kedudukan_hukum_id', [71, 72, 73]);
     }
+
+    public function scopeMale($query)
+    {
+        return $query
+            ->where('jenis_kelamin', 'M');
+    }
+
+    public function scopeFemale($query)
+    {
+        return $query
+            ->where('jenis_kelamin', 'F');
+    }
 }
