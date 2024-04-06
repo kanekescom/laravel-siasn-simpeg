@@ -34,91 +34,109 @@ class PullRiwayatCommand extends Command
         'angkakredit' => [
             'model' => Models\PnsRwAngkakredit::class,
             'method' => 'getAngkakredit',
+            'relationship' => 'rwAngkakredits',
             'pnsId' => 'pns',
         ],
         'cltn' => [
             'model' => Models\PnsRwCltn::class,
             'method' => 'getCltn',
+            'relationship' => 'rwCltns',
             'pnsId' => 'pnsOrangId',
         ],
         'diklat' => [
             'model' => Models\PnsRwDiklat::class,
             'method' => 'getDiklat',
+            'relationship' => 'rwDiklats',
             'pnsId' => 'idPns',
         ],
         'dp3' => [
             'model' => Models\PnsRwDp3::class,
             'method' => 'getDp3',
+            'relationship' => 'rwDp3s',
             'pnsId' => 'pnsId',
         ],
         'golongan' => [
             'model' => Models\PnsRwGolongan::class,
             'method' => 'getGolongan',
+            'relationship' => 'rwGolongans',
             'pnsId' => 'idPns',
         ],
         'hukdis' => [
             'model' => Models\PnsRwHukdis::class,
             'method' => 'getHukdis',
+            'relationship' => 'rwHukdiss',
             'pnsId' => 'pnsOrang',
         ],
         'jabatan' => [
             'model' => Models\PnsRwJabatan::class,
             'method' => 'getJabatan',
+            'relationship' => 'rwJabatans',
             'pnsId' => 'idPns',
         ],
         'kinerjaperiodik' => [
             'model' => Models\PnsRwKinerjaperiodik::class,
             'method' => 'getKinerjaperiodik',
+            'relationship' => 'rwKinerjaperiodiks',
             'pnsId' => 'pnsDinilaiId',
         ],
         'kursus' => [
             'model' => Models\PnsRwKursus::class,
             'method' => 'getKursus',
+            'relationship' => 'rwKursuss',
             'pnsId' => 'idPns',
         ],
         'masakerja' => [
             'model' => Models\PnsRwMasakerja::class,
             'method' => 'getMasakerja',
+            'relationship' => 'rwMasakerjas',
             'pnsId' => 'idPns',
         ],
         'pemberhentian' => [
             'model' => Models\PnsRwPemberhentian::class,
             'method' => 'getPemberhentian',
+            'relationship' => 'rwPemberhentians',
             'pnsId' => 'pns',
         ],
         'pendidikan' => [
             'model' => Models\PnsRwPendidikan::class,
             'method' => 'getPendidikan',
+            'relationship' => 'rwPendidikans',
             'pnsId' => 'idPns',
         ],
         'penghargaan' => [
             'model' => Models\PnsRwPenghargaan::class,
             'method' => 'getPenghargaan',
+            'relationship' => 'rwPenghargaans',
             'pnsId' => 'pnsOrangId',
         ],
         'pindahinstansi' => [
             'model' => Models\PnsRwPindahinstansi::class,
             'method' => 'getPindahinstansi',
+            'relationship' => 'rwPindahinstansis',
             'pnsId' => 'pnsOrang',
         ],
         'unor' => [
             'model' => Models\PnsRwPnsunor::class,
             'method' => 'getUnor',
+            'relationship' => 'rwUnors',
             'pnsId' => 'pnsOrang',
         ],
         'pwk' => [
             'model' => Models\PnsRwPwk::class,
             'method' => 'getPwk',
+            'relationship' => 'rwPwks',
             'pnsId' => 'pnsOrang',
         ],
         'skp' => [
             'model' => Models\PnsRwSkp::class,
             'method' => 'getSkp',
+            'relationship' => 'rwSkps',
             'pnsId' => 'pns',
         ],
         'skp22' => [
             'model' => Models\PnsRwSkp22::class,
             'method' => 'getSkp22',
+            'relationship' => 'rwSkp22s',
             'pnsId' => 'pnsDinilaiId',
         ],
     ];
@@ -162,10 +180,14 @@ class PullRiwayatCommand extends Command
         $iPegawai = $skip;
         $pegawais = filled($nipBaru) ? Pegawai::whereIn('nip_baru', $nipBaru) : new Pegawai;
 
-        if ($onlyDoesntHave && filled($endpoints->count() == 1)) {
-            $relationName = str($endpoints->first())
-                ->plural();
-            $pegawais = $pegawais->doesntHave($relationName);
+        if ($onlyDoesntHave && $endpoints->count() == 1) {
+            $pegawais = $pegawais->doesntHave($this->endpoints[$endpoints->first()]['relationship']);
+        }
+
+        if ($onlyDoesntHave && $endpoints->count() > 1) {
+            $this->components->error('Can only pull one endpoint in --onlyDoesntHave mode.');
+
+            return self::FAILURE;
         }
 
         $pegawaiCount = $pegawais->count();

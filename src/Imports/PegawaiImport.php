@@ -18,10 +18,10 @@ class PegawaiImport implements ToModel, WithChunkReading, WithHeadingRow, WithPr
     public function model(array $row)
     {
         $row = Arr::map($row, function ($value) {
-            $cleanedString = preg_replace('/[^\p{L}\p{N}\p{P}\p{S}\s]/u', '', $value);
-            $cleanedString = str_replace("'", '', $cleanedString);
+            $value = str($value)
+                ->ltrim("'");
 
-            return $cleanedString === 'null' ? null : $cleanedString;
+            return $value === 'null' ? null : $value;
         });
 
         $row = fractal()
