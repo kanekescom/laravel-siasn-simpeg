@@ -180,8 +180,14 @@ class PullRiwayatCommand extends Command
         $iPegawai = $skip;
         $pegawais = filled($nipBaru) ? Pegawai::whereIn('nip_baru', $nipBaru) : new Pegawai;
 
-        if ($onlyDoesntHave && filled($endpoints->count() == 1)) {
+        if ($onlyDoesntHave && $endpoints->count() == 1) {
             $pegawais = $pegawais->doesntHave($this->endpoints[$endpoints->first()]['relationship']);
+        }
+
+        if ($onlyDoesntHave && $endpoints->count() > 1) {
+            $this->components->error('Can only pull one endpoint in --onlyDoesntHave mode.');
+
+            return self::FAILURE;
         }
 
         $pegawaiCount = $pegawais->count();
