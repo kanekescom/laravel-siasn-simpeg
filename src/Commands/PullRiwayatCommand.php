@@ -118,7 +118,7 @@ class PullRiwayatCommand extends Command
         'unor' => [
             'model' => Models\PnsRwPnsunor::class,
             'method' => 'getUnor',
-            'relationship' => 'rwUnors',
+            'relationship' => 'rwPnsunors',
             'pnsId' => 'pnsOrang',
         ],
         'pwk' => [
