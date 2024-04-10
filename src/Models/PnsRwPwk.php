@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Kanekescom\Siasn\Referensi\Models\Instansi;
+use Kanekescom\Siasn\Referensi\Models\Lokasi;
+use Kanekescom\Siasn\Referensi\Models\SatuanKerja;
 
 class PnsRwPwk extends Model
 {
@@ -38,5 +41,33 @@ class PnsRwPwk extends Model
     public function pegawai(): BelongsTo
     {
         return $this->belongsTo(Pegawai::class, 'pnsOrang');
+    }
+
+    public function instansiR(): BelongsTo
+    {
+        return $this->belongsTo(Instansi::class, 'instansi');
+    }
+
+    public function lokasiKerjaBaruR(): BelongsTo
+    {
+        return $this->belongsTo(Lokasi::class, 'lokasiKerjaBaru');
+    }
+
+    public function unorBaruR(): BelongsTo
+    {
+        return $this->belongsTo(ReferensiRefUnor::class, 'unorBaru');
+    }
+
+    public function satuanKerjaR(): BelongsTo
+    {
+        return $this->belongsTo(SatuanKerja::class, 'satuanKerja');
+    }
+
+    public function scopeNipBaru($query, $string)
+    {
+        return $query
+            ->whereHas('pegawai', function ($query) use ($string) {
+                $query->where('nip_baru', $string);
+            });
     }
 }

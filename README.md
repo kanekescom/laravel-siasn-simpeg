@@ -5,7 +5,7 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/kanekescom/laravel-siasn-simpeg/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/kanekescom/laravel-siasn-simpeg/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/kanekescom/laravel-siasn-simpeg.svg?style=flat-square)](https://packagist.org/packages/kanekescom/laravel-siasn-simpeg)
 
-This library is the abstraction of SIASN SIMPEG API for access from applications written with Laravel PHP Framework.
+This library is the abstraction of SIASN SIMPEG for access from applications written with Laravel PHP Framework.
 
 ## Support us
 

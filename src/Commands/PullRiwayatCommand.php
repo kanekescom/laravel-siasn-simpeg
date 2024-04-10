@@ -64,7 +64,7 @@ class PullRiwayatCommand extends Command
         'hukdis' => [
             'model' => Models\PnsRwHukdis::class,
             'method' => 'getHukdis',
-            'relationship' => 'rwHukdiss',
+            'relationship' => 'rwHukdises',
             'pnsId' => 'pnsOrang',
         ],
         'jabatan' => [
@@ -82,7 +82,7 @@ class PullRiwayatCommand extends Command
         'kursus' => [
             'model' => Models\PnsRwKursus::class,
             'method' => 'getKursus',
-            'relationship' => 'rwKursuss',
+            'relationship' => 'rwKursuses',
             'pnsId' => 'idPns',
         ],
         'masakerja' => [
