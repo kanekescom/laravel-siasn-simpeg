@@ -39,4 +39,21 @@ class PnsRwPenghargaan extends Model
     {
         return $this->belongsTo(Pegawai::class, 'pnsOrangId');
     }
+
+    public function scopeNipBaru($query, $string)
+    {
+        return $query
+            ->whereHas('pegawai', function ($query) use ($string) {
+                $query->where('nip_baru', $string);
+            });
+    }
+
+    public function scopeTahunOptions($query)
+    {
+        return $query
+            ->distinct('tahun')
+            ->select('tahun')
+            ->orderBy('tahun', 'desc')
+            ->pluck('tahun', 'tahun');
+    }
 }
