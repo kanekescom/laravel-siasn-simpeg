@@ -36,7 +36,6 @@ composer require kanekescom/laravel-siasn-simpeg
 You can publish and run the migrations with:
 
 ```bash
-php artisan vendor:publish --tag="siasn-simpeg-migrations"
 php artisan migrate
 ```
 
