@@ -38,7 +38,7 @@ class SimpegServiceProvider extends PackageServiceProvider
                 '2024_01_02_000027_create_siasn_simpeg_pns_rw_skp22_table',
                 '2024_01_02_000028_create_siasn_simpeg_referensi_ref_unor_table',
                 '2024_07_18_000001_add_nama_sekolah_field_on_siasn_simpeg_pegawai_table',
-                '2024_07_18_000002_change_jenis_kawin_id_data_type_on_siasn_simpeg_pegawai_table'
+                '2024_07_18_000002_change_jenis_kawin_id_data_type_on_siasn_simpeg_pegawai_table',
             ])
             ->runsMigrations()
             ->hasCommands([
