@@ -40,6 +40,14 @@ class SimpegServiceProvider extends PackageServiceProvider
                 '2024_07_18_000001_add_nama_sekolah_field_on_siasn_simpeg_pegawai_table',
                 '2024_07_18_000002_change_jenis_kawin_id_data_type_on_siasn_simpeg_pegawai_table',
                 '2024_07_18_000003_change_alamat_data_type_on_siasn_simpeg_pegawai_table',
+                '2024_07_19_000001_add_tglSpmt_field_on_siasn_simpeg_pns_data_utama_table',
+                '2024_07_19_000002_add_kode_jenjang_jabatan_field_on_siasn_simpeg_pns_data_utama_table',
+                '2024_07_19_000003_add_path_field_on_siasn_simpeg_pns_data_utama_table',
+                '2024_07_19_000004_add_genEmailAsn_field_on_siasn_simpeg_pns_data_utama_table',
+                '2024_07_19_000005_add_masa_kerja_tahun_field_on_siasn_simpeg_pns_list_kp_instansi_table',
+                '2024_07_19_000006_add_masa_kerja_bulan_field_on_siasn_simpeg_pns_list_kp_instansi_table',
+                '2024_07_19_000007_add_jenis_kp_field_on_siasn_simpeg_pns_list_kp_instansi_table',
+                '2024_07_19_000008_add_jenis_prosedur_field_on_siasn_simpeg_pns_list_kp_instansi_table',
             ])
             ->runsMigrations()
             ->hasCommands([
