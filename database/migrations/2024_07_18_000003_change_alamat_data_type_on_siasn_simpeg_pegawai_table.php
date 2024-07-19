@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('siasn_simpeg_pegawai', function (Blueprint $table) {
-            $table->string('jenis_kawin_id', 1)->nullable()->change();
+            $table->text('alamat')->nullable()->change();
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('siasn_simpeg_pegawai', function (Blueprint $table) {
-            $table->unsignedTinyInteger('jenis_kawin_id')->nullable()->index('1_jenis_kawin_id')->autoIncrement(false)->change();
+            $table->string('alamat')->nullable()->change();
         });
     }
 };
